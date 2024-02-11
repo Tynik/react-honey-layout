@@ -16,7 +16,8 @@
   "author": "Mykhailo Aliinyk <m.aliynik@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "build": "NODE_ENV=production webpack -c webpack-build.config.js",
+    "build:lib": "NODE_ENV=production webpack -c webpack-lib.config.js",
+    "build:docs": "NODE_ENV=production webpack -c webpack-docs.config.js",
     "test": "jest --collect-coverage",
     "start": "NODE_ENV=development webpack serve"
   },
