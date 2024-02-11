@@ -20,6 +20,11 @@ const GlobalStyle = createGlobalStyle`
     body {
       margin: 0;
       padding: 0;
+
+      font-family: 'Roboto', sans-serif;
+      font-weight: 400;
+      font-style: normal;
+      line-height: 1.2rem;
     }
 
     html,
