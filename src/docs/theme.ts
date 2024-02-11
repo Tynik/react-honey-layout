@@ -32,17 +32,16 @@ export const theme: HoneyLayoutTheme = {
       slateBlue: '#6A5ACD',
       mauve: '#E0B0FF',
       // Text
+      white: '#FFFFFF',
       lightBlue: '#ADD8E6',
+      lightGray: '#CCCCCC',
+      beige: '#F5F5DC',
+      cream: '#FFFDD0',
+      paleYellow: '#FFFFE0',
+      paleGreen: '#98FB98',
     },
     success: {},
     warning: {},
     error: {},
   },
 };
-
-// White (#FFFFFF): White text offers the highest contrast against a Charcoal Gray background, ensuring excellent readability.
-//   Light Gray (#CCCCCC): A slightly lighter shade of gray provides good contrast while maintaining a subdued look.
-// Cream (#FFFDD0): A warm cream color provides a softer alternative to white while still offering good contrast.
-// Beige (#F5F5DC): A light beige color complements the Charcoal Gray background and creates a calm and neutral aesthetic.
-//   Pale Yellow (#FFFFE0): A pale yellow color adds warmth to the text and contrasts nicely with Charcoal Gray.
-//   Pale Green (#98FB98): A light green color offers a subtle pop of color and contrasts well with Charcoal Gray.

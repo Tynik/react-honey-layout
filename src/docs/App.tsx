@@ -1,10 +1,8 @@
 import React from 'react';
-import type { PropsWithChildren } from 'react';
 import styled, { css, useTheme } from 'styled-components';
 
 import { HoneyBox } from '../components';
-import { useHoneyLayoutMediaQuery } from '../hooks';
-import { HoneyLayoutBreakpointName } from '../types';
+import { HoneyContainer, Text, Description, DemoContainer } from './components';
 
 const SquareHoneyBox = styled(HoneyBox)``;
 
@@ -20,11 +18,10 @@ const List = styled.ul`
   list-style-type: none;
 `;
 
-const ListItem = styled.li`
+const ListItem = styled(Text).attrs({
+  as: 'li',
+})`
   ${({ theme }) => css`
-    font-family: 'Roboto', sans-serif;
-    font-weight: 400;
-    font-style: normal;
     font-size: 18px;
 
     padding: 8px 16px;
@@ -33,82 +30,18 @@ const ListItem = styled.li`
   `}
 `;
 
-const HoneyContainer = styled(HoneyBox)`
-  ${({ theme }) => css`
-    display: flex;
-    flex-direction: column;
-
-    margin: 0 auto;
-    max-width: ${theme.container?.maxWidth};
-
-    padding: 16px;
-  `}
-`;
-
-const StyledDemoContainer = styled(HoneyBox)`
-  ${({ theme }) => css`
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-
-    padding: 8px;
-
-    border: 1px solid #cccccc;
-    border-radius: 4px;
-  `}
-`;
-
-const DemoContainer = ({ children }: PropsWithChildren) => {
-  const theme = useTheme();
-  const screenState = useHoneyLayoutMediaQuery();
-
-  const getBreakpointInfo = (breakpoint: HoneyLayoutBreakpointName) => {
-    const breakpointConfig = theme.breakpoints?.[breakpoint];
-
-    return `${breakpoint}[${breakpointConfig?.minWidth ? `>=${breakpointConfig.minWidth}` : ''}${breakpointConfig?.maxWidth ? `<=${breakpointConfig.maxWidth}` : ''}]`;
-  };
-
-  return (
-    <>
-      <HoneyBox
-        $display="flex"
-        $gap="8px"
-        $margin="0 auto"
-        $color={theme.colors?.neutral.goldenrod}
-      >
-        <span>
-          {getBreakpointInfo('xs')}: {screenState.isXs.toString()}
-        </span>
-        <span>
-          {getBreakpointInfo('sm')}: {screenState.isSm.toString()}
-        </span>
-        <span>
-          {getBreakpointInfo('md')}: {screenState.isMd.toString()}
-        </span>
-        <span>
-          {getBreakpointInfo('lg')}: {screenState.isLg.toString()}
-        </span>
-        <span>
-          {getBreakpointInfo('xl')}: {screenState.isXl.toString()}
-        </span>
-      </HoneyBox>
-
-      <StyledDemoContainer $marginTop="4px">{children}</StyledDemoContainer>
-    </>
-  );
-};
-
 export const App = () => {
   const theme = useTheme();
 
   return (
-    <HoneyBox $display="flex" $height="100%" $alignItems="flex-start">
+    <HoneyBox $display="flex" $height="100%" $alignItems="flex-start" $overflow="hidden">
       <HoneyBox
-        $display={{ xs: 'none', md: 'block' }}
+        $display={{ xs: 'none', md: 'flex' }}
         $width="300px"
-        $height="100%"
+        $height="calc(100% - 16px * 2)"
         $padding="16px"
         $flexShrink={0}
+        $overflow="auto"
       >
         <List>
           <ListItem>test 1</ListItem>
@@ -116,22 +49,67 @@ export const App = () => {
         </List>
       </HoneyBox>
 
-      <HoneyContainer>
-        <DemoContainer>
-          {Array.from(new Array(100)).map((_, index) => (
-            <SquareHoneyBox
-              key={index}
-              $backgroundColor={{
-                xs: 'white',
-                sm: theme.colors?.neutral.forestGreen,
-                md: theme.colors?.neutral.crimsonRed,
-              }}
-            >
-              Box
-            </SquareHoneyBox>
-          ))}
-        </DemoContainer>
-      </HoneyContainer>
+      <HoneyBox $display="flex" $height="100%" $flexGrow={1} $overflow="auto">
+        <HoneyContainer>
+          <Description>
+            <p>
+              <strong>HoneyBox: </strong>A Versatile Styled Component
+            </p>
+            <p>
+              <strong>Usage:</strong>
+            </p>
+            <p>
+              The HoneyBox component is a versatile styled component that provides flexible styling
+              options for creating various UI elements. It offers a wide range of props to customize
+              its appearance, making it suitable for building different types of components such as
+              containers, boxes, or cards.
+            </p>
+            <p>
+              <strong>Benefits:</strong>
+            </p>
+            <ul>
+              <li>
+                <strong>Flexibility: </strong>With the HoneyBox component, you have complete control
+                over the styling of your UI elements. It supports a variety of props that allow you
+                to adjust properties like width, height, padding, margin, background color, and
+                more. system.
+              </li>
+              <li>
+                <strong>Responsive Design: </strong>The HoneyBox component supports responsive
+                design out of the box. You can easily specify different styles for various screen
+                sizes using the $display, $width, $height, and other props with responsive values,
+                ensuring your components look great across different devices and viewport sizes.
+                system.
+              </li>
+              <li>
+                <strong>Styled Components Integration: </strong>Being built with styled-components,
+                the HoneyBox component seamlessly integrates with your styled-components-based
+                project. You can leverage the power of styled-components to define complex styling
+                logic while maintaining a clean and readable codebase.
+              </li>
+              <li>
+                <strong>Customization: </strong>You can extend the HoneyBox component to create
+                custom styled components tailored to your specific design requirements. By extending
+                the HoneyBox component and adding custom styling or additional props, you can
+                quickly create reusable UI components that fit your project's design system.
+              </li>
+            </ul>
+          </Description>
+
+          <DemoContainer>
+            {Array.from(new Array(50)).map((_, index) => (
+              <SquareHoneyBox
+                key={index}
+                $backgroundColor={{
+                  xs: 'white',
+                  sm: theme.colors?.neutral.forestGreen,
+                  md: theme.colors?.neutral.crimsonRed,
+                }}
+              />
+            ))}
+          </DemoContainer>
+        </HoneyContainer>
+      </HoneyBox>
     </HoneyBox>
   );
 };

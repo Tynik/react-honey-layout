@@ -1,17 +1,20 @@
 {
-  "name": "@tynik/honey-layout",
+  "name": "@tynik/react-honey-layout",
   "version": "1.0.0",
   "description": "",
   "keywords": [
+    "react",
+    "web",
+    "honey",
     "layout"
   ],
-  "homepage": "https://github.com/Tynik/honey-layout",
+  "homepage": "https://github.com/Tynik/react-honey-layout",
   "bugs": {
-    "url": "https://github.com/Tynik/honey-layout/issues"
+    "url": "https://github.com/Tynik/react-honey-layout/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/Tynik/honey-layout.git"
+    "url": "git+ssh://git@github.com/Tynik/react-honey-layout.git"
   },
   "author": "Mykhailo Aliinyk <m.aliynik@gmail.com>",
   "license": "MIT",
@@ -19,7 +22,7 @@
     "build:lib": "NODE_ENV=production webpack -c webpack-lib.config.js",
     "build:docs": "NODE_ENV=production webpack -c webpack-docs.config.js",
     "test": "jest --collect-coverage",
-    "start": "NODE_ENV=development webpack serve"
+    "start": "NODE_ENV=development webpack serve -c webpack-docs.config.js"
   },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
