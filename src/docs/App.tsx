@@ -1,9 +1,10 @@
 import React from 'react';
 import styled, { css, useTheme } from 'styled-components';
-import Markdown from 'react-markdown';
 
 import { HoneyBox } from '../components';
-import { HoneyContainer, Text, DemoContainer } from './components';
+import { MDXWrapper, HoneyContainer, DemoContainer } from './components';
+
+import HoneyBoxPage from './pages/honey-box.page.mdx';
 
 const SquareHoneyBox = styled(HoneyBox)``;
 
@@ -19,67 +20,13 @@ const List = styled.ul`
   list-style-type: none;
 `;
 
-const ListItem = styled(Text).attrs({
-  as: 'li',
-})`
+const ListItem = styled.li`
   ${({ theme }) => css`
     font-size: 18px;
 
     padding: 8px 16px;
 
     color: ${theme.colors?.neutral.lightBlue};
-  `}
-`;
-
-const description = `
-## HoneyBox: A Versatile Styled Component
-
-### Usage:
-
-The HoneyBox component is a versatile
-styled component that provides flexible styling options for creating various UI
-elements. It offers a wide range of props to customize its appearance, making it
-suitable for building different types of components such as containers, boxes, or cards.
-
-### Benefits:
-
-* Flexibility: With the HoneyBox component, you have complete control over the
-styling of your UI elements. It supports a variety of props that allow you to adjust
-properties like width, height, padding, margin, background color, and more.
-
-* Responsive Design: The HoneyBox component supports responsive design out of the box. You can easily
-specify different styles for various screen sizes using the $display, $width, $height,
-and other props with responsive values, ensuring your components look great across
-different devices and viewport sizes.
-
-* Styled Components Integration: Being built with styled-components, 
-the HoneyBox component seamlessly integrates with your styled-components-based project. 
-You can leverage the power of styled-components to define complex styling logic while maintaining a clean and readable codebase.
-
-* Customization: You can extend the HoneyBox component to create custom styled components
-tailored to your specific design requirements. By extending the HoneyBox component and
-adding custom styling or additional props, you can quickly create reusable UI components
-that fit your project's design system.
-
-~~~react-jsx
-  <HoneyBox
-    $backgroundColor={{
-      xs: 'white',
-      sm: theme.colors?.neutral.forestGreen,
-      md: theme.colors?.neutral.crimsonRed,
-    }}
-  />
-~~~
-`;
-
-const MarkdownC = styled(Markdown)`
-  ${({ theme }) => css`
-    font-size: 18px;
-    font-weight: 300;
-    letter-spacing: 0.025rem;
-    line-height: 1.7rem;
-
-    color: ${theme.colors?.neutral.lightGray};
   `}
 `;
 
@@ -104,7 +51,7 @@ export const App = () => {
 
       <HoneyBox $display="flex" $height="100%" $flexGrow={1} $overflow="auto">
         <HoneyContainer>
-          <MarkdownC>{description}</MarkdownC>
+          <HoneyBoxPage components={{ wrapper: MDXWrapper }} />
 
           <DemoContainer>
             {Array.from(new Array(50)).map((_, index) => (

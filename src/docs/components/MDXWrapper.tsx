@@ -1,10 +1,6 @@
 import styled, { css } from 'styled-components';
 
-import { Text } from './Text';
-
-export const Description = styled(Text).attrs({
-  as: 'div',
-})`
+export const MDXWrapper = styled.div`
   ${({ theme }) => css`
     font-size: 18px;
     font-weight: 300;

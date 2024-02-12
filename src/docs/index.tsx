@@ -1,5 +1,6 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
+import { MDXProvider } from '@mdx-js/react';
 import { createGlobalStyle, css, ThemeProvider } from 'styled-components';
 
 import type { HoneyLayoutTheme } from '../types';
@@ -41,6 +42,9 @@ const root = createRoot(document.getElementById('root') as HTMLDivElement);
 root.render(
   <ThemeProvider theme={theme}>
     <GlobalStyle />
-    <App />
+
+    <MDXProvider>
+      <App />
+    </MDXProvider>
   </ThemeProvider>,
 );

@@ -16,6 +16,18 @@ module.exports = {
         use: 'ts-loader',
         exclude: /node_modules/,
       },
+      {
+        test: /\.mdx$/,
+        use: [
+          {
+            loader: '@mdx-js/loader',
+            /** @type {import('@mdx-js/loader').Options} */
+            options: {
+              /* jsxImportSource: …, otherOptions… */
+            },
+          },
+        ],
+      },
     ],
   },
   resolve: {

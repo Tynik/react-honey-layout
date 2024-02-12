@@ -1,4 +1,3 @@
 export * from './HoneyContainer';
-export * from './Text';
-export * from './Description';
+export * from './MDXWrapper';
 export * from './DemoContainer';
