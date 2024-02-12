@@ -1,9 +1,11 @@
 import React from 'react';
-import styled, { css, useTheme } from 'styled-components';
+import { Route, Routes } from 'react-router-dom';
+import styled from 'styled-components';
 
 import { HoneyBox } from '../components';
-import { MDXWrapper, HoneyContainer, DemoContainer } from './components';
+import { MDXWrapper, HoneyContainer, Menu } from './components';
 
+import GettingStartedPage from './pages/getting-started.page.mdx';
 import HoneyBoxPage from './pages/honey-box.page.mdx';
 
 const SquareHoneyBox = styled(HoneyBox)``;
@@ -13,58 +15,23 @@ SquareHoneyBox.defaultProps = {
   $height: '100px',
 };
 
-const List = styled.ul`
-  margin: 0;
-  padding: 0;
-
-  list-style-type: none;
-`;
-
-const ListItem = styled.li`
-  ${({ theme }) => css`
-    font-size: 18px;
-
-    padding: 8px 16px;
-
-    color: ${theme.colors?.neutral.lightBlue};
-  `}
-`;
-
 export const App = () => {
-  const theme = useTheme();
-
   return (
     <HoneyBox $display="flex" $height="100%" $alignItems="flex-start" $overflow="hidden">
-      <HoneyBox
-        $display={{ xs: 'none', md: 'flex' }}
-        $width="300px"
-        $height="calc(100% - 16px * 2)"
-        $padding="16px"
-        $flexShrink={0}
-        $overflow="auto"
-      >
-        <List>
-          <ListItem>test 1</ListItem>
-          <ListItem>test 2</ListItem>
-        </List>
-      </HoneyBox>
+      <Menu />
 
       <HoneyBox $display="flex" $height="100%" $flexGrow={1} $overflow="auto">
         <HoneyContainer>
-          <HoneyBoxPage components={{ wrapper: MDXWrapper }} />
-
-          <DemoContainer>
-            {Array.from(new Array(50)).map((_, index) => (
-              <SquareHoneyBox
-                key={index}
-                $backgroundColor={{
-                  xs: 'white',
-                  sm: theme.colors?.neutral.forestGreen,
-                  md: theme.colors?.neutral.crimsonRed,
-                }}
-              />
-            ))}
-          </DemoContainer>
+          <Routes>
+            <Route
+              path="getting-started"
+              element={<GettingStartedPage components={{ wrapper: MDXWrapper }} />}
+            />
+            <Route
+              path="honey-box"
+              element={<HoneyBoxPage components={{ wrapper: MDXWrapper }} />}
+            />
+          </Routes>
         </HoneyContainer>
       </HoneyBox>
     </HoneyBox>

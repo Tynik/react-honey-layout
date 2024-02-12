@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { StrictMode } from 'react';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { createRoot } from 'react-dom/client';
 import { MDXProvider } from '@mdx-js/react';
-import { createGlobalStyle, css, ThemeProvider } from 'styled-components';
 
+import { createGlobalStyle, css, ThemeProvider } from 'styled-components';
 import type { HoneyLayoutTheme } from '../types';
 import { App } from './App';
 import { theme } from './theme';
@@ -34,17 +35,36 @@ const GlobalStyle = createGlobalStyle`
       height: 100%;
       min-height: 100%;
     }
+
+    a,
+    a:hover,
+    a:focus,
+    a:active {
+      text-decoration: none;
+      color: inherit;
+    }
   `}
 `;
 
 const root = createRoot(document.getElementById('root') as HTMLDivElement);
+
+const router = createBrowserRouter([
+  {
+    path: '/*',
+    element: (
+      <StrictMode>
+        <App />
+      </StrictMode>
+    ),
+  },
+]);
 
 root.render(
   <ThemeProvider theme={theme}>
     <GlobalStyle />
 
     <MDXProvider>
-      <App />
+      <RouterProvider router={router} />
     </MDXProvider>
   </ThemeProvider>,
 );

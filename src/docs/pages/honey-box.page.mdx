@@ -1,38 +1,67 @@
+import { useTheme } from 'styled-components';
+
+import { HoneyBox } from '../../components';
+
+export const SquareHoneyBox = () => {
+  const theme = useTheme();
+
+  return <HoneyBox
+    $width="100px"
+    $height="100px"
+    $margin="0 auto"
+    $backgroundColor={{
+      xs: 'white',
+      sm: theme.colors?.neutral.forestGreen,
+      md: theme.colors?.neutral.crimsonRed,
+    }}
+  />
+}
 
 ## HoneyBox: A Versatile Styled Component
 
 ### Usage:
 
-The HoneyBox component is a versatile styled component that provides flexible styling options for creating various UI
+The `HoneyBox` component is a versatile styled component that provides flexible styling options for creating various UI
 elements. It offers a wide range of props to customize its appearance, making it
 suitable for building different types of components such as containers, boxes, or cards.
 
 ### Benefits:
 
-* Flexibility: With the HoneyBox component, you have complete control over the
+* **Flexibility:** With the `HoneyBox` component, you have complete control over the
 styling of your UI elements. It supports a variety of props that allow you to adjust
 properties like width, height, padding, margin, background color, and more.
 
-* Responsive Design: The HoneyBox component supports responsive design out of the box. You can easily
+* **Responsive Design:** The `HoneyBox` component supports responsive design out of the box. You can easily
 specify different styles for various screen sizes using the $display, $width, $height,
 and other props with responsive values, ensuring your components look great across
 different devices and viewport sizes.
 
-* Styled Components Integration: Being built with styled-components,
-the HoneyBox component seamlessly integrates with your styled-components-based project.
+* **Styled Components Integration:** Being built with styled-components,
+the `HoneyBox` component seamlessly integrates with your styled-components-based project.
 You can leverage the power of styled-components to define complex styling logic while maintaining a clean and readable codebase.
 
-* Customization: You can extend the HoneyBox component to create custom styled components
-tailored to your specific design requirements. By extending the HoneyBox component and
+* **Customization:** You can extend the `HoneyBox` component to create custom styled components
+tailored to your specific design requirements. By extending the `HoneyBox` component and
 adding custom styling or additional props, you can quickly create reusable UI components
 that fit your project's design system.
 
-~~~react-jsx
-<HoneyBox
-  $backgroundColor={{
-    xs: 'white',
-    sm: theme.colors?.neutral.forestGreen,
-    md: theme.colors?.neutral.crimsonRed,
-  }}
-/>
+### Usage:
+
+~~~tsx
+export const SquareHoneyBox = () => {
+  const theme = useTheme();
+
+  return <HoneyBox
+    $width="100px"
+    $height="100px"
+    $margin="0 auto"
+    $backgroundColor={{
+      xs: 'white',
+      sm: theme.colors?.neutral.forestGreen,
+      md: theme.colors?.neutral.crimsonRed,
+    }}
+  />
+}
 ~~~
+
+<SquareHoneyBox/>
