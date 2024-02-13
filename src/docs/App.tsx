@@ -1,12 +1,10 @@
 import React from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { HoneyBox } from '../components';
-import { MDXWrapper, HoneyContainer, Menu } from './components';
-
-import GettingStartedPage from './pages/getting-started.page.mdx';
-import HoneyBoxPage from './pages/honey-box.page.mdx';
+import { HoneyContainer, Menu } from './components';
+import { PAGES } from './constants';
 
 const SquareHoneyBox = styled(HoneyBox)``;
 
@@ -23,14 +21,11 @@ export const App = () => {
       <HoneyBox $display="flex" $height="100%" $flexGrow={1} $overflow="auto">
         <HoneyContainer>
           <Routes>
-            <Route
-              path="getting-started"
-              element={<GettingStartedPage components={{ wrapper: MDXWrapper }} />}
-            />
-            <Route
-              path="honey-box"
-              element={<HoneyBoxPage components={{ wrapper: MDXWrapper }} />}
-            />
+            {PAGES.map(page => (
+              <Route key={page.path} path={page.path} element={page.element} />
+            ))}
+
+            <Route path="*" element={<Navigate to={PAGES[0].path} replace />} />
           </Routes>
         </HoneyContainer>
       </HoneyBox>

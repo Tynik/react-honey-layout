@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 
 import { HoneyBox } from '../../components';
+import { PAGES } from '../constants';
 
 const List = styled.ul`
   margin: 0;
@@ -32,13 +33,11 @@ export const Menu = () => {
       $overflow="auto"
     >
       <List>
-        <ListItem>
-          <NavLink to="getting-started">Getting Started</NavLink>
-        </ListItem>
-
-        <ListItem>
-          <NavLink to="honey-box">Honey Box</NavLink>
-        </ListItem>
+        {PAGES.map(page => (
+          <ListItem key={page.path}>
+            <NavLink to={page.path}>{page.menuLabel}</NavLink>
+          </ListItem>
+        ))}
       </List>
     </HoneyBox>
   );
