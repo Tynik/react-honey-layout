@@ -1,7 +1,6 @@
 import styled, { css } from 'styled-components';
-import { HoneyBox } from '../../components';
 
-export const HoneyContainer = styled(HoneyBox)`
+export const HoneyContainer = styled.div`
   ${({ theme }) => css`
     display: flex;
     flex-direction: column;

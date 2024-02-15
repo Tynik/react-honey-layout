@@ -53,20 +53,27 @@ export type HoneyLayoutContainer = {
   maxWidth: CSS.Properties['width'];
 };
 
-type HoneyLayoutColorSegment =
-  | 'primary'
-  | 'secondary'
-  | 'accent'
-  | 'neutral'
-  | 'success'
-  | 'warning'
-  | 'error';
+export type HoneyLayoutPrimaryColors = string;
+export type HoneyLayoutSecondaryColors = string;
+export type HoneyLayoutAccentColors = string;
+export type HoneyLayoutNeutralColors = string;
+export type HoneyLayoutSuccessColors = string;
+export type HoneyLayoutWarningColors = string;
+export type HoneyLayoutErrorColors = string;
 
 export type HoneyLayoutTheme = Partial<{
   breakpoints: Partial<HoneyLayoutBreakpoints>;
   container: Partial<HoneyLayoutContainer>;
   spacing: unknown;
-  colors: Record<HoneyLayoutColorSegment, Record<string, DataType.Color>>;
+  colors: {
+    primary: Record<HoneyLayoutPrimaryColors, DataType.Color>;
+    secondary: Record<HoneyLayoutSecondaryColors, DataType.Color>;
+    accent: Record<HoneyLayoutAccentColors, DataType.Color>;
+    neutral: Record<HoneyLayoutNeutralColors, DataType.Color>;
+    success: Record<HoneyLayoutSuccessColors, DataType.Color>;
+    warning: Record<HoneyLayoutWarningColors, DataType.Color>;
+    error: Record<HoneyLayoutErrorColors, DataType.Color>;
+  };
 }>;
 
 export type HoneyLayoutThemedProps<T> = { theme: HoneyLayoutTheme } & T;

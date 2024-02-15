@@ -2,11 +2,12 @@ import React, { StrictMode } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { createRoot } from 'react-dom/client';
 import { MDXProvider } from '@mdx-js/react';
+import { createGlobalStyle, css } from 'styled-components';
 
-import { createGlobalStyle, css, ThemeProvider } from 'styled-components';
 import type { HoneyLayoutTheme } from '../types';
 import { App } from './App';
 import { theme } from './theme';
+import { HoneyThemeProvider } from '../components';
 
 declare module 'styled-components' {
   // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -60,11 +61,11 @@ const router = createBrowserRouter([
 ]);
 
 root.render(
-  <ThemeProvider theme={theme}>
+  <HoneyThemeProvider theme={theme}>
     <GlobalStyle />
 
     <MDXProvider>
       <RouterProvider router={router} />
     </MDXProvider>
-  </ThemeProvider>,
+  </HoneyThemeProvider>,
 );
