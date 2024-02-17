@@ -28,6 +28,7 @@ export const theme: HoneyLayoutTheme = {
     neutral: {
       charcoalGray: '#333333',
       crimsonRed: '#DC143C',
+      coralRed: '#FF4D4D',
       forestGreen: '#228B22',
       royalBlue: '#4169E1',
       goldenrod: '#DAA520',

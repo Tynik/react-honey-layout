@@ -46,7 +46,8 @@ const GlobalStyle = createGlobalStyle`
     }
 
     pre {
-      white-space: pre-wrap;
+      border-radius: 4px;
+      overflow: hidden;
     }
   `}
 `;

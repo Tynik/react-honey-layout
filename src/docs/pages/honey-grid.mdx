@@ -1,6 +1,17 @@
-import { useTheme } from 'styled-components';
+import styled, { css, useTheme } from 'styled-components';
 
 import { HoneyGrid, HoneyGridColumn } from '../../components';
+
+
+export const GridColumnStyled = styled.div`
+  ${({ theme }) => css`
+    cursor: pointer;
+
+    &:hover {
+        background-color: ${theme.colors?.neutral.coralRed};
+    }
+  `}
+`;
 
 export const GridColumn =  ({ children, ...props }) => {
   const theme = useTheme();
@@ -11,6 +22,7 @@ export const GridColumn =  ({ children, ...props }) => {
       $justifyContent="center"
       $alignItems="center"
       $backgroundColor={theme.colors?.neutral.crimsonRed}
+      as={GridColumnStyled}
       {...props}
     >
       {children}
@@ -125,13 +137,8 @@ export const GridWith2Columns = () => {
       spacing={2}
       $padding="16px"
     >
-      <HoneyGridColumn $minWidth="300px">
-        1
-      </HoneyGridColumn>
-
-      <HoneyGridColumn $minWidth="300px">
-        2
-      </HoneyGridColumn>
+      <HoneyGridColumn $minWidth="300px">1</HoneyGridColumn>
+      <HoneyGridColumn $minWidth="300px">2</HoneyGridColumn>
     </HoneyGrid>
   );
 ~~~

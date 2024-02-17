@@ -5,11 +5,13 @@ export const HoneyContainer = styled.div`
     display: flex;
     flex-direction: column;
 
-    height: min-content;
-    margin: 0 auto;
     width: 100%;
     max-width: ${theme.container?.maxWidth};
+    height: min-content;
 
+    margin: 0 auto;
     padding: 16px;
+
+    overflow: hidden;
   `}
 `;
