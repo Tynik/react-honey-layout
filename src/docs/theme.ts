@@ -18,7 +18,9 @@ export const theme: HoneyLayoutTheme = {
   container: {
     maxWidth: '1450px',
   },
-  spacing: {},
+  spacing: {
+    nominal: 8,
+  },
   colors: {
     primary: {},
     secondary: {},

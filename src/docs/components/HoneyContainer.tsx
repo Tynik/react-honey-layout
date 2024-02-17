@@ -7,6 +7,7 @@ export const HoneyContainer = styled.div`
 
     height: min-content;
     margin: 0 auto;
+    width: 100%;
     max-width: ${theme.container?.maxWidth};
 
     padding: 16px;

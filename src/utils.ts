@@ -1,3 +1,5 @@
+import type { HoneyLayoutThemedProps } from './types';
+
 export const camelToDashCase = (str: string) =>
   str.replace(/[A-Z]/g, letter => `-${letter.toLowerCase()}`);
 
@@ -22,3 +24,8 @@ export const createMediaRule = ({ minWidth, maxWidth }: CreateMediaRuleOptions) 
 
   return `@media only screen and ${minWidthRule}${minWidth && maxWidth ? ' and ' : ''}${maxWidthRule}`;
 };
+
+export const calculateSpacing =
+  (spacing: number) =>
+  ({ theme }: HoneyLayoutThemedProps) =>
+    spacing * (theme.spacing?.nominal ?? 0);

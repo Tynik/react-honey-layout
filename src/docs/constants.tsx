@@ -6,6 +6,7 @@ import { MDXWrapper } from './components/MDXWrapper';
 
 import GettingStartedPage from './pages/getting-started.page.mdx';
 import HoneyBoxPage from './pages/honey-box.page.mdx';
+import HoneyGridPage from './pages/honey-grid.mdx';
 
 const MDX_COMPONENTS: MDXComponents = { wrapper: MDXWrapper };
 
@@ -19,5 +20,10 @@ export const PAGES: Page[] = [
     path: 'honey-box',
     menuLabel: 'Honey Box',
     element: <HoneyBoxPage components={MDX_COMPONENTS} />,
+  },
+  {
+    path: 'honey-grid',
+    menuLabel: 'Honey Grid',
+    element: <HoneyGridPage components={MDX_COMPONENTS} />,
   },
 ];

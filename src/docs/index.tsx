@@ -44,6 +44,10 @@ const GlobalStyle = createGlobalStyle`
       text-decoration: none;
       color: inherit;
     }
+
+    pre {
+      white-space: pre-wrap;
+    }
   `}
 `;
 

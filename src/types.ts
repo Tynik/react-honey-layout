@@ -64,7 +64,10 @@ export type HoneyLayoutErrorColors = string;
 export type HoneyLayoutTheme = Partial<{
   breakpoints: Partial<HoneyLayoutBreakpoints>;
   container: Partial<HoneyLayoutContainer>;
-  spacing: unknown;
+  spacing: {
+    // Value in px
+    nominal: number;
+  };
   colors: {
     primary: Record<HoneyLayoutPrimaryColors, DataType.Color>;
     secondary: Record<HoneyLayoutSecondaryColors, DataType.Color>;
@@ -76,4 +79,4 @@ export type HoneyLayoutTheme = Partial<{
   };
 }>;
 
-export type HoneyLayoutThemedProps<T> = { theme: HoneyLayoutTheme } & T;
+export type HoneyLayoutThemedProps<T = unknown> = { theme: HoneyLayoutTheme } & T;
