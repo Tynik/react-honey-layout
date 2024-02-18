@@ -24,9 +24,9 @@ export const DemoContainer = ({ children }: PropsWithChildren) => {
   const screenState = useHoneyLayoutMediaQuery();
 
   const getBreakpointInfo = (breakpoint: HoneyLayoutBreakpointName) => {
-    const breakpointConfig = theme.breakpoints?.[breakpoint];
+    const size = theme.breakpoints?.[breakpoint];
 
-    return `${breakpoint}[${breakpointConfig?.minWidth ? `>=${breakpointConfig.minWidth}` : ''}${breakpointConfig?.maxWidth ? `<=${breakpointConfig.maxWidth}` : ''}]`;
+    return `${breakpoint}[${size}px]`;
   };
 
   return (

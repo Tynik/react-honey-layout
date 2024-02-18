@@ -45,9 +45,31 @@ const GlobalStyle = createGlobalStyle`
       color: inherit;
     }
 
+    html {
+      box-sizing: border-box;
+    }
+
+    *,
+    *:before,
+    *:after {
+      box-sizing: inherit;
+    }
+
     pre {
       border-radius: 4px;
       overflow: hidden;
+    }
+
+    code {
+      padding: 4px 8px;
+      border-radius: 4px;
+
+      background-color: #22272e;
+    }
+
+    #root {
+      display: flex;
+      flex-direction: column;
     }
   `}
 `;

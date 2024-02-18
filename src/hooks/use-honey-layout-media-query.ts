@@ -29,53 +29,26 @@ const getScreenState = (breakpoints: Partial<HoneyLayoutBreakpoints> | undefined
     };
   }
 
-  // Get the keys of the provided breakpoints
-  const breakpointKeys = Object.keys(breakpoints) as (keyof Partial<HoneyLayoutBreakpoints>)[];
+  const sortedBreakpoints = Object.entries(breakpoints)
+    .sort(([, a], [, b]) => a - b) // Sort breakpoints in ascending order of width
+    .map(([name]) => name) as (keyof Partial<HoneyLayoutBreakpoints>)[];
 
-  // Find the first breakpoint that matches the current screen width
-  const currentBreakpoint = breakpointKeys.findLast(breakpoint => {
-    const breakpointConfig = breakpoints[breakpoint];
+  const currentBreakpoint =
+    sortedBreakpoints.find(breakpoint => {
+      const size = breakpoints[breakpoint];
 
-    return (
-      (!breakpointConfig?.minWidth || window.innerWidth >= (breakpointConfig?.minWidth ?? 0)) &&
-      (!breakpointConfig?.maxWidth || window.innerWidth <= (breakpointConfig?.maxWidth ?? 0))
-    );
-  });
+      return size ? window.innerWidth < size : false;
+    }) || sortedBreakpoints[sortedBreakpoints.length - 1]; // Use the largest breakpoint if no match is found
 
-  // Initialize screen state with default values
-  const screenState: ScreenState = {
+  return {
     isPortrait,
     isLandscape,
-    isXs: false,
-    isSm: false,
-    isMd: false,
-    isLg: false,
-    isXl: false,
+    isXs: currentBreakpoint === 'xs',
+    isSm: currentBreakpoint === 'sm',
+    isMd: currentBreakpoint === 'md',
+    isLg: currentBreakpoint === 'lg',
+    isXl: currentBreakpoint === 'xl',
   };
-
-  // Update screen state based on the current breakpoint
-  if (currentBreakpoint) {
-    switch (currentBreakpoint) {
-      case 'xs':
-        screenState.isXs = true;
-        break;
-      case 'sm':
-        screenState.isSm = true;
-        break;
-      case 'md':
-        screenState.isMd = true;
-        break;
-      case 'lg':
-        screenState.isLg = true;
-        break;
-      case 'xl':
-        screenState.isXl = true;
-        break;
-      default:
-    }
-  }
-
-  return screenState;
 };
 
 export const useHoneyLayoutMediaQuery = () => {

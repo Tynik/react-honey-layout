@@ -2,22 +2,6 @@ import type { DataType } from 'csstype';
 import * as CSS from 'csstype';
 
 /**
- * Represents the configuration for a single breakpoint in a responsive layout.
- * Contains optional `minWidth` and `maxWidth` values for the breakpoint,
- *  which define the range of screen widths for applying the @media rule.
- */
-export type HoneyLayoutBreakpoint = Partial<{
-  /**
-   * Minimum width for the @media rule
-   */
-  minWidth: number;
-  /**
-   * Maximum width for the @media rule
-   */
-  maxWidth: number;
-}>;
-
-/**
  * Represents the breakpoints configuration for a responsive layout.
  *
  * Notes:
@@ -28,11 +12,11 @@ export type HoneyLayoutBreakpoint = Partial<{
  * - `xl`: Extra large devices
  */
 export type HoneyLayoutBreakpoints = {
-  xs: HoneyLayoutBreakpoint;
-  sm: HoneyLayoutBreakpoint;
-  md: HoneyLayoutBreakpoint;
-  lg: HoneyLayoutBreakpoint;
-  xl: HoneyLayoutBreakpoint;
+  xs: number;
+  sm: number;
+  md: number;
+  lg: number;
+  xl: number;
 };
 
 export type HoneyLayoutBreakpointName = keyof HoneyLayoutBreakpoints;

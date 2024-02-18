@@ -2,18 +2,10 @@ import type { HoneyLayoutTheme } from '../types';
 
 export const theme: HoneyLayoutTheme = {
   breakpoints: {
-    xs: {
-      minWidth: 320,
-    },
-    sm: {
-      minWidth: 700,
-    },
-    md: {
-      minWidth: 1200,
-    },
-    lg: {
-      minWidth: 1600,
-    },
+    xs: 480,
+    sm: 768,
+    md: 992,
+    lg: 1200,
   },
   container: {
     maxWidth: '1450px',
@@ -26,6 +18,7 @@ export const theme: HoneyLayoutTheme = {
     secondary: {},
     accent: {},
     neutral: {
+      charcoalDark: '#222222',
       charcoalGray: '#333333',
       crimsonRed: '#DC143C',
       coralRed: '#FF4D4D',

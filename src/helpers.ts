@@ -41,6 +41,35 @@ const checkIfApplyBreakpoint = (
       propertyName[0] === '$' && typeof propertyValue === 'object' && breakpoint in propertyValue,
   );
 
+export const useBreakpoint = (breakpoint: HoneyLayoutBreakpointName) => {
+  const down = ({ theme }: HoneyLayoutThemedProps<HoneyLayoutBoxProps>) => {
+    const size = theme.breakpoints?.[breakpoint];
+    if (!size) {
+      return null;
+    }
+
+    return createMediaRule({
+      maxWidth: `${size}px`,
+    });
+  };
+
+  const up = ({ theme }: HoneyLayoutThemedProps<HoneyLayoutBoxProps>) => {
+    const size = theme.breakpoints?.[breakpoint];
+    if (!size) {
+      return null;
+    }
+
+    return createMediaRule({
+      minWidth: `${size}px`,
+    });
+  };
+
+  return {
+    down,
+    up,
+  };
+};
+
 export const generateMediaStyles =
   (breakpoint: HoneyLayoutBreakpointName) =>
   ({ theme, ...props }: HoneyLayoutThemedProps<HoneyLayoutBoxProps>) => {
@@ -51,10 +80,7 @@ export const generateMediaStyles =
     }
 
     return css`
-      ${createMediaRule({
-        minWidth: breakpointConfig.minWidth ? `${breakpointConfig.minWidth}px` : undefined,
-        maxWidth: breakpointConfig.maxWidth ? `${breakpointConfig.maxWidth}px` : undefined,
-      })} {
+      ${useBreakpoint(breakpoint).up} {
         ${generateStyles(breakpoint)};
       }
     `;

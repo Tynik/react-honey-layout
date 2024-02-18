@@ -5,9 +5,10 @@ import hljs from 'highlight.js';
 
 import 'highlight.js/styles/github-dark-dimmed.min.css';
 
-import { HoneyBox } from '../components';
-import { HoneyContainer, Menu } from './components';
 import { PAGES } from './constants';
+import { AppProvider } from './providers';
+import { HoneyBox } from '../components';
+import { HoneyContainer, Menu, TopBar } from './components';
 
 const SquareHoneyBox = styled(HoneyBox)``;
 
@@ -24,20 +25,30 @@ export const App = () => {
   }, [location.pathname]);
 
   return (
-    <HoneyBox $display="flex" $height="100%" $alignItems="flex-start" $overflow="hidden">
-      <Menu />
+    <AppProvider>
+      <TopBar />
 
-      <HoneyBox $display="flex" $height="100%" $flexGrow={1} $overflow="auto">
-        <HoneyContainer>
-          <Routes>
-            {PAGES.map(page => (
-              <Route key={page.path} path={page.path} element={page.element} />
-            ))}
+      <HoneyBox
+        $position="relative"
+        $display="flex"
+        $height="100%"
+        $alignItems="flex-start"
+        $overflow="hidden"
+      >
+        <Menu />
 
-            <Route path="*" element={<Navigate to={PAGES[0].path} replace />} />
-          </Routes>
-        </HoneyContainer>
+        <HoneyBox $display="flex" $height="100%" $flexGrow={1} $overflow="auto">
+          <HoneyContainer>
+            <Routes>
+              {PAGES.map(page => (
+                <Route key={page.path} path={page.path} element={page.element} />
+              ))}
+
+              <Route path="*" element={<Navigate to={PAGES[0].path} replace />} />
+            </Routes>
+          </HoneyContainer>
+        </HoneyBox>
       </HoneyBox>
-    </HoneyBox>
+    </AppProvider>
   );
 };
