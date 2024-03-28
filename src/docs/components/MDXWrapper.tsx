@@ -5,7 +5,7 @@ export const MDXWrapper = styled.div`
     font-size: 18px;
     font-weight: 300;
     letter-spacing: 0.025rem;
-    line-height: 1.7rem;
+    line-height: 2rem;
 
     color: ${theme.colors?.neutral.lightGray};
   `}

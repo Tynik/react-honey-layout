@@ -11,7 +11,7 @@ import { GlobalStyle } from './global-style';
 
 declare module 'styled-components' {
   // eslint-disable-next-line @typescript-eslint/no-empty-interface
-  export interface DefaultTheme extends HoneyLayoutTheme {}
+  interface DefaultTheme extends HoneyLayoutTheme {}
 }
 
 const root = createRoot(document.getElementById('root') as HTMLDivElement);

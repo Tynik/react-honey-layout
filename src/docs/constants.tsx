@@ -5,6 +5,7 @@ import type { Page } from './types';
 import { MDXWrapper } from './components/MDXWrapper';
 
 import GettingStartedPage from './pages/getting-started.page.mdx';
+import ThemePage from './pages/theme.mdx';
 import HoneyBoxPage from './pages/honey-box.page.mdx';
 import HoneyGridPage from './pages/honey-grid.mdx';
 
@@ -15,6 +16,11 @@ export const PAGES: Page[] = [
     path: 'getting-started',
     menuLabel: 'Getting Started',
     element: <GettingStartedPage components={MDX_COMPONENTS} />,
+  },
+  {
+    path: 'theme',
+    menuLabel: 'Theme',
+    element: <ThemePage components={MDX_COMPONENTS} />,
   },
   {
     path: 'honey-box',

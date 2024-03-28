@@ -98,30 +98,28 @@ export interface BaseHoneyLayoutColors {
 
 /**
  * Example of augmenting the `HoneyLayoutColors` interface.
- * This adds a custom color palette to the theme.
  *
  * @example
- *
  * ```typescript
  * declare module '@tynik/react-honey-layout' {
- *  interface HoneyLayoutColors extends BaseHoneyLayoutColors {
+ *  interface HoneyLayoutColors {
  *    neutral: Record<'charcoalDark' | 'charcoalGray' | 'crimsonRed', DataType.Color>;
- *    custom: Record<string, DataType.Color>;
  *  }
  * }
  * ```
  */
 export interface HoneyLayoutColors extends BaseHoneyLayoutColors {}
 
+/**
+ * Represents the theme configuration.
+ */
 export interface BaseHoneyLayoutTheme {
   breakpoints?: Partial<HoneyLayoutBreakpoints>;
   container?: Partial<HoneyLayoutContainer>;
   spacings?: HoneyLayoutSpacings;
   colors?: HoneyLayoutColors;
 }
-/**
- * Represents the theme configuration.
- */
+
 export interface HoneyLayoutTheme extends BaseHoneyLayoutTheme {}
 
 export type HoneyLayoutThemedProps<T = unknown> = { theme: HoneyLayoutTheme } & T;

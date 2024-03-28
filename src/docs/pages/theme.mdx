@@ -1,0 +1,103 @@
+
+### HoneyThemeProvider Component
+
+The `HoneyThemeProvider` component is used to provide a merged theme to its children.
+It merges the provided theme with the current theme from the context.
+
+---
+
+### Usage
+
+1. Define your theme object, extending the `HoneyLayoutTheme` interface from `@tynik/react-honey-layout`.
+
+~~~ts
+// theme.ts
+import type { HoneyLayoutTheme } from '@tynik/react-honey-layout';
+
+const theme: HoneyLayoutTheme = {
+  // Define your theme properties here
+};
+
+export default theme;
+~~~
+
+2. Wrap your application with the `ThemeProvider`, providing your theme object as a prop.
+
+~~~tsx
+// App.tsx
+import React from 'react';
+import { ThemeProvider } from 'styled-components';
+import theme from './theme';
+
+const App = () => {
+  return (
+    <ThemeProvider theme={theme}>
+      {/* Your application components */}
+    </ThemeProvider>
+  );
+};
+
+export default App;
+~~~
+
+3. You can nest instances of `HoneyThemeProvider` within each other to provide different themes to different parts of your application.
+Each nested `HoneyThemeProvider` merges its theme with the theme provided by its parent.
+
+~~~tsx
+import React from 'react';
+import { HoneyThemeProvider } from '@tynik/react-honey-layout';
+import theme from './theme';
+import nestedTheme from './nested-theme';
+
+export const NestedThemeProvider = () => {
+  return (
+    <ThemeProvider theme={theme}>
+      <HoneyThemeProvider theme={nestedTheme}>
+        {/* Nested components */}
+      </HoneyThemeProvider>
+    </ThemeProvider>
+  );
+};
+~~~
+
+In this example, `NestedThemeProvider` is a component that provides a specific theme (nestedTheme) to its children.
+This nested instance of `HoneyThemeProvider` merges nested theme with the theme provided by its parent `ThemeProvider` or `HoneyThemeProvider`.
+
+---
+
+### Augmentation for `DefaultTheme` from styled components library
+
+To augment the `DefaultTheme` interface from `styled-components` with the `HoneyLayoutTheme`, add the following declaration to your project:
+
+~~~ts
+import type { HoneyLayoutTheme } from '@tynik/react-honey-layout';
+
+declare module 'styled-components' {
+  interface DefaultTheme extends HoneyLayoutTheme {}
+}
+~~~
+
+This declaration extends the `DefaultTheme` interface with the properties defined in `HoneyLayoutTheme`, allowing you to use them within your styled components.
+
+---
+
+### Augmentation for `HoneyLayoutColors`
+
+To augment the `HoneyLayoutColors` interface, use the following module declaration.
+
+~~~ts
+import type { DataType } from 'csstype';
+
+declare module '@tynik/react-honey-layout' {
+  interface HoneyLayoutColors {
+    neutral: Record<
+      'charcoalDark' | 'charcoalGray' | 'crimsonRed',
+      DataType.Color
+    >;
+    custom: Record<string, DataType.Color>;
+  }
+}
+~~~
+
+This declaration extends the `HoneyLayoutColors` interface with the additional neutral color palette and a custom color palette.
+You can then use these extended color palettes within your styled components.
