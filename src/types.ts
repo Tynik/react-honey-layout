@@ -70,26 +70,6 @@ export type HoneyLayoutContainer = {
 };
 
 /**
- * Represents the primary colors used in the theme.
- * These type can be overwritten when using this library.
- *
- * Example of overriding:
- *
- * ```typescript
- * declare module '@tynik/react-honey-layout' {
- *   export type HoneyLayoutPrimaryColors = 'red' | 'blue' | 'green';
- * }
- * ```
- */
-export type HoneyLayoutPrimaryColors = string;
-export type HoneyLayoutSecondaryColors = string;
-export type HoneyLayoutAccentColors = string;
-export type HoneyLayoutNeutralColors = string;
-export type HoneyLayoutSuccessColors = string;
-export type HoneyLayoutWarningColors = string;
-export type HoneyLayoutErrorColors = string;
-
-/**
  * Defines different spacing sizes available in the theme.
  */
 export type HoneyLayoutSpacings = {
@@ -106,24 +86,42 @@ export type HoneyLayoutSpacings = {
 /**
  * Defines the color palette used in the theme.
  */
-export type HoneyLayoutColors = {
-  primary: Record<HoneyLayoutPrimaryColors, DataType.Color>;
-  secondary: Record<HoneyLayoutSecondaryColors, DataType.Color>;
-  accent: Record<HoneyLayoutAccentColors, DataType.Color>;
-  neutral: Record<HoneyLayoutNeutralColors, DataType.Color>;
-  success: Record<HoneyLayoutSuccessColors, DataType.Color>;
-  warning: Record<HoneyLayoutWarningColors, DataType.Color>;
-  error: Record<HoneyLayoutErrorColors, DataType.Color>;
-};
+export interface BaseHoneyLayoutColors {
+  primary: Record<string, DataType.Color>;
+  secondary: Record<string, DataType.Color>;
+  accent: Record<string, DataType.Color>;
+  neutral: Record<string, DataType.Color>;
+  success: Record<string, DataType.Color>;
+  warning: Record<string, DataType.Color>;
+  error: Record<string, DataType.Color>;
+}
 
+/**
+ * Example of augmenting the `HoneyLayoutColors` interface.
+ * This adds a custom color palette to the theme.
+ *
+ * @example
+ *
+ * ```typescript
+ * declare module '@tynik/react-honey-layout' {
+ *  interface HoneyLayoutColors extends BaseHoneyLayoutColors {
+ *    neutral: Record<'charcoalDark' | 'charcoalGray' | 'crimsonRed', DataType.Color>;
+ *    custom: Record<string, DataType.Color>;
+ *  }
+ * }
+ * ```
+ */
+export interface HoneyLayoutColors extends BaseHoneyLayoutColors {}
+
+export interface BaseHoneyLayoutTheme {
+  breakpoints?: Partial<HoneyLayoutBreakpoints>;
+  container?: Partial<HoneyLayoutContainer>;
+  spacings?: HoneyLayoutSpacings;
+  colors?: HoneyLayoutColors;
+}
 /**
  * Represents the theme configuration.
  */
-export type HoneyLayoutTheme = Partial<{
-  breakpoints: Partial<HoneyLayoutBreakpoints>;
-  container: Partial<HoneyLayoutContainer>;
-  spacings: HoneyLayoutSpacings;
-  colors: HoneyLayoutColors;
-}>;
+export interface HoneyLayoutTheme extends BaseHoneyLayoutTheme {}
 
 export type HoneyLayoutThemedProps<T = unknown> = { theme: HoneyLayoutTheme } & T;
