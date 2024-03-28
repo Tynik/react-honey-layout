@@ -28,4 +28,4 @@ export const createMediaRule = ({ minWidth, maxWidth }: CreateMediaRuleOptions) 
 export const calculateSpacing =
   (spacing: number) =>
   ({ theme }: HoneyLayoutThemedProps) =>
-    spacing * (theme.spacing?.nominal ?? 0);
+    spacing * (theme.spacings?.base ?? 0);

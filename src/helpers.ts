@@ -9,11 +9,21 @@ import type {
 } from './types';
 import { camelToDashCase, createMediaRule } from './utils';
 
+/**
+ * Retrieves the CSS property value corresponding to the provided breakpoint.
+ * If the property value is an object (indicating a responsive value),
+ * it returns the value associated with the specified breakpoint.
+ */
 const getCSSPropertyValue = <CSSProperty extends keyof CSS.Properties>(
   propertyValue: HoneyLayoutCSSPropertyValue<CSSProperty>,
   breakpoint: HoneyLayoutBreakpointName,
 ) => (typeof propertyValue === 'object' ? propertyValue[breakpoint] : propertyValue);
 
+/**
+ * Generates CSS styles based on the provided breakpoint and props.
+ * Filters the props to include only those with breakpoints matching the specified breakpoint.
+ * For each matching prop, it converts the property name to dash-case and retrieves the corresponding value.
+ */
 export const generateStyles =
   (breakpoint: HoneyLayoutBreakpointName) =>
   ({ theme, ...props }: HoneyLayoutThemedProps<HoneyLayoutBoxProps>) => css`
@@ -32,6 +42,10 @@ export const generateStyles =
       })}
   `;
 
+/**
+ * Checks if any of the props require a media query for the specified breakpoint.
+ * Filters the props to include only those with responsive values containing the specified breakpoint.
+ */
 const checkIfApplyBreakpoint = (
   breakpoint: HoneyLayoutBreakpointName,
   props: HoneyLayoutBoxProps,
@@ -41,6 +55,11 @@ const checkIfApplyBreakpoint = (
       propertyName[0] === '$' && typeof propertyValue === 'object' && breakpoint in propertyValue,
   );
 
+/**
+ * Hook that returns functions for generating media queries for the specified breakpoint.
+ * The down function creates a media query for screen sizes smaller than the breakpoint,
+ * while the up function creates a media query for screen sizes larger than the breakpoint.
+ */
 export const useBreakpoint = (breakpoint: HoneyLayoutBreakpointName) => {
   const down = ({ theme }: HoneyLayoutThemedProps<HoneyLayoutBoxProps>) => {
     const size = theme.breakpoints?.[breakpoint];
@@ -70,6 +89,9 @@ export const useBreakpoint = (breakpoint: HoneyLayoutBreakpointName) => {
   };
 };
 
+/**
+ * Generates media query styles based on the provided breakpoint and props.
+ */
 export const generateMediaStyles =
   (breakpoint: HoneyLayoutBreakpointName) =>
   ({ theme, ...props }: HoneyLayoutThemedProps<HoneyLayoutBoxProps>) => {

@@ -1,19 +1,12 @@
 import { useTheme } from 'styled-components';
 import { useEffect, useState } from 'react';
+import debounce from 'lodash.debounce';
 
-import type { HoneyLayoutBreakpoints } from '../types';
+import type { HoneyLayoutBreakpoints, HoneyLayoutScreenState } from '../types';
 
-type ScreenState = {
-  isPortrait: boolean;
-  isLandscape: boolean;
-  isXs: boolean;
-  isSm: boolean;
-  isMd: boolean;
-  isLg: boolean;
-  isXl: boolean;
-};
-
-const getScreenState = (breakpoints: Partial<HoneyLayoutBreakpoints> | undefined): ScreenState => {
+const calculateScreenState = (
+  breakpoints: Partial<HoneyLayoutBreakpoints> | undefined,
+): HoneyLayoutScreenState => {
   const isPortrait = window.innerHeight > window.innerWidth;
   const isLandscape = !isPortrait;
 
@@ -35,10 +28,10 @@ const getScreenState = (breakpoints: Partial<HoneyLayoutBreakpoints> | undefined
 
   const currentBreakpoint =
     sortedBreakpoints.find(breakpoint => {
-      const size = breakpoints[breakpoint];
+      const screenSize = breakpoints[breakpoint];
 
-      return size ? window.innerWidth < size : false;
-    }) || sortedBreakpoints[sortedBreakpoints.length - 1]; // Use the largest breakpoint if no match is found
+      return screenSize ? window.innerWidth < screenSize : false;
+    }) || sortedBreakpoints.pop(); // Use the largest breakpoint if no match is found
 
   return {
     isPortrait,
@@ -51,21 +44,41 @@ const getScreenState = (breakpoints: Partial<HoneyLayoutBreakpoints> | undefined
   };
 };
 
-export const useHoneyLayoutMediaQuery = () => {
+type UseHoneyLayoutMediaQueryOptions = {
+  /**
+   * The delay in milliseconds before the resize event is processed.
+   *
+   * @default 0
+   */
+  delay?: number;
+};
+
+/**
+ * A hook for tracking the current screen state based on media queries defined in the theme.
+ *
+ * @param options - Optional configuration.
+ *
+ * @returns The current screen state.
+ */
+export const useHoneyLayoutMediaQuery = ({ delay = 0 }: UseHoneyLayoutMediaQueryOptions = {}) => {
   const theme = useTheme();
 
-  const [screenState, setScreenState] = useState<ScreenState>(getScreenState(theme.breakpoints));
+  const [screenState, setScreenState] = useState<HoneyLayoutScreenState>(() =>
+    calculateScreenState(theme.breakpoints),
+  );
 
   useEffect(() => {
-    const handleResize = () => {
-      setScreenState(getScreenState(theme.breakpoints));
-    };
+    const handleResize = debounce(() => {
+      setScreenState(calculateScreenState(theme.breakpoints));
+    }, delay);
 
     handleResize();
 
     window.addEventListener('resize', handleResize);
 
     return () => {
+      handleResize.cancel();
+
       window.removeEventListener('resize', handleResize);
     };
   }, []);
