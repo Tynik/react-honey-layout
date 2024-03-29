@@ -1,7 +1,7 @@
 import React from 'react';
 
 import type { IconProps } from '../components';
-import { Icon } from '../components';
+import { Icon } from '../components/Icon';
 
 export const MenuIcon = (props: IconProps) => (
   <Icon viewBox="0 0 24 24" {...props}>

@@ -1,10 +1,12 @@
 
+# Thematization
+
+---
+
 ### HoneyThemeProvider Component
 
 The `HoneyThemeProvider` component is used to provide a merged theme to its children.
 It merges the provided theme with the current theme from the context.
-
----
 
 ### Usage
 
@@ -27,6 +29,7 @@ export default theme;
 // App.tsx
 import React from 'react';
 import { ThemeProvider } from 'styled-components';
+
 import theme from './theme';
 
 const App = () => {
@@ -45,7 +48,9 @@ Each nested `HoneyThemeProvider` merges its theme with the theme provided by its
 
 ~~~tsx
 import React from 'react';
+import { ThemeProvider } from 'styled-components';
 import { HoneyThemeProvider } from '@tynik/react-honey-layout';
+
 import theme from './theme';
 import nestedTheme from './nested-theme';
 
@@ -63,8 +68,6 @@ export const NestedThemeProvider = () => {
 In this example, `NestedThemeProvider` is a component that provides a specific theme (nestedTheme) to its children.
 This nested instance of `HoneyThemeProvider` merges nested theme with the theme provided by its parent `ThemeProvider` or `HoneyThemeProvider`.
 
----
-
 ### Augmentation for `DefaultTheme` from styled components library
 
 To augment the `DefaultTheme` interface from `styled-components` with the `HoneyLayoutTheme`, add the following declaration to your project:
@@ -78,8 +81,6 @@ declare module 'styled-components' {
 ~~~
 
 This declaration extends the `DefaultTheme` interface with the properties defined in `HoneyLayoutTheme`, allowing you to use them within your styled components.
-
----
 
 ### Augmentation for `HoneyLayoutColors`
 

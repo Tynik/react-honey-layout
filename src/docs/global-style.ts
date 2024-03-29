@@ -47,7 +47,7 @@ export const GlobalStyle = createGlobalStyle`
     }
 
     code {
-      padding: 4px 8px;
+      padding: 2px 4px;
       border-radius: 4px;
 
       background-color: #22272e;

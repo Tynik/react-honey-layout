@@ -23,8 +23,8 @@ const MenuStyled = styled(HoneyBox)<MenuStyledProps>`
     height: 100%;
 
     transition: all 200ms ease-in-out;
-    overflow: hidden auto;
     background-color: ${theme.colors?.neutral.charcoalGray};
+    overflow: hidden auto;
 
     ${isOpenMenu
       ? css`
@@ -42,6 +42,10 @@ const MenuStyled = styled(HoneyBox)<MenuStyledProps>`
 
     ${useBreakpoint('sm').down} {
       position: absolute;
+    }
+
+    ${useBreakpoint('xs').up} {
+      border-right: 1px solid ${theme.colors?.neutral.charcoalDark};
     }
   `}
 `;
