@@ -1,12 +1,16 @@
 import styled, { css } from 'styled-components';
 
-import type { HoneyLayoutBoxProps } from '../types';
+import type { HoneyBoxProps } from '../types';
 import { generateMediaStyles, generateStyles } from '../helpers';
+import { HTML_ATTRIBUTES } from '../constants';
 
 export const HoneyBox = styled.div.withConfig({
   shouldForwardProp: prop =>
-    ['children'].includes(prop) || prop.startsWith('data-') || prop.startsWith('aria-'),
-})<HoneyLayoutBoxProps>`
+    HTML_ATTRIBUTES.includes(prop as never) ||
+    prop.startsWith('on') ||
+    prop.startsWith('data-') ||
+    prop.startsWith('aria-'),
+})<HoneyBoxProps>`
   ${() => css`
     ${generateStyles('xs')};
 

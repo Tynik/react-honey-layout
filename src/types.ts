@@ -1,3 +1,4 @@
+import type { HTMLAttributes } from 'react';
 import type { DataType } from 'csstype';
 import * as CSS from 'csstype';
 
@@ -11,7 +12,7 @@ import * as CSS from 'csstype';
  * - `lg`: Large devices
  * - `xl`: Extra large devices
  */
-export type HoneyLayoutBreakpoints = {
+export type HoneyBreakpoints = {
   xs: number;
   sm: number;
   md: number;
@@ -19,36 +20,37 @@ export type HoneyLayoutBreakpoints = {
   xl: number;
 };
 
-export type HoneyLayoutBreakpointName = keyof HoneyLayoutBreakpoints;
+export type HoneyBreakpointName = keyof HoneyBreakpoints;
 
 /**
  * Represents a responsive CSS property value for a specific CSS property.
  * Each breakpoint name is associated with the corresponding CSS property value.
  */
-type HoneyLayoutResponsiveCSSPropertyValue<CSSProperty extends keyof CSS.Properties> = Partial<
-  Record<HoneyLayoutBreakpointName, CSS.Properties[CSSProperty]>
+type HoneyResponsiveCSSPropertyValue<CSSProperty extends keyof CSS.Properties> = Partial<
+  Record<HoneyBreakpointName, CSS.Properties[CSSProperty]>
 >;
 
 /**
  * Represents a CSS property value that can be either a single value or a responsive value.
  * For responsive values, each breakpoint name is associated with the corresponding CSS property value.
  */
-export type HoneyLayoutCSSPropertyValue<CSSProperty extends keyof CSS.Properties> =
+export type HoneyCSSPropertyValue<CSSProperty extends keyof CSS.Properties> =
   | CSS.Properties[CSSProperty]
-  | HoneyLayoutResponsiveCSSPropertyValue<CSSProperty>;
+  | HoneyResponsiveCSSPropertyValue<CSSProperty>;
 
 /**
  * Represents the props that can be used to style a box element with CSS properties.
  * Each CSS property is prefixed with '$' to indicate it's a `HoneyLayoutCSSPropertyValue`.
  */
-export type HoneyLayoutBoxProps = Partial<{
-  [CSSProperty in keyof CSS.Properties as `$${CSSProperty}`]: HoneyLayoutCSSPropertyValue<CSSProperty>;
-}>;
+export type HoneyBoxProps = HTMLAttributes<HTMLElement> &
+  Partial<{
+    [CSSProperty in keyof CSS.Properties as `$${CSSProperty}`]: HoneyCSSPropertyValue<CSSProperty>;
+  }>;
 
 /**
  * Represents the state of the screen layout.
  */
-export type HoneyLayoutScreenState = {
+export type HoneyScreenState = {
   /** Indicates if the screen size is extra-small (xs). */
   isXs: boolean;
   /** Indicates if the screen size is small (sm). */
@@ -65,14 +67,14 @@ export type HoneyLayoutScreenState = {
   isLandscape: boolean;
 };
 
-export type HoneyLayoutContainer = {
+export type HoneyContainer = {
   maxWidth: CSS.Properties['width'];
 };
 
 /**
  * Defines different spacing sizes available in the theme.
  */
-export type HoneyLayoutSpacings = {
+export type HoneySpacings = {
   /**
    * The base spacing value in pixels.
    */
@@ -86,7 +88,7 @@ export type HoneyLayoutSpacings = {
 /**
  * Defines the color palette used in the theme.
  */
-export interface BaseHoneyLayoutColors {
+export interface BaseHoneyColors {
   primary: Record<string, DataType.Color>;
   secondary: Record<string, DataType.Color>;
   accent: Record<string, DataType.Color>;
@@ -97,29 +99,29 @@ export interface BaseHoneyLayoutColors {
 }
 
 /**
- * Example of augmenting the `HoneyLayoutColors` interface.
+ * Example of augmenting the colors interface.
  *
  * @example
  * ```typescript
  * declare module '@tynik/react-honey-layout' {
- *  interface HoneyLayoutColors {
+ *  interface HoneyColors {
  *    neutral: Record<'charcoalDark' | 'charcoalGray' | 'crimsonRed', DataType.Color>;
  *  }
  * }
  * ```
  */
-export interface HoneyLayoutColors extends BaseHoneyLayoutColors {}
+export interface HoneyColors extends BaseHoneyColors {}
 
 /**
  * Represents the theme configuration.
  */
-export interface BaseHoneyLayoutTheme {
-  breakpoints?: Partial<HoneyLayoutBreakpoints>;
-  container?: Partial<HoneyLayoutContainer>;
-  spacings?: HoneyLayoutSpacings;
-  colors?: HoneyLayoutColors;
+export interface BaseHoneyTheme {
+  breakpoints?: Partial<HoneyBreakpoints>;
+  container?: Partial<HoneyContainer>;
+  spacings?: HoneySpacings;
+  colors?: HoneyColors;
 }
 
-export interface HoneyLayoutTheme extends BaseHoneyLayoutTheme {}
+export interface HoneyTheme extends BaseHoneyTheme {}
 
-export type HoneyLayoutThemedProps<T = unknown> = { theme: HoneyLayoutTheme } & T;
+export type HoneyThemedProps<T = unknown> = { theme: HoneyTheme } & T;

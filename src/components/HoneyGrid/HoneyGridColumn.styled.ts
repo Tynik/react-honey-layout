@@ -1,10 +1,10 @@
 import styled, { css } from 'styled-components';
 
-import type { HoneyLayoutBoxProps } from '../../types';
+import type { HoneyBoxProps } from '../../types';
 import { calculateSpacing } from '../../utils';
 import { HoneyBox } from '../HoneyBox';
 
-export type HoneyLayoutGridColumnStyledProps = HoneyLayoutBoxProps & {
+export type HoneyGridColumnStyledProps = HoneyBoxProps & {
   /**
    * Total number of columns in the grid.
    */
@@ -26,7 +26,7 @@ export type HoneyLayoutGridColumnStyledProps = HoneyLayoutBoxProps & {
  * It provides flexibility in specifying the number of columns to take, the total number of columns in the grid,
  * and the spacing between columns.
  */
-export const HoneyGridColumnStyled = styled(HoneyBox)<HoneyLayoutGridColumnStyledProps>`
+export const HoneyGridColumnStyled = styled(HoneyBox)<HoneyGridColumnStyledProps>`
   ${({ columns, takeColumns = 1, spacing = 0, theme }) => {
     const fractionalWidth = 100 / columns;
 

@@ -1,7 +1,7 @@
-import type { HoneyLayoutGridColumnStyledProps } from './HoneyGridColumnStyled';
+import type { HoneyGridColumnStyledProps } from './HoneyGridColumn.styled';
 
-export type HoneyLayoutGridColumnProps = Omit<
-  HoneyLayoutGridColumnStyledProps,
+export type HoneyGridColumnProps = Omit<
+  HoneyGridColumnStyledProps,
   'columns' | 'spacing' | 'totalColumns' | 'totalTakeColumns'
 > & {
   //

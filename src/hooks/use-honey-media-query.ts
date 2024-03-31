@@ -2,11 +2,11 @@ import { useTheme } from 'styled-components';
 import { useEffect, useState } from 'react';
 import debounce from 'lodash.debounce';
 
-import type { HoneyLayoutBreakpoints, HoneyLayoutScreenState } from '../types';
+import type { HoneyBreakpoints, HoneyScreenState } from '../types';
 
 const calculateScreenState = (
-  breakpoints: Partial<HoneyLayoutBreakpoints> | undefined,
-): HoneyLayoutScreenState => {
+  breakpoints: Partial<HoneyBreakpoints> | undefined,
+): HoneyScreenState => {
   const isPortrait = window.innerHeight > window.innerWidth;
   const isLandscape = !isPortrait;
 
@@ -24,7 +24,7 @@ const calculateScreenState = (
 
   const sortedBreakpoints = Object.entries(breakpoints)
     .sort(([, a], [, b]) => a - b) // Sort breakpoints in ascending order of width
-    .map(([name]) => name) as (keyof Partial<HoneyLayoutBreakpoints>)[];
+    .map(([name]) => name) as (keyof Partial<HoneyBreakpoints>)[];
 
   const currentBreakpoint =
     sortedBreakpoints.find(breakpoint => {
@@ -44,7 +44,7 @@ const calculateScreenState = (
   };
 };
 
-type UseHoneyLayoutMediaQueryOptions = {
+type UseHoneyMediaQueryOptions = {
   /**
    * The delay in milliseconds before the resize event is processed.
    *
@@ -60,10 +60,10 @@ type UseHoneyLayoutMediaQueryOptions = {
  *
  * @returns The current screen state.
  */
-export const useHoneyLayoutMediaQuery = ({ delay = 0 }: UseHoneyLayoutMediaQueryOptions = {}) => {
+export const useHoneyMediaQuery = ({ delay = 0 }: UseHoneyMediaQueryOptions = {}) => {
   const theme = useTheme();
 
-  const [screenState, setScreenState] = useState<HoneyLayoutScreenState>(() =>
+  const [screenState, setScreenState] = useState<HoneyScreenState>(() =>
     calculateScreenState(theme.breakpoints),
   );
 

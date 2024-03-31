@@ -1,14 +1,14 @@
 import React from 'react';
 import type { PropsWithChildren } from 'react';
 
-import type { HoneyLayoutGridColumnProps } from './HoneyGrid.types';
+import type { HoneyGridColumnProps } from './HoneyGrid.types';
 import { useCurrentHoneyGrid } from './HoneyGrid';
-import { HoneyGridColumnStyled } from './HoneyGridColumnStyled';
+import { HoneyGridColumnStyled } from './HoneyGridColumn.styled';
 
 export const HoneyGridColumn = ({
   children,
   ...props
-}: PropsWithChildren<HoneyLayoutGridColumnProps>) => {
+}: PropsWithChildren<HoneyGridColumnProps>) => {
   const { columns, columnGrowing, spacing } = useCurrentHoneyGrid();
 
   return (
@@ -16,6 +16,7 @@ export const HoneyGridColumn = ({
       columns={columns}
       spacing={spacing}
       $flexGrow={columnGrowing ? 1 : 0}
+      // Data
       data-testid="honey-grid-column"
       {...props}
     >

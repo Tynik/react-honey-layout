@@ -2,14 +2,14 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 
-import type { HoneyLayoutBoxProps } from '../../types';
+import type { HoneyBoxProps } from '../../types';
 import { HoneyBox } from '../../components';
 import { PAGES } from '../constants';
 import { useCurrentApp } from '../providers';
 import { useBreakpoint } from '../../helpers';
-import { useHoneyLayoutMediaQuery } from '../../hooks';
+import { useHoneyMediaQuery } from '../../hooks';
 
-type MenuStyledProps = HoneyLayoutBoxProps & {
+type MenuStyledProps = HoneyBoxProps & {
   isOpenMenu: boolean;
 };
 
@@ -73,7 +73,7 @@ const ListItem = styled.li`
 `;
 
 export const Menu = () => {
-  const screenState = useHoneyLayoutMediaQuery();
+  const screenState = useHoneyMediaQuery();
 
   const { isOpenMenu, toggleMenu } = useCurrentApp();
 

@@ -1,1 +1,2 @@
-export * from './use-honey-layout-media-query';
+export * from './use-honey-media-query';
+export * from './use-honey-infinite-scroll';

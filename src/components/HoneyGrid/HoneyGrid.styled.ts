@@ -1,12 +1,12 @@
 import type { CSSProperties } from 'styled-components';
 import styled, { css } from 'styled-components';
 
-import type { HoneyLayoutBoxProps } from '../../types';
+import type { HoneyBoxProps } from '../../types';
 import { calculateSpacing } from '../../utils';
-import { HoneyGridColumnStyled } from './HoneyGridColumnStyled';
+import { HoneyGridColumnStyled } from './HoneyGridColumn.styled';
 import { HoneyBox } from '../HoneyBox';
 
-export type HoneyLayoutGridStyledProps = HoneyLayoutBoxProps & {
+export type HoneyGridStyledProps = HoneyBoxProps & {
   /**
    * The height of each grid column.
    */
@@ -21,7 +21,7 @@ export type HoneyLayoutGridStyledProps = HoneyLayoutBoxProps & {
   spacing?: number;
 };
 
-export const HoneyGridStyled = styled(HoneyBox)<HoneyLayoutGridStyledProps>`
+export const HoneyGridStyled = styled(HoneyBox)<HoneyGridStyledProps>`
   ${({ columnHeight, minColumnHeight, spacing = 0 }) => css`
     display: flex;
     gap: ${calculateSpacing(spacing)}px;

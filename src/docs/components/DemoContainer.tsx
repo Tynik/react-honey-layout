@@ -2,9 +2,9 @@ import React from 'react';
 import type { PropsWithChildren } from 'react';
 import styled, { css, useTheme } from 'styled-components';
 
-import type { HoneyLayoutBreakpointName } from '../../types';
+import type { HoneyBreakpointName } from '../../types';
 import { HoneyBox } from '../../components';
-import { useHoneyLayoutMediaQuery } from '../../hooks';
+import { useHoneyMediaQuery } from '../../hooks';
 
 const StyledDemoContainer = styled(HoneyBox)`
   ${({ theme }) => css`
@@ -21,9 +21,9 @@ const StyledDemoContainer = styled(HoneyBox)`
 
 export const DemoContainer = ({ children }: PropsWithChildren) => {
   const theme = useTheme();
-  const screenState = useHoneyLayoutMediaQuery();
+  const screenState = useHoneyMediaQuery();
 
-  const getBreakpointInfo = (breakpoint: HoneyLayoutBreakpointName) => {
+  const getBreakpointInfo = (breakpoint: HoneyBreakpointName) => {
     const size = theme.breakpoints?.[breakpoint];
 
     return `${breakpoint}[${size}px]`;

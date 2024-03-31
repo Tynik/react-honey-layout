@@ -1,8 +1,8 @@
 import React, { createContext, useContext, useMemo } from 'react';
 import type { PropsWithChildren } from 'react';
 
-import type { HoneyLayoutGridStyledProps } from './HoneyGridStyled';
-import { HoneyGridStyled } from './HoneyGridStyled';
+import type { HoneyGridStyledProps } from './HoneyGrid.styled';
+import { HoneyGridStyled } from './HoneyGrid.styled';
 
 type HoneyGridContextValue = {
   columns: number;
@@ -12,7 +12,7 @@ type HoneyGridContextValue = {
 
 const HoneyGridContext = createContext<HoneyGridContextValue | undefined>(undefined);
 
-export type HoneyLayoutGridProps = HoneyLayoutGridStyledProps & {
+export type HoneyLayoutGridProps = HoneyGridStyledProps & {
   /**
    * The number of columns in the grid layout.
    */

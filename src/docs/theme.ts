@@ -1,6 +1,6 @@
-import type { HoneyLayoutTheme } from '../types';
+import type { HoneyTheme } from '../types';
 
-export const theme: HoneyLayoutTheme = {
+export const theme: HoneyTheme = {
   breakpoints: {
     xs: 480,
     sm: 768,

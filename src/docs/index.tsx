@@ -3,7 +3,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { createRoot } from 'react-dom/client';
 import { MDXProvider } from '@mdx-js/react';
 
-import type { HoneyLayoutTheme } from '../types';
+import type { HoneyTheme } from '../types';
 import { App } from './App';
 import { theme } from './theme';
 import { HoneyThemeProvider } from '../providers';
@@ -11,7 +11,7 @@ import { GlobalStyle } from './global-style';
 
 declare module 'styled-components' {
   // eslint-disable-next-line @typescript-eslint/no-empty-interface
-  interface DefaultTheme extends HoneyLayoutTheme {}
+  interface DefaultTheme extends HoneyTheme {}
 }
 
 const root = createRoot(document.getElementById('root') as HTMLDivElement);
