@@ -6,7 +6,7 @@ export const HoneyContainer = styled.div`
     flex-direction: column;
 
     width: 100%;
-    max-width: ${theme.container?.maxWidth};
+    max-width: ${theme.container?.maxWidth}px;
     height: min-content;
 
     margin: 0 auto;

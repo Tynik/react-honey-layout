@@ -8,7 +8,7 @@ export const theme: HoneyTheme = {
     lg: 1200,
   },
   container: {
-    maxWidth: '1450px',
+    maxWidth: 1450,
   },
   spacings: {
     base: 8,

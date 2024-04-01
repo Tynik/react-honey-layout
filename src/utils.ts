@@ -1,4 +1,4 @@
-import type { HoneyThemedProps } from './types';
+import type { HoneySpacings, HoneyThemedProps } from './types';
 
 export const camelToDashCase = (str: string) =>
   str.replace(/[A-Z]/g, letter => `-${letter.toLowerCase()}`);
@@ -16,7 +16,7 @@ type CreateMediaRuleOptions = {
 
 export const createMediaRule = ({ minWidth, maxWidth }: CreateMediaRuleOptions) => {
   if (!minWidth && !maxWidth) {
-    throw new Error('`minWidth` or `maxWidth` should be set');
+    throw new Error('The `minWidth` or `maxWidth` should be set');
   }
 
   const minWidthRule = minWidth ? `(min-width: ${minWidth})` : '';
@@ -25,7 +25,15 @@ export const createMediaRule = ({ minWidth, maxWidth }: CreateMediaRuleOptions) 
   return `@media only screen and ${minWidthRule}${minWidth && maxWidth ? ' and ' : ''}${maxWidthRule}`;
 };
 
+/**
+ * Calculates the spacing value based on the provided spacing factor and spacing type.
+ *
+ * @param spacing The spacing factor to be applied.
+ * @param type The type of spacing to be used, e.g., 'base', 'small', 'large'. Default: `base`.
+ *
+ * @returns The calculated spacing value.
+ */
 export const calculateSpacing =
-  (spacing: number) =>
+  (spacing: number, type: keyof HoneySpacings = 'base') =>
   ({ theme }: HoneyThemedProps) =>
-    spacing * (theme.spacings?.base ?? 0);
+    spacing * (theme.spacings?.[type] ?? 0);

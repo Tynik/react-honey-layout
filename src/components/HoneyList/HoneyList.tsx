@@ -1,8 +1,8 @@
 import React, { Fragment } from 'react';
-import type { ComponentType, ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import styled from 'styled-components';
 
-import type { HoneyBoxProps } from '../../types';
+import type { ComponentWithAs, HoneyBoxProps } from '../../types';
 import type { HoneyListItem, HoneyListItemKey } from './HoneyList.types';
 import type { HoneyConditionalBlockProps } from '../HoneyConditionalBlock';
 import { HoneyBox } from '../HoneyBox';
@@ -15,13 +15,14 @@ const HoneyListStyled = styled(HoneyBox).attrs({
   overflow: hidden auto;
 `;
 
-type HoneyListProps<Item extends HoneyListItem> = Omit<HoneyBoxProps, 'children'> &
-  Omit<HoneyConditionalBlockProps, 'isNoContent'> & {
-    children: (item: Item, itemIndex: number, thisItems: Item[]) => ReactNode;
-    items: Item[] | undefined;
-    itemKey?: HoneyListItemKey<Item>;
-    as?: string | ComponentType<any>;
-  };
+type HoneyListProps<Item extends HoneyListItem> = ComponentWithAs<
+  Omit<HoneyBoxProps, 'children'> &
+    Omit<HoneyConditionalBlockProps, 'isNoContent'> & {
+      children: (item: Item, itemIndex: number, thisItems: Item[]) => ReactNode;
+      items: Item[] | undefined;
+      itemKey?: HoneyListItemKey<Item>;
+    }
+>;
 
 export const HoneyList = <Item extends HoneyListItem>({
   children,

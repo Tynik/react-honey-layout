@@ -3,11 +3,11 @@ import type { HoneyListItem, HoneyListItemId, HoneyListItemKey } from './HoneyLi
 export const getListItemId = <Item extends HoneyListItem>(
   item: Item,
   itemKey: HoneyListItemKey<Item> | undefined,
-  index: number,
+  itemIndex: number,
 ): HoneyListItemId<Item> => {
   if (typeof itemKey === 'function') {
     return itemKey(item);
   }
 
-  return itemKey ? item[itemKey] : index;
+  return itemKey ? item[itemKey] : itemIndex;
 };

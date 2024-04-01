@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components';
+
 import { calculateSpacing } from '../../utils';
 
 export const MDXWrapper = styled.div`
