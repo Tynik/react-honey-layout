@@ -24,16 +24,18 @@ export const ListExample = () => {
   }));
 
   return (
-    <HoneyList
-      items={items}
-      itemKey="id"
-      $display="flex"
-      $flexDirection="column"
-      $gap="8px"
-      as="ul"
-    >
-      {item => <HoneyBox as={ListItemStyled}>{item.name}</HoneyBox>}
-    </HoneyList>
+    <HoneyBox $marginTop="16px" $border="1px solid #cccccc" $borderRadius="4px">
+      <HoneyList
+        items={items}
+        itemKey="id"
+        $display="flex"
+        $flexDirection="column"
+        $gap="8px"
+        as="ul"
+      >
+        {item => <HoneyBox as={ListItemStyled}>{item.name}</HoneyBox>}
+      </HoneyList>
+    </HoneyBox>
   );
 }
 
@@ -93,16 +95,18 @@ const ListExample = () => {
   }));
 
   return (
-    <HoneyList
-      items={items}
-      itemKey="id"
-      $display="flex"
-      $flexDirection="column"
-      $gap="8px"
-      as="ul"
-    >
-      {item => <HoneyBox as={ListItemStyled}>{item.name}</HoneyBox>}
-    </HoneyList>
+    <HoneyBox $marginTop="16px" $border="1px solid #cccccc" $borderRadius="4px">
+      <HoneyList
+        items={items}
+        itemKey="id"
+        $display="flex"
+        $flexDirection="column"
+        $gap="8px"
+        as="ul"
+      >
+        {item => <HoneyBox as={ListItemStyled}>{item.name}</HoneyBox>}
+      </HoneyList>
+    </HoneyBox>
   );
 }
 ```

@@ -27,7 +27,7 @@ export const LazyContentExample = () => {
   const [isShow, setIsShow] = useState(false);
 
   return (
-    <HoneyBox $padding="16px">
+    <HoneyBox $padding="16px" $border="1px solid #cccccc" $borderRadius="4px">
       <HoneyBox $display="flex" $alignItems="center" $gap="8px">
         <Button onClick={() => setIsShow(!isShow)}>
           Toggle Content
@@ -68,6 +68,8 @@ If `true`, the content will not be unmounted after the first time it's mounted. 
 
 ### Usage
 
+This example showcases the usage of the `HoneyLazyContent` component alongside a styled button for toggling content visibility. When the button is clicked, it toggles the display of lazily loaded content.
+
 <LazyContentExample/>
 
 ```tsx
@@ -99,7 +101,7 @@ export const LazyContentExample = () => {
   const [isShow, setIsShow] = useState(false);
 
   return (
-    <HoneyBox $padding="16px">
+    <HoneyBox $padding="16px" $border="1px solid #cccccc" $borderRadius="4px">
       <HoneyBox $display="flex" $alignItems="center" $gap="8px">
         <Button onClick={() => setIsShow(!isShow)}>
           Toggle Content
