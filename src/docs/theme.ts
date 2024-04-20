@@ -23,6 +23,8 @@ export const theme: HoneyTheme = {
       crimsonRed: '#DC143C',
       coralRed: '#FF4D4D',
       forestGreen: '#228B22',
+      forestGreenLight: '#3BA439',
+      forestGreenDark: '#005800',
       royalBlue: '#4169E1',
       goldenrod: '#DAA520',
       slateBlue: '#6A5ACD',

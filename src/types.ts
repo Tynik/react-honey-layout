@@ -2,6 +2,8 @@ import type { ComponentType, HTMLAttributes } from 'react';
 import type { DataType } from 'csstype';
 import * as CSS from 'csstype';
 
+export type TimeoutId = ReturnType<typeof setTimeout>;
+
 /**
  * Represents the breakpoints configuration for a responsive layout.
  *

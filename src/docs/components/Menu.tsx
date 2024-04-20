@@ -42,6 +42,7 @@ const MenuStyled = styled(HoneyBox)<MenuStyledProps>`
 
     ${useBreakpoint('sm').down} {
       position: absolute;
+      z-index: 999;
     }
 
     ${useBreakpoint('xs').up} {

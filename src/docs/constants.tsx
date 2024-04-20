@@ -9,6 +9,7 @@ import ThematizationPage from './pages/thematization.mdx';
 import HoneyBoxPage from './pages/honey-box.page.mdx';
 import HoneyGridPage from './pages/honey-grid.mdx';
 import HoneyListPage from './pages/honey-list.mdx';
+import HoneyLazyContent from './pages/honey-lazy-content.mdx';
 
 const MDX_COMPONENTS: MDXComponents = { wrapper: MDXWrapper };
 
@@ -27,6 +28,11 @@ export const PAGES: Page[] = [
     path: 'box',
     menuLabel: 'Box',
     element: <HoneyBoxPage components={MDX_COMPONENTS} />,
+  },
+  {
+    path: 'lazy-content',
+    menuLabel: 'Lazy Content',
+    element: <HoneyLazyContent components={MDX_COMPONENTS} />,
   },
   {
     path: 'grid',
