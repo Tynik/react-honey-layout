@@ -4,10 +4,10 @@ import styled from 'styled-components';
 
 import type { ComponentWithAs, HoneyBoxProps } from '../../types';
 import type { HoneyListItem, HoneyListItemKey } from './HoneyList.types';
-import type { HoneyConditionalBlockProps } from '../HoneyConditionalBlock';
+import type { HoneyConditionalContentProps } from '../HoneyConditionalContent';
 
 import { HoneyBox } from '../HoneyBox';
-import { HoneyConditionalBlock } from '../HoneyConditionalBlock';
+import { HoneyConditionalContent } from '../HoneyConditionalContent';
 import { getListItemId } from './HoneyList.helpers';
 
 const HoneyListStyled = styled(HoneyBox).attrs({
@@ -18,7 +18,7 @@ const HoneyListStyled = styled(HoneyBox).attrs({
 
 type HoneyListProps<Item extends HoneyListItem> = ComponentWithAs<
   Omit<HoneyBoxProps, 'children'> &
-    Omit<HoneyConditionalBlockProps, 'isNoContent'> & {
+    Omit<HoneyConditionalContentProps, 'isNoContent'> & {
       children: (item: Item, itemIndex: number, thisItems: Item[]) => ReactNode;
       items: Item[] | undefined;
       itemKey?: HoneyListItemKey<Item>;
@@ -38,7 +38,7 @@ export const HoneyList = <Item extends HoneyListItem>({
 }: HoneyListProps<Item>) => {
   return (
     <HoneyListStyled {...boxProps}>
-      <HoneyConditionalBlock
+      <HoneyConditionalContent
         isLoading={isLoading}
         loadingBlockContent={loadingBlockContent}
         isError={isError}
@@ -51,7 +51,7 @@ export const HoneyList = <Item extends HoneyListItem>({
 
           return <Fragment key={String(itemId)}>{children(item, itemIndex, thisItems)}</Fragment>;
         })}
-      </HoneyConditionalBlock>
+      </HoneyConditionalContent>
     </HoneyListStyled>
   );
 };

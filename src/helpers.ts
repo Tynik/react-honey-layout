@@ -7,6 +7,7 @@ import type {
   HoneyCSSPropertyValue,
   HoneyThemedProps,
 } from './types';
+
 import { camelToDashCase, createMediaRule } from './utils';
 
 /**

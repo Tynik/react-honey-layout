@@ -2,19 +2,17 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 
-import type { HoneyBoxProps } from '../../types';
-import { HoneyBox } from '../../components';
 import { PAGES } from '../constants';
 import { useCurrentApp } from '../providers';
 import { useBreakpoint } from '../../helpers';
 import { useHoneyMediaQuery } from '../../hooks';
 
-type MenuStyledProps = HoneyBoxProps & {
-  isOpenMenu: boolean;
+type MenuStyledProps = {
+  $isOpenMenu: boolean;
 };
 
-const MenuStyled = styled(HoneyBox)<MenuStyledProps>`
-  ${({ isOpenMenu, theme }) => css`
+const MenuStyled = styled.div<MenuStyledProps>`
+  ${({ $isOpenMenu, theme }) => css`
     position: relative;
 
     display: flex;
@@ -26,7 +24,7 @@ const MenuStyled = styled(HoneyBox)<MenuStyledProps>`
     background-color: ${theme.colors?.neutral.charcoalGray};
     overflow: hidden auto;
 
-    ${isOpenMenu
+    ${$isOpenMenu
       ? css`
           width: 300px;
           padding: 16px;
@@ -37,7 +35,7 @@ const MenuStyled = styled(HoneyBox)<MenuStyledProps>`
         `}
 
     ${useBreakpoint('xs').down} {
-      width: ${isOpenMenu && '100%'};
+      width: ${$isOpenMenu && '100%'};
     }
 
     ${useBreakpoint('sm').down} {
@@ -85,7 +83,7 @@ export const Menu = () => {
   };
 
   return (
-    <MenuStyled isOpenMenu={isOpenMenu}>
+    <MenuStyled $isOpenMenu={isOpenMenu}>
       <List>
         {PAGES.map(page => (
           <ListItem key={page.path}>

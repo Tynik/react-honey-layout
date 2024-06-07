@@ -23,6 +23,30 @@ const theme: HoneyTheme = {
 export default theme;
 ~~~
 
+Example of configuring the theme:
+
+~~~ts
+// theme.ts
+import type { HoneyTheme } from '@tynik/react-honey-layout';
+
+const theme: HoneyTheme = {
+  breakpoints: {
+    xs: 480,
+    sm: 768,
+    md: 992,
+    lg: 1200,
+  },
+  container: {
+    maxWidth: 1450,
+  },
+  spacings: {
+    base: 8,
+  }
+};
+
+export default theme;
+~~~
+
 2. Wrap your application with the `ThemeProvider`, providing your theme object as a prop.
 
 ~~~tsx
@@ -47,7 +71,6 @@ export default App;
 Each nested `HoneyThemeProvider` merges its theme with the theme provided by its parent.
 
 ~~~tsx
-import React from 'react';
 import { ThemeProvider } from 'styled-components';
 import { HoneyThemeProvider } from '@tynik/react-honey-layout';
 

@@ -21,9 +21,9 @@ export const SquareBox = () => {
 
 ---
 
-The `HoneyBox` component is a versatile styled component that provides flexible styling options for creating various UI
+The `HoneyBox` component is a versatile-styled component that provides flexible styling options for creating various UI
 elements. It offers a wide range of props to customize its appearance, making it
-suitable for building different types of components such as containers, boxes, or cards.
+suitable for building different types of components such as containers, boxes, cards etc.
 
 ### Benefits:
 
@@ -47,7 +47,18 @@ that fit your project's design system.
 
 ### Usage
 
+The `SquareBox` component renders a square box with customizable dimensions and background color based on screen size.
+
 ~~~tsx
+import { useTheme } from 'styled-components';
+import { HoneyBox } from '@tynik/react-honey-layout';
+
+/**
+* $backgroundColor (object): An object containing background colors for different screen sizes.
+*   xs (string): Background color for extra small screens (xs).
+*   sm (string): Background color for small screens (sm).
+*   md (string): Background color for medium screens (md).
+* */
 export const SquareBox = () => {
   const theme = useTheme();
 

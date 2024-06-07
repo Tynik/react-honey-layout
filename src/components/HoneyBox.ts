@@ -1,6 +1,7 @@
 import styled, { css } from 'styled-components';
 
 import type { HoneyBoxProps } from '../types';
+
 import { generateMediaStyles, generateStyles } from '../helpers';
 import { HTML_ATTRIBUTES } from '../constants';
 

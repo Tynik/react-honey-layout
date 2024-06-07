@@ -1,7 +1,7 @@
 import React from 'react';
 import type { PropsWithChildren, ReactNode } from 'react';
 
-export type HoneyConditionalBlockProps = {
+export type HoneyConditionalContentProps = {
   /**
    * A flag indicating whether the component is in a loading state.
    *
@@ -43,7 +43,7 @@ export type HoneyConditionalBlockProps = {
 /**
  * A component that conditionally renders blocks based on specified boolean flags.
  */
-export const HoneyConditionalBlock = ({
+export const HoneyConditionalContent = ({
   children,
   isLoading = false,
   loadingBlockContent = null,
@@ -51,7 +51,7 @@ export const HoneyConditionalBlock = ({
   errorBlockContent = null,
   isNoContent = false,
   noContent = null,
-}: PropsWithChildren<HoneyConditionalBlockProps>) => {
+}: PropsWithChildren<HoneyConditionalContentProps>) => {
   if (isError) {
     return errorBlockContent;
   }
