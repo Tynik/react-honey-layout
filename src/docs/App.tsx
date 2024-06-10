@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
-import styled from 'styled-components';
 import hljs from 'highlight.js';
 
 import 'highlight.js/styles/github-dark-dimmed.min.css';
@@ -9,13 +8,6 @@ import { PAGES } from './constants';
 import { AppProvider } from './providers';
 import { HoneyBox } from '../components';
 import { HoneyContainer, Menu, TopBar } from './components';
-
-const SquareHoneyBox = styled(HoneyBox)``;
-
-SquareHoneyBox.defaultProps = {
-  $width: '100px',
-  $height: '100px',
-};
 
 export const App = () => {
   const location = useLocation();

@@ -1,6 +1,7 @@
 import React from 'react';
 
 import type { IconProps } from '../components';
+
 import { Icon } from '../components/Icon';
 
 export const MenuIcon = (props: IconProps) => (

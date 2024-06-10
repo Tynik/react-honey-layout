@@ -1,8 +1,9 @@
 import React, { useContext, useMemo } from 'react';
-import type { PropsWithChildren, JSX } from 'react';
-import type { DefaultTheme } from 'styled-components';
 import { ThemeContext, ThemeProvider } from 'styled-components';
 import merge from 'lodash.merge';
+
+import type { PropsWithChildren, JSX } from 'react';
+import type { DefaultTheme } from 'styled-components';
 
 type HoneyThemeProviderProps = {
   theme: DefaultTheme;

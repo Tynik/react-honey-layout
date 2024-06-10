@@ -1,6 +1,7 @@
+import styled, { css } from 'styled-components';
+
 import type { SVGAttributes } from 'react';
 import type { CSSProperties } from 'styled-components';
-import styled, { css } from 'styled-components';
 
 export type IconSize = 'small' | 'medium' | 'large';
 

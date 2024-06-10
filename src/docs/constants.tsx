@@ -5,11 +5,11 @@ import type { Page } from './types';
 import { MDXWrapper } from './components/MDXWrapper';
 
 import GettingStartedPage from './pages/getting-started.page.mdx';
-import ThematizationPage from './pages/thematization.mdx';
+import ThematizationPage from './pages/thematization.page.mdx';
 import HoneyBoxPage from './pages/honey-box.page.mdx';
-import HoneyGridPage from './pages/honey-grid.mdx';
-import HoneyListPage from './pages/honey-list.mdx';
-import HoneyLazyContent from './pages/honey-lazy-content.mdx';
+import HoneyGridPage from './pages/honey-grid.page.mdx';
+import HoneyListPage from './pages/honey-list.page.mdx';
+import HoneyLazyContent from './pages/honey-lazy-content.page.mdx';
 
 const MDX_COMPONENTS: MDXComponents = { wrapper: MDXWrapper };
 

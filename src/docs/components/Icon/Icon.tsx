@@ -1,7 +1,8 @@
 import React from 'react';
-import type { PropsWithChildren } from 'react';
 
+import type { PropsWithChildren } from 'react';
 import type { IconStyledProps } from './IconStyled';
+
 import { IconStyled } from './IconStyled';
 
 export type IconProps = IconStyledProps;
