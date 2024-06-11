@@ -8,7 +8,7 @@ export const MDXWrapper = styled.div`
     letter-spacing: 0.025rem;
     line-height: 2rem;
 
-    color: ${theme.colors?.neutral.lightGray};
+    color: ${theme.colors.neutral.lightGray};
 
     h3 {
       position: relative;

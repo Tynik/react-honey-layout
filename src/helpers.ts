@@ -7,13 +7,15 @@ import type {
   HoneyCSSPropertyValue,
   HoneyThemedProps,
 } from './types';
-
 import { camelToDashCase, createMediaRule } from './utils';
 
 /**
  * Retrieves the CSS property value corresponding to the provided breakpoint.
  * If the property value is an object (indicating a responsive value),
  * it returns the value associated with the specified breakpoint.
+ *
+ * @param {HoneyCSSPropertyValue<CSSProperty>} propertyValue - The property value which can be an object or any other type.
+ * @param {HoneyBreakpointName} breakpoint - The name of the breakpoint.
  */
 const getCSSPropertyValue = <CSSProperty extends keyof CSS.Properties>(
   propertyValue: HoneyCSSPropertyValue<CSSProperty>,
@@ -24,6 +26,8 @@ const getCSSPropertyValue = <CSSProperty extends keyof CSS.Properties>(
  * Generates CSS styles based on the provided breakpoint and props.
  * Filters the props to include only those with breakpoints matching the specified breakpoint.
  * For each matching prop, it converts the property name to dash-case and retrieves the corresponding value.
+ *
+ * @param {HoneyBreakpointName} breakpoint - The name of the breakpoint.
  */
 export const generateStyles =
   (breakpoint: HoneyBreakpointName) =>
@@ -54,13 +58,15 @@ const checkIfApplyBreakpoint = (breakpoint: HoneyBreakpointName, props: HoneyBox
   );
 
 /**
- * Hook that returns functions for generating media queries for the specified breakpoint.
+ * Utility function that returns functions for generating media queries for the specified breakpoint.
  * The down function creates a media query for screen sizes smaller than the breakpoint,
  * while the up function creates a media query for screen sizes larger than the breakpoint.
+ *
+ * @param {HoneyBreakpointName} breakpoint - The name of the breakpoint.
  */
-export const useBreakpoint = (breakpoint: HoneyBreakpointName) => {
+export const getBreakpointMediaQuery = (breakpoint: HoneyBreakpointName) => {
   const down = ({ theme }: HoneyThemedProps<HoneyBoxProps>) => {
-    const size = theme.breakpoints?.[breakpoint];
+    const size = theme.breakpoints[breakpoint];
     if (!size) {
       return null;
     }
@@ -71,7 +77,7 @@ export const useBreakpoint = (breakpoint: HoneyBreakpointName) => {
   };
 
   const up = ({ theme }: HoneyThemedProps<HoneyBoxProps>) => {
-    const size = theme.breakpoints?.[breakpoint];
+    const size = theme.breakpoints[breakpoint];
     if (!size) {
       return null;
     }
@@ -93,14 +99,14 @@ export const useBreakpoint = (breakpoint: HoneyBreakpointName) => {
 export const generateMediaStyles =
   (breakpoint: HoneyBreakpointName) =>
   ({ theme, ...props }: HoneyThemedProps<HoneyBoxProps>) => {
-    const breakpointConfig = theme.breakpoints?.[breakpoint];
+    const breakpointConfig = theme.breakpoints[breakpoint];
 
     if (!breakpointConfig || !checkIfApplyBreakpoint(breakpoint, props)) {
       return null;
     }
 
     return css`
-      ${useBreakpoint(breakpoint).up} {
+      ${getBreakpointMediaQuery(breakpoint).up} {
         ${generateStyles(breakpoint)};
       }
     `;

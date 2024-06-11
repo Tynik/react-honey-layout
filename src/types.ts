@@ -155,10 +155,10 @@ export interface HoneyColors extends BaseHoneyColors {}
  * Represents the theme configuration.
  */
 export interface BaseHoneyTheme {
-  breakpoints?: Partial<HoneyBreakpoints>;
-  container?: Partial<HoneyContainer>;
-  spacings?: HoneySpacings;
-  colors?: HoneyColors;
+  breakpoints: Partial<HoneyBreakpoints>;
+  container: Partial<HoneyContainer>;
+  spacings: HoneySpacings;
+  colors: HoneyColors;
 }
 
 export interface HoneyTheme extends BaseHoneyTheme {}

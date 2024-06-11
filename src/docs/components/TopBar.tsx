@@ -15,7 +15,7 @@ export const TopBar = () => {
     <HoneyBox
       $display="flex"
       $padding="16px"
-      $backgroundColor={theme.colors?.neutral.charcoalDark}
+      $backgroundColor={theme.colors.neutral.charcoalDark}
       $boxShadow="0 2px 4px rgba(0, 0, 0, 0.2)"
       $zIndex={99}
       data-testid="top-bar"

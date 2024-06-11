@@ -24,7 +24,7 @@ export const DemoContainer = ({ children }: PropsWithChildren) => {
   const screenState = useHoneyMediaQuery();
 
   const getBreakpointInfo = (breakpoint: HoneyBreakpointName) => {
-    const size = theme.breakpoints?.[breakpoint];
+    const size = theme.breakpoints[breakpoint];
 
     return `${breakpoint}[${size}px]`;
   };
@@ -36,7 +36,7 @@ export const DemoContainer = ({ children }: PropsWithChildren) => {
         $flexWrap="wrap"
         $gap="8px"
         $margin="0 auto"
-        $color={theme.colors?.neutral.goldenrod}
+        $color={theme.colors.neutral.goldenrod}
       >
         <span>
           {getBreakpointInfo('xs')}: {screenState.isXs.toString()}

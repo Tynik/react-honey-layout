@@ -4,7 +4,7 @@ import type { HoneyBoxProps } from '../types';
 import { generateMediaStyles, generateStyles } from '../helpers';
 import { HTML_ATTRIBUTES } from '../constants';
 
-export const HoneyBox = styled('div').withConfig({
+export const HoneyBox = styled.div.withConfig({
   shouldForwardProp: prop =>
     HTML_ATTRIBUTES.includes(prop as never) ||
     prop.startsWith('on') ||

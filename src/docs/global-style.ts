@@ -3,7 +3,7 @@ import { createGlobalStyle, css } from 'styled-components';
 export const GlobalStyle = createGlobalStyle`
   ${({ theme }) => css`
     html {
-      background-color: ${theme.colors?.neutral.charcoalGray};
+      background-color: ${theme.colors.neutral.charcoalGray};
     }
 
     body {

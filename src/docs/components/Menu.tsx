@@ -4,7 +4,7 @@ import styled, { css } from 'styled-components';
 
 import { PAGES } from '../constants';
 import { useCurrentApp } from '../providers';
-import { useBreakpoint } from '../../helpers';
+import { getBreakpointMediaQuery } from '../../helpers';
 import { useHoneyMediaQuery } from '../../hooks';
 
 type MenuStyledProps = {
@@ -21,7 +21,7 @@ const MenuStyled = styled.div<MenuStyledProps>`
     height: 100%;
 
     transition: all 200ms ease-in-out;
-    background-color: ${theme.colors?.neutral.charcoalGray};
+    background-color: ${theme.colors.neutral.charcoalGray};
     overflow: hidden auto;
 
     ${$isOpenMenu
@@ -34,17 +34,17 @@ const MenuStyled = styled.div<MenuStyledProps>`
           padding: 0;
         `}
 
-    ${useBreakpoint('xs').down} {
+    ${getBreakpointMediaQuery('xs').down} {
       width: ${$isOpenMenu && '100%'};
     }
 
-    ${useBreakpoint('sm').down} {
+    ${getBreakpointMediaQuery('sm').down} {
       position: absolute;
       z-index: 999;
     }
 
-    ${useBreakpoint('xs').up} {
-      border-right: 1px solid ${theme.colors?.neutral.charcoalDark};
+    ${getBreakpointMediaQuery('xs').up} {
+      border-right: 1px solid ${theme.colors.neutral.charcoalDark};
     }
   `}
 `;
@@ -63,7 +63,7 @@ const ListItem = styled.li`
 
     padding: 8px 16px;
 
-    color: ${theme.colors?.neutral.lightBlue};
+    color: ${theme.colors.neutral.lightBlue};
 
     overflow: hidden;
     text-overflow: ellipsis;
