@@ -5,6 +5,17 @@ import type { DataType } from 'csstype';
 
 export type TimeoutId = ReturnType<typeof setTimeout>;
 
+type HoneyCSSAbsoluteLengthUnit = 'px' | 'cm' | 'mm' | 'in' | 'pt' | 'pc';
+type HoneyCSSRelativeLengthUnit = 'em' | 'rem' | '%' | 'vh' | 'vw' | 'vmin' | 'vmax';
+
+export type HoneyCSSLengthUnit = HoneyCSSAbsoluteLengthUnit | HoneyCSSRelativeLengthUnit;
+
+export type HoneyCSSLengthValue = `${number}${HoneyCSSLengthUnit}`;
+
+export type HoneyCSSArrayValue<T> = [T, T] | [T, T, T] | [T, T, T, T];
+
+export type HoneyCSSMultiValue<T> = T | HoneyCSSArrayValue<T>;
+
 /**
  * Represents the breakpoints configuration for a responsive layout.
  *

@@ -4,7 +4,7 @@ import styled, { css } from 'styled-components';
 
 import { PAGES } from '../constants';
 import { useCurrentApp } from '../providers';
-import { getBreakpointMediaQuery } from '../../helpers';
+import { buildBreakpointMediaQuery } from '../../helpers';
 import { useHoneyMediaQuery } from '../../hooks';
 
 type MenuStyledProps = {
@@ -34,22 +34,24 @@ const MenuStyled = styled.div<MenuStyledProps>`
           padding: 0;
         `}
 
-    ${getBreakpointMediaQuery('xs').down} {
+    ${buildBreakpointMediaQuery('xs').down} {
       width: ${$isOpenMenu && '100%'};
     }
 
-    ${getBreakpointMediaQuery('sm').down} {
-      position: absolute;
-      z-index: 999;
+    ${buildBreakpointMediaQuery('xs').up} {
+      border-right: 1px solid ${theme.colors.neutral.charcoalDark};
     }
 
-    ${getBreakpointMediaQuery('xs').up} {
-      border-right: 1px solid ${theme.colors.neutral.charcoalDark};
+    ${buildBreakpointMediaQuery('sm').down} {
+      position: absolute;
+      z-index: 999;
     }
   `}
 `;
 
 const List = styled.ul`
+  width: 100%;
+
   margin: 0;
   padding: 0;
 
@@ -60,14 +62,23 @@ const List = styled.ul`
 const ListItem = styled.li`
   ${({ theme }) => css`
     font-size: 18px;
-
-    padding: 8px 16px;
-
+    border-radius: 4px;
     color: ${theme.colors.neutral.lightBlue};
 
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+
+    a {
+      display: block;
+
+      width: 100%;
+      padding: 8px 16px;
+    }
+
+    &:hover {
+      background-color: ${theme.colors.neutral.charcoalDark};
+    }
   `}
 `;
 

@@ -2,11 +2,11 @@ import { useState } from 'react';
 import styled, { css } from 'styled-components';
 
 import { HoneyBox, HoneyLazyContent } from '../../components';
-import { calculateSpacing } from '../../utils';
+import { resolveSpacing } from '../../helpers';
 
 export const Button = styled.button`
   ${({ theme: { colors } }) => css`
-    padding: ${calculateSpacing(1)}px;
+    padding: ${resolveSpacing(1)};
 
     border: 0;
     border-radius: 4px;
@@ -80,7 +80,7 @@ import { HoneyBox, HoneyLazyContent, calculateSpacing } from '@tynik/react-honey
 
 export const Button = styled.button`
   ${({ theme: { colors } }) => css`
-    padding: ${calculateSpacing(1)}px;
+    padding: ${calculateSpacing(1)};
 
     border: 0;
     border-radius: 4px;

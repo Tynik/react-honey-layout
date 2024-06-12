@@ -1,39 +1,47 @@
-import type { HoneySpacings, HoneyThemedProps } from './types';
+import type { HoneyCSSLengthValue } from './types';
 
 export const camelToDashCase = (str: string) =>
   str.replace(/[A-Z]/g, letter => `-${letter.toLowerCase()}`);
 
-type CreateMediaRuleOptions = {
-  /**
-   * Minimum width for the @media rule
-   */
-  minWidth?: string;
-  /**
-   * Maximum width for the @media rule
-   */
-  maxWidth?: string;
-};
-
-export const createMediaRule = ({ minWidth, maxWidth }: CreateMediaRuleOptions) => {
-  if (!minWidth && !maxWidth) {
-    throw new Error('The `minWidth` or `maxWidth` should be set');
-  }
-
-  const minWidthRule = minWidth ? `(min-width: ${minWidth})` : '';
-  const maxWidthRule = maxWidth ? `(max-width: ${maxWidth})` : '';
-
-  return `@media only screen and ${minWidthRule}${minWidth && maxWidth ? ' and ' : ''}${maxWidthRule}`;
+export type HoneyCreateMediaRuleOptions = {
+  operator?: 'not' | 'only';
+  mediaType?: 'all' | 'print' | 'screen' | 'speech';
+  minWidth?: HoneyCSSLengthValue;
+  minHeight?: HoneyCSSLengthValue;
+  maxWidth?: HoneyCSSLengthValue;
+  maxHeight?: HoneyCSSLengthValue;
+  orientation?: 'landscape' | 'portrait';
 };
 
 /**
- * Calculates the spacing value based on the provided spacing factor and spacing type.
+ * Builds a media query string based on the provided options.
  *
- * @param spacing The spacing factor to be applied.
- * @param type The type of spacing to be used, e.g., 'base', 'small', 'large'. Default: `base`.
+ * @param {HoneyCreateMediaRuleOptions} options - Options for the media query.
  *
- * @returns The calculated spacing value.
+ * @returns {string} The generated media query string.
  */
-export const calculateSpacing =
-  (spacing: number, type: keyof HoneySpacings = 'base') =>
-  ({ theme }: HoneyThemedProps) =>
-    spacing * (theme.spacings?.[type] ?? 0);
+export const buildMediaQuery = ({
+  operator,
+  mediaType = 'screen',
+  minWidth,
+  maxWidth,
+  minHeight,
+  maxHeight,
+  orientation,
+}: HoneyCreateMediaRuleOptions): string => {
+  const conditions = [
+    minWidth && ['min-width', minWidth],
+    maxWidth && ['max-width', maxWidth],
+    minHeight && ['min-height', minHeight],
+    maxHeight && ['max-height', maxHeight],
+    orientation && ['orientation', orientation],
+  ]
+    .filter(Boolean)
+    .map(r => r && `(${r[0]}: ${r[1]})`)
+    .join(' and ');
+
+  const operatorPart = operator ? `${operator} ` : '';
+  const conditionsPart = conditions ? ` and ${conditions}` : '';
+
+  return `@media ${operatorPart}${mediaType}${conditionsPart}`;
+};

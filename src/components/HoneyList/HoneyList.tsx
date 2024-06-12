@@ -5,7 +5,6 @@ import styled from 'styled-components';
 import type { ComponentWithAs, HoneyBoxProps } from '../../types';
 import type { HoneyListItem, HoneyListItemKey } from './HoneyList.types';
 import type { HoneyConditionalContentProps } from '../HoneyConditionalContent';
-
 import { HoneyBox } from '../HoneyBox';
 import { HoneyConditionalContent } from '../HoneyConditionalContent';
 import { getListItemId } from './HoneyList.helpers';

@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components';
 
 import type { HoneyBoxProps } from '../../types';
-import { calculateSpacing } from '../../utils';
+import { resolveSpacing } from '../../helpers';
 import { HoneyBox } from '../HoneyBox';
 
 export type HoneyGridColumnStyledProps = HoneyBoxProps & {
@@ -30,7 +30,7 @@ export const HoneyGridColumnStyled = styled(HoneyBox)<HoneyGridColumnStyledProps
   ${({ columns, takeColumns = 1, spacing = 0, theme }) => {
     const fractionalWidth = 100 / columns;
 
-    const columnSpacing = calculateSpacing(spacing)({ theme });
+    const columnSpacing = resolveSpacing(spacing, null)({ theme });
     const columnWidth = takeColumns * fractionalWidth;
     const columnGap = (columns - takeColumns) * (columnSpacing / columns);
 

@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
 
-import { calculateSpacing } from '../../utils';
+import { resolveSpacing } from '../../helpers';
 
 export const MDXWrapper = styled.div`
   ${({ theme }) => css`
@@ -13,8 +13,8 @@ export const MDXWrapper = styled.div`
     h3 {
       position: relative;
 
-      margin: ${calculateSpacing(5)}px 0 0;
-      padding-left: ${calculateSpacing(2)}px;
+      margin: ${resolveSpacing([5, 0, 0])};
+      padding-left: ${resolveSpacing(2)};
 
       &:before {
         position: absolute;
@@ -22,7 +22,7 @@ export const MDXWrapper = styled.div`
 
         top: -2px;
         left: 0;
-        margin-right: ${calculateSpacing(1)}px;
+        margin-right: ${resolveSpacing(1)};
 
         font-weight: bold;
         font-size: 2.5rem;
