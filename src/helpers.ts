@@ -9,11 +9,11 @@ import type {
   HoneyCSSLengthUnit,
   HoneyCSSMultiValue,
   HoneyCSSPropertyValue,
+  HoneyCSSMediaRule,
   HoneySpacings,
   HoneyTheme,
   HoneyThemedProps,
 } from './types';
-import type { HoneyCreateMediaRuleOptions } from './utils';
 import { camelToDashCase, buildMediaQuery } from './utils';
 
 /**
@@ -70,13 +70,13 @@ const checkIfApplyBreakpoint = (breakpoint: HoneyBreakpointName, props: HoneyBox
  * while the up function creates a media query for screen sizes larger than the breakpoint.
  *
  * @param {HoneyBreakpointName} breakpoint - The name of the breakpoint.
- * @param {HoneyCreateMediaRuleOptions} [ruleOptions={}] - Additional options for the media rule.
+ * @param {HoneyCSSMediaRule} [ruleOptions={}] - Additional options for the media rule.
  *
  * @returns Functions for generating media queries.
  */
 export const buildBreakpointMediaQuery = (
   breakpoint: HoneyBreakpointName,
-  ruleOptions: Omit<HoneyCreateMediaRuleOptions, 'minWidth' | 'maxWidth'> = {},
+  ruleOptions: Omit<HoneyCSSMediaRule, 'width' | 'minWidth' | 'maxWidth'> = {},
 ) => {
   const resolveBreakpointValue = (theme: HoneyTheme) => {
     const value = theme.breakpoints[breakpoint];
@@ -88,17 +88,21 @@ export const buildBreakpointMediaQuery = (
   };
 
   const down = ({ theme }: HoneyThemedProps<HoneyBoxProps>) => {
-    return buildMediaQuery({
-      maxWidth: `${resolveBreakpointValue(theme)}px`,
-      ...ruleOptions,
-    });
+    return buildMediaQuery([
+      {
+        maxWidth: `${resolveBreakpointValue(theme)}px`,
+        ...ruleOptions,
+      },
+    ]);
   };
 
   const up = ({ theme }: HoneyThemedProps<HoneyBoxProps>) => {
-    return buildMediaQuery({
-      minWidth: `${resolveBreakpointValue(theme)}px`,
-      ...ruleOptions,
-    });
+    return buildMediaQuery([
+      {
+        minWidth: `${resolveBreakpointValue(theme)}px`,
+        ...ruleOptions,
+      },
+    ]);
   };
 
   return {

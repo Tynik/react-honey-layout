@@ -1,47 +1,39 @@
-import type { HoneyCSSLengthValue } from './types';
+import type { HoneyCSSMediaRule } from './types';
 
 export const camelToDashCase = (str: string) =>
   str.replace(/[A-Z]/g, letter => `-${letter.toLowerCase()}`);
 
-export type HoneyCreateMediaRuleOptions = {
-  operator?: 'not' | 'only';
-  mediaType?: 'all' | 'print' | 'screen' | 'speech';
-  minWidth?: HoneyCSSLengthValue;
-  minHeight?: HoneyCSSLengthValue;
-  maxWidth?: HoneyCSSLengthValue;
-  maxHeight?: HoneyCSSLengthValue;
-  orientation?: 'landscape' | 'portrait';
-};
-
 /**
  * Builds a media query string based on the provided options.
  *
- * @param {HoneyCreateMediaRuleOptions} options - Options for the media query.
+ * @param {HoneyCSSMediaRule[]} rules - Conditions for the media query.
  *
  * @returns {string} The generated media query string.
  */
-export const buildMediaQuery = ({
-  operator,
-  mediaType = 'screen',
-  minWidth,
-  maxWidth,
-  minHeight,
-  maxHeight,
-  orientation,
-}: HoneyCreateMediaRuleOptions): string => {
-  const conditions = [
-    minWidth && ['min-width', minWidth],
-    maxWidth && ['max-width', maxWidth],
-    minHeight && ['min-height', minHeight],
-    maxHeight && ['max-height', maxHeight],
-    orientation && ['orientation', orientation],
-  ]
-    .filter(Boolean)
-    .map(r => r && `(${r[0]}: ${r[1]})`)
-    .join(' and ');
+export const buildMediaQuery = (rules: HoneyCSSMediaRule[]): string => {
+  const mediaRules = rules.map(rule => {
+    const conditions = [
+      rule.width && ['width', rule.width],
+      rule.minWidth && ['min-width', rule.minWidth],
+      rule.maxWidth && ['max-width', rule.maxWidth],
+      rule.height && ['height', rule.height],
+      rule.minHeight && ['min-height', rule.minHeight],
+      rule.maxHeight && ['max-height', rule.maxHeight],
+      rule.orientation && ['orientation', rule.orientation],
+      rule.minResolution && ['min-resolution', rule.minResolution],
+      rule.maxResolution && ['max-resolution', rule.maxResolution],
+      rule.resolution && ['resolution', rule.resolution],
+      rule.update && ['update', rule.update],
+    ]
+      .filter(Boolean)
+      .map(r => r && `(${r[0]}: ${r[1]})`)
+      .join(' and ');
 
-  const operatorPart = operator ? `${operator} ` : '';
-  const conditionsPart = conditions ? ` and ${conditions}` : '';
+    const operatorPart = rule.operator ? `${rule.operator} ` : '';
+    const conditionsPart = conditions ? ` and ${conditions}` : '';
 
-  return `@media ${operatorPart}${mediaType}${conditionsPart}`;
+    return `${operatorPart}${rule.mediaType ?? 'screen'}${conditionsPart}`;
+  });
+
+  return `@media ${mediaRules.join(', ')}`;
 };

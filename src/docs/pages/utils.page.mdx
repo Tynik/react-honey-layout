@@ -22,7 +22,7 @@ export const ResponsiveBox = styled.div`
   `}
 `;
 
-# Utilities
+# Utils
 
 ---
 
@@ -33,17 +33,23 @@ The `buildBreakpointMediaQuery` utility function that returns functions for gene
 ### Parameters
 
 - `breakpoint` **\{HoneyBreakpointName\}**: The name of the breakpoint.
-- `ruleOptions` **\{HoneyCreateMediaRuleOptions\} [default={}]**: Additional options for the media rule.
+- `ruleOptions` **\{HoneyCSSMediaRule\} [default={}]**: Additional options for the media rule.
 
-### HoneyCreateMediaRuleOptions
+### HoneyCSSMediaRule
 
-- `operator` **\{'not' | 'only'\}**: Operator for the @media rule.
-- `mediaType` **\{'all' | 'print' | 'screen' | 'speech'\}**: Media type for the @media rule.
-- `minWidth` **\{HoneyCSSLengthValue\}**: Minimum width for the @media rule.
-- `maxWidth` **\{HoneyCSSLengthValue\}**: Maximum width for the @media rule.
-- `minHeight` **\{HoneyCSSLengthValue\}**: Minimum height for the @media rule.
-- `maxHeight` **\{HoneyCSSLengthValue\}**: Maximum height for the @media rule.
-- `orientation` **\{'landscape' | 'portrait'\}**: Orientation for the @media rule.
+- `operator` **\{'not' | 'only'\}**: Operator for the media rule.
+- `mediaType` **\{'all' | 'print' | 'screen' | 'speech'\}**: Media type for the media rule.
+- `width` **\{HoneyCSSLengthValue\}**: Width for the media rule.
+- `minWidth` **\{HoneyCSSLengthValue\}**: Minimum width for the media rule.
+- `maxWidth` **\{HoneyCSSLengthValue\}**: Maximum width for the media rule.
+- `height` **\{HoneyCSSLengthValue\}**: Height for the media rule.
+- `minHeight` **\{HoneyCSSLengthValue\}**: Minimum height for the media rule.
+- `maxHeight` **\{HoneyCSSLengthValue\}**: Maximum height for the media rule.
+- `orientation` **\{HoneyCSSMediaOrientation\}**: Orientation for the media rule.
+- `resolution` **\{HoneyCSSResolutionValue\}**: Resolution for the media rule.
+- `minResolution` **\{HoneyCSSResolutionValue\}**: Minimum resolution for the media rule.
+- `maxResolution` **\{HoneyCSSResolutionValue\}**: Maximum resolution for the media rule.
+- `update` **\{'none' | 'slow' | 'fast'\}**: Update for the media rule.
 
 ### Returns
 

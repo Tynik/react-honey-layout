@@ -13,6 +13,12 @@ type HoneyCSSRelativeLengthUnit = 'em' | 'rem' | '%' | 'vh' | 'vw' | 'vmin' | 'v
  */
 export type HoneyCSSLengthUnit = HoneyCSSAbsoluteLengthUnit | HoneyCSSRelativeLengthUnit;
 
+export type HoneyCSSResolution = 'dpi' | 'dpcm' | 'dppx' | 'x';
+
+export type HoneyCSSResolutionValue = `${number}${HoneyCSSResolution}`;
+
+export type HoneyCSSMediaOrientation = 'landscape' | 'portrait';
+
 /**
  * Represents a specific CSS length value with a unit.
  */
@@ -49,6 +55,25 @@ export type HoneyCSSArrayValue<T> = [T, T] | [T, T, T] | [T, T, T, T];
  * @template T - Type of the value.
  */
 export type HoneyCSSMultiValue<T> = T | HoneyCSSArrayValue<T>;
+
+/**
+ * Options for CSS @media at-rule.
+ */
+export type HoneyCSSMediaRule = {
+  operator?: 'not' | 'only';
+  mediaType?: 'all' | 'print' | 'screen' | 'speech';
+  width?: HoneyCSSLengthValue;
+  minWidth?: HoneyCSSLengthValue;
+  maxWidth?: HoneyCSSLengthValue;
+  height?: HoneyCSSLengthValue;
+  minHeight?: HoneyCSSLengthValue;
+  maxHeight?: HoneyCSSLengthValue;
+  orientation?: HoneyCSSMediaOrientation;
+  resolution?: HoneyCSSResolutionValue;
+  minResolution?: HoneyCSSResolutionValue;
+  maxResolution?: HoneyCSSResolutionValue;
+  update?: 'none' | 'slow' | 'fast';
+};
 
 /**
  * Represents the breakpoints configuration for a responsive layout.
