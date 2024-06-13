@@ -4,7 +4,7 @@ import styled, { css } from 'styled-components';
 
 import { PAGES } from '../constants';
 import { useCurrentApp } from '../providers';
-import { buildBreakpointMediaQuery } from '../../helpers';
+import { buildBreakpointMediaQuery, resolveSpacing } from '../../helpers';
 import { useHoneyMediaQuery } from '../../hooks';
 
 type MenuStyledProps = {
@@ -60,10 +60,12 @@ const List = styled.ul`
 `;
 
 const ListItem = styled.li`
-  ${({ theme }) => css`
+  ${({ theme: { colors } }) => css`
+    margin: ${resolveSpacing([0.5, 0])};
+
     font-size: 18px;
     border-radius: 4px;
-    color: ${theme.colors.neutral.lightBlue};
+    color: ${colors.neutral.lightBlue};
 
     overflow: hidden;
     text-overflow: ellipsis;
@@ -74,10 +76,14 @@ const ListItem = styled.li`
 
       width: 100%;
       padding: 8px 16px;
+
+      &.active {
+        background-color: ${colors.neutral.charcoalDark};
+      }
     }
 
     &:hover {
-      background-color: ${theme.colors.neutral.charcoalDark};
+      background-color: ${colors.neutral.charcoalDark};
     }
   `}
 `;

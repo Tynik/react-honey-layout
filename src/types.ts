@@ -8,12 +8,46 @@ export type TimeoutId = ReturnType<typeof setTimeout>;
 type HoneyCSSAbsoluteLengthUnit = 'px' | 'cm' | 'mm' | 'in' | 'pt' | 'pc';
 type HoneyCSSRelativeLengthUnit = 'em' | 'rem' | '%' | 'vh' | 'vw' | 'vmin' | 'vmax';
 
+/**
+ * Represents a CSS length unit, which can be either an absolute or relative length unit.
+ */
 export type HoneyCSSLengthUnit = HoneyCSSAbsoluteLengthUnit | HoneyCSSRelativeLengthUnit;
 
-export type HoneyCSSLengthValue = `${number}${HoneyCSSLengthUnit}`;
+/**
+ * Represents a specific CSS length value with a unit.
+ */
+export type HoneyCSSLengthValue<Unit extends HoneyCSSLengthUnit = HoneyCSSLengthUnit> =
+  `${number}${Unit}`;
 
+/**
+ * Represents a shorthand CSS length value for 2, 3, or 4 values with the same unit.
+ *
+ * @template Value - Type of the value.
+ * @template Unit - CSS length unit.
+ */
+export type HoneyCSSLengthShortHandValue<Value, Unit extends HoneyCSSLengthUnit> = Value extends [
+  unknown,
+  unknown,
+]
+  ? `${HoneyCSSLengthValue<Unit>} ${HoneyCSSLengthValue<Unit>}`
+  : Value extends [unknown, unknown, unknown]
+    ? `${HoneyCSSLengthValue<Unit>} ${HoneyCSSLengthValue<Unit>} ${HoneyCSSLengthValue<Unit>}`
+    : Value extends [unknown, unknown, unknown, unknown]
+      ? `${HoneyCSSLengthValue<Unit>} ${HoneyCSSLengthValue<Unit>} ${HoneyCSSLengthValue<Unit>} ${HoneyCSSLengthValue<Unit>}`
+      : never;
+
+/**
+ * Represents an array of CSS values, either 2, 3, or 4 values.
+ *
+ * @template T - Type of the value.
+ */
 export type HoneyCSSArrayValue<T> = [T, T] | [T, T, T] | [T, T, T, T];
 
+/**
+ * Represents a CSS value that can be either a single value or an array of values.
+ *
+ * @template T - Type of the value.
+ */
 export type HoneyCSSMultiValue<T> = T | HoneyCSSArrayValue<T>;
 
 /**

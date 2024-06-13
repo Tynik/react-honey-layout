@@ -1,0 +1,126 @@
+import styled, { css } from 'styled-components';
+import { buildBreakpointMediaQuery } from '../../helpers';
+
+export const ResponsiveBox = styled.div`
+  ${({ theme: { colors } }) => css`
+    width: 100px;
+    height: 100px;
+    margin: 0 auto;
+    background-color: ${colors.neutral.royalBlue};
+
+    ${buildBreakpointMediaQuery('sm').down} {
+        background-color: ${colors.neutral.mauve};
+    }
+
+    ${buildBreakpointMediaQuery('md').up} {
+        background-color: ${colors.neutral.coralRed};
+    }
+
+    ${buildBreakpointMediaQuery('lg').up} {
+        background-color: ${colors.neutral.forestGreen};
+    }
+  `}
+`;
+
+# Utilities
+
+---
+
+## buildBreakpointMediaQuery
+
+The `buildBreakpointMediaQuery` utility function that returns functions for generating media queries for the specified breakpoint. The `down` function creates a media query for screen sizes smaller than the breakpoint, while the `up` function creates a media query for screen sizes larger than the breakpoint.
+
+### Parameters
+
+- `breakpoint` **\{HoneyBreakpointName\}**: The name of the breakpoint.
+- `ruleOptions` **\{HoneyCreateMediaRuleOptions\} [default={}]**: Additional options for the media rule.
+
+### HoneyCreateMediaRuleOptions
+
+- `operator` **\{'not' | 'only'\}**: Operator for the @media rule.
+- `mediaType` **\{'all' | 'print' | 'screen' | 'speech'\}**: Media type for the @media rule.
+- `minWidth` **\{HoneyCSSLengthValue\}**: Minimum width for the @media rule.
+- `maxWidth` **\{HoneyCSSLengthValue\}**: Maximum width for the @media rule.
+- `minHeight` **\{HoneyCSSLengthValue\}**: Minimum height for the @media rule.
+- `maxHeight` **\{HoneyCSSLengthValue\}**: Maximum height for the @media rule.
+- `orientation` **\{'landscape' | 'portrait'\}**: Orientation for the @media rule.
+
+### Returns
+
+Functions for generating media queries:
+
+- `down`: Function that creates a media query for screen sizes smaller than the breakpoint.
+- `up`: Function that creates a media query for screen sizes larger than the breakpoint.
+
+### Usage
+
+Changes the background color of the box element responsively according to the screen size, adapting to small, medium, and large screens for a seamless user experience.
+
+<ResponsiveBox/>
+
+```tsx
+import styled, { css }from 'styled-components';
+import { buildBreakpointMediaQuery } from '@tynik/react-honey-layout';
+
+const ResponsiveBox = styled.div`
+  ${({ theme: { colors } }) => css`
+    width: 100px;
+    height: 100px;
+    margin: 0 auto;
+    background-color: ${colors.neutral.royalBlue};
+
+    ${buildBreakpointMediaQuery('sm').down} {
+        background-color: ${colors.neutral.mauve};
+    }
+
+    ${buildBreakpointMediaQuery('md').up} {
+        background-color: ${colors.neutral.coralRed};
+    }
+
+    ${buildBreakpointMediaQuery('lg').up} {
+        background-color: ${colors.neutral.forestGreen};
+    }
+  `}
+`;
+```
+
+---
+
+## resolveSpacing
+
+The `resolveSpacing` function resolves spacing values based on the provided spacing factor and spacing type, allowing for flexible application of spacing in your CSS-in-JS setup.
+This function is particularly useful when styling components with dynamically calculated spacing based on theme values.
+
+### Parameters
+
+- `value` **\{HoneyCSSMultiValue\}**: The spacing factor to be applied, which can be a single number or an array of 2, 3, or 4 numbers.
+- `unit` **\{HoneyCSSLengthUnit | null\}**: Optional. The CSS unit to be used for the calculated value, e.g., 'px', 'em'. Set null to not apply a unit. Default: 'px'.
+- `type` **\{keyof HoneySpacings\}**: Optional. The type of spacing to be used, e.g., 'base', 'small', 'large'. Default: 'base'.
+
+### Returns
+
+The resolved spacing value, either as a string or a number, optionally with the specified unit. When `value` is an array, the returned string joins array values with a space.
+
+### Usage
+
+The `resolveSpacing` function calculates spacing values based on the `value`, `unit`, and `type` parameters.
+
+Here's how it works:
+
+* **value**: Can be a single number or an array of numbers `[num1, num2]`, `[num1, num2, num2]` or `[num1, num2, num3, num4]`.
+* **unit**: Specifies the CSS unit (px, em, %, etc.) to apply to the calculated spacing values. If not provided, defaults to 'px'. When set to `null`, no unit will be applied.
+* **type**: Indicates the type of spacing ('base', 'small', 'large', etc.) to fetch from the theme. Defaults to 'base'.
+
+```tsx
+import styled, { css } from 'styled-components';
+import { resolveSpacing } from '@tynik/react-honey-layout';
+
+const Button = styled.button`
+  ${({ theme }) => css`
+    margin: ${resolveSpacing(1)}; /* Using default unit 'px' */
+    padding: ${resolveSpacing([1, 2], 'rem', 'small')}; /* Using 'rem' unit and 'small' type spacing from theme */
+    width: ${resolveSpacing(5, '%')}; /* Using '%' unit */
+    height: ${resolveSpacing([10, 15], 'px', 'large')}; /* Using 'px' unit and 'large' type spacing from theme */
+  `}
+`;
+```

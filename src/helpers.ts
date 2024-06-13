@@ -5,6 +5,7 @@ import type {
   HoneyBoxProps,
   HoneyBreakpointName,
   HoneyCSSArrayValue,
+  HoneyCSSLengthShortHandValue,
   HoneyCSSLengthUnit,
   HoneyCSSMultiValue,
   HoneyCSSPropertyValue,
@@ -128,28 +129,38 @@ export const generateMediaStyles =
 /**
  * Conditional type to determine the return type of the `resolveSpacing` function.
  *
- * If the spacing value is an array and unit is provided, the return type is an array of strings.
- * If the spacing value is an array and no unit is provided, the return type is an array of numbers.
- * If the spacing value is a single number and unit is provided, the return type is a string.
- * If the spacing value is a single number and no unit is provided, the return type is a number.
+ * @template MultiValue - Type of the spacing value, can be a single value or an array of values.
+ * @template Unit - CSS length unit, which can be null or a specific unit type.
+ * @template T - Type of the numeric value.
  */
-type ResolveSpacingResult<MultiValue, Unit extends HoneyCSSLengthUnit | null, T extends number> =
-  MultiValue extends HoneyCSSArrayValue<T>
-    ? Unit extends null
-      ? HoneyCSSArrayValue<T>
-      : HoneyCSSArrayValue<`${T}${Unit}`>
-    : Unit extends null
-      ? T
-      : `${T}${Unit}`;
+type ResolveSpacingResult<
+  MultiValue extends HoneyCSSMultiValue<T>,
+  Unit extends HoneyCSSLengthUnit | null,
+  T extends number,
+> = Unit extends null
+  ? MultiValue extends HoneyCSSArrayValue<T>
+    ? // Returns an array of calculated values if `MultiValue` is an array
+      HoneyCSSArrayValue<T>
+    : // Returns a single calculated value if `MultiValue` is a single number
+      T
+  : MultiValue extends HoneyCSSArrayValue<T>
+    ? // Returns a shorthand CSS value for arrays with specified unit
+      HoneyCSSLengthShortHandValue<MultiValue, NonNullable<Unit>>
+    : // Returns a single value with specified unit
+      `${T}${Unit}`;
 
 /**
- * Resolves the spacing value based on the provided spacing factor and spacing type.
+ * Resolves the spacing value based on the provided `value`, `unit`, and `type`.
  *
  * @param value - The spacing factor to be applied, which can be a single number or an array of 2, 3, or 4 numbers.
- * @param unit - The CSS unit to be used for the calculated value, e.g., 'px', 'em'. Set null to do not apply unit. Default: 'px'.
- * @param type - The type of spacing to be used, e.g., 'base', 'small', 'large'. Default: 'base'.
+ * @param unit - The CSS unit to be used for the calculated value, e.g., 'px', 'em'. Set `null` to apply no unit. Default: 'px'.
+ * @param type - The type of spacing to be used from the theme, e.g., 'base', 'small', 'large'. Default: 'base'.
  *
- * @returns The resolved spacing value, either as a single number or an array of numbers, optionally with the specified unit.
+ * @returns The resolved spacing value, either as a single number or a string of space-separated numbers, optionally with the specified unit.
+ *
+ * @template MultiValue - Type of the spacing value, can be a single value or an array of values.
+ * @template Unit - CSS length unit, which can be null or a specific unit type.
+ * @template T - Type of the numeric value.
  */
 export const resolveSpacing =
   <
@@ -174,9 +185,11 @@ export const resolveSpacing =
       >;
     }
 
-    return value.map(v => {
+    const calculatedValues = value.map(v => {
       const calculatedValue = v * selectedSpacing;
 
       return unit ? `${calculatedValue}${unit}` : calculatedValue;
-    }) as ResolveSpacingResult<MultiValue, Unit, T>;
+    });
+
+    return calculatedValues.join(' ') as ResolveSpacingResult<MultiValue, Unit, T>;
   };
