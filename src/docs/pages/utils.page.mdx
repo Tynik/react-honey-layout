@@ -1,5 +1,19 @@
 import styled, { css } from 'styled-components';
-import { buildBreakpointMediaQuery } from '../../helpers';
+import { resolveColor, buildBreakpointMediaQuery } from '../../helpers';
+
+export const ColoredBox = styled.div`
+  ${() => css`
+    width: 100px;
+    height: 100px;
+    margin: 0 auto;
+
+    background-color: ${resolveColor('neutral.crimsonRed')};
+
+    &:hover {
+        background-color: ${resolveColor('neutral.coralRed')};
+    }
+  `}
+`;
 
 export const ResponsiveBox = styled.div`
   ${({ theme: { colors } }) => css`
@@ -24,9 +38,84 @@ export const ResponsiveBox = styled.div`
 
 # Utils
 
+A comprehensive list of utility functions designed to streamline and enhance your CSS-in-JS development workflow.
+
+## resolveColor
 ---
 
+The `resolveColor` function resolves a color value based on the provided color key. This utility function facilitates the retrieval of theme colors in a consistent and type-safe manner.
+
+### Parameters
+
+- `colorKey` **\{HoneyColorKey\}**: The key representing the color to be resolved. This key is a string in the format `colorType.colorName`.
+
+### Returns
+
+The resolved color value from the theme.
+
+### Usage
+
+Dynamically resolve color values from the theme based on color keys, enabling consistent theming throughout your application.
+
+<ColoredBox/>
+
+```tsx
+import styled from 'styled-components';
+import { resolveColor } from '@tynik/react-honey-layout';
+
+export const ColoredBox = styled.div`
+  width: 100px;
+  height: 100px;
+  margin: 0 auto;
+
+  background-color: ${resolveColor('neutral.crimsonRed')};
+
+  &:hover {
+    background-color: ${resolveColor('neutral.coralRed')};
+  }
+`;
+```
+
+## resolveSpacing
+---
+
+The `resolveSpacing` function resolves spacing values based on the provided spacing factor and spacing type, allowing for flexible application of spacing in your CSS-in-JS setup.
+This function is particularly useful when styling components with dynamically calculated spacing based on theme values.
+
+### Parameters
+
+- `value` **\{HoneyCSSMultiValue\}**: The spacing factor to be applied, which can be a single number or an array of 2, 3, or 4 numbers.
+- `unit` **\{HoneyCSSLengthUnit | null\}**: Optional. The CSS unit to be used for the calculated value, e.g., 'px', 'em'. Set null to not apply a unit. Default: 'px'.
+- `type` **\{keyof HoneySpacings\}**: Optional. The type of spacing to be used, e.g., 'base', 'small', 'large'. Default: 'base'.
+
+### Returns
+
+The resolved spacing value, either as a string or a number, optionally with the specified unit. When `value` is an array, the returned string joins array values with a space.
+
+### Usage
+
+The `resolveSpacing` function calculates spacing values based on the `value`, `unit`, and `type` parameters.
+
+Here's how it works:
+
+* **value**: Can be a single number or an array of numbers `[num1, num2]`, `[num1, num2, num2]` or `[num1, num2, num3, num4]`.
+* **unit**: Specifies the CSS unit (px, em, %, etc.) to apply to the calculated spacing values. If not provided, defaults to 'px'. When set to `null`, no unit will be applied.
+* **type**: Indicates the type of spacing ('base', 'small', 'large', etc.) to fetch from the theme. Defaults to 'base'.
+
+```tsx
+import styled, { css } from 'styled-components';
+import { resolveSpacing } from '@tynik/react-honey-layout';
+
+const Button = styled.button`
+  margin: ${resolveSpacing(1)}; /* Using default unit 'px' */
+  padding: ${resolveSpacing([1, 2], 'rem', 'small')}; /* Using 'rem' unit and 'small' type spacing from theme */
+  width: ${resolveSpacing(5, '%')}; /* Using '%' unit */
+  height: ${resolveSpacing([10, 15], 'px', 'large')}; /* Using 'px' unit and 'large' type spacing from theme */
+`;
+```
+
 ## buildBreakpointMediaQuery
+---
 
 The `buildBreakpointMediaQuery` utility function that returns functions for generating media queries for the specified breakpoint. The `down` function creates a media query for screen sizes smaller than the breakpoint, while the `up` function creates a media query for screen sizes larger than the breakpoint.
 
@@ -86,47 +175,6 @@ const ResponsiveBox = styled.div`
     ${buildBreakpointMediaQuery('lg').up} {
         background-color: ${colors.neutral.forestGreen};
     }
-  `}
-`;
-```
-
----
-
-## resolveSpacing
-
-The `resolveSpacing` function resolves spacing values based on the provided spacing factor and spacing type, allowing for flexible application of spacing in your CSS-in-JS setup.
-This function is particularly useful when styling components with dynamically calculated spacing based on theme values.
-
-### Parameters
-
-- `value` **\{HoneyCSSMultiValue\}**: The spacing factor to be applied, which can be a single number or an array of 2, 3, or 4 numbers.
-- `unit` **\{HoneyCSSLengthUnit | null\}**: Optional. The CSS unit to be used for the calculated value, e.g., 'px', 'em'. Set null to not apply a unit. Default: 'px'.
-- `type` **\{keyof HoneySpacings\}**: Optional. The type of spacing to be used, e.g., 'base', 'small', 'large'. Default: 'base'.
-
-### Returns
-
-The resolved spacing value, either as a string or a number, optionally with the specified unit. When `value` is an array, the returned string joins array values with a space.
-
-### Usage
-
-The `resolveSpacing` function calculates spacing values based on the `value`, `unit`, and `type` parameters.
-
-Here's how it works:
-
-* **value**: Can be a single number or an array of numbers `[num1, num2]`, `[num1, num2, num2]` or `[num1, num2, num3, num4]`.
-* **unit**: Specifies the CSS unit (px, em, %, etc.) to apply to the calculated spacing values. If not provided, defaults to 'px'. When set to `null`, no unit will be applied.
-* **type**: Indicates the type of spacing ('base', 'small', 'large', etc.) to fetch from the theme. Defaults to 'base'.
-
-```tsx
-import styled, { css } from 'styled-components';
-import { resolveSpacing } from '@tynik/react-honey-layout';
-
-const Button = styled.button`
-  ${({ theme }) => css`
-    margin: ${resolveSpacing(1)}; /* Using default unit 'px' */
-    padding: ${resolveSpacing([1, 2], 'rem', 'small')}; /* Using 'rem' unit and 'small' type spacing from theme */
-    width: ${resolveSpacing(5, '%')}; /* Using '%' unit */
-    height: ${resolveSpacing([10, 15], 'px', 'large')}; /* Using 'px' unit and 'large' type spacing from theme */
   `}
 `;
 ```

@@ -1,6 +1,7 @@
 import * as CSS from 'csstype';
 import { css } from 'styled-components';
 
+import type { DataType } from 'csstype';
 import type {
   HoneyBoxProps,
   HoneyBreakpointName,
@@ -13,6 +14,8 @@ import type {
   HoneySpacings,
   HoneyTheme,
   HoneyThemedProps,
+  HoneyColorKey,
+  BaseHoneyColors,
 } from './types';
 import { camelToDashCase, buildMediaQuery } from './utils';
 
@@ -196,4 +199,19 @@ export const resolveSpacing =
     });
 
     return calculatedValues.join(' ') as ResolveSpacingResult<MultiValue, Unit, T>;
+  };
+
+/**
+ * Resolves a color value based on the provided color key.
+ *
+ * @param colorKey - The key representing the color to be resolved. This key is a string in the format 'colorType.colorName'.
+ *
+ * @returns The resolved color value from the theme.
+ */
+export const resolveColor =
+  (colorKey: HoneyColorKey) =>
+  ({ theme }: HoneyThemedProps): DataType.Color => {
+    const [colorType, colorName] = colorKey.split('.');
+
+    return theme.colors[colorType as keyof BaseHoneyColors][colorName];
   };

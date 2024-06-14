@@ -222,6 +222,31 @@ export interface BaseHoneyColors {
 export interface HoneyColors extends BaseHoneyColors {}
 
 /**
+ * Generates a union of all possible color keys by combining each property of `HoneyColors` with its corresponding keys.
+ *
+ * This type iterates over each key in the `HoneyColors` interface and creates a string template,
+ * which combines the color type with each of its keys. The result is a union of all possible color keys.
+ *
+ * @example
+ *
+ * Given the `HoneyColors` interface:
+ * ```typescript
+ * interface HoneyColors {
+ *   primary: Record<'blue' | 'green', DataType.Color>;
+ *   neutral: Record<'charcoalDark' | 'charcoalGray' | 'crimsonRed', DataType.Color>;
+ * }
+ * ```
+ *
+ * The resulting `HoneyColorKey` type will be:
+ * ```typescript
+ * type HoneyColorKey = 'neutral.charcoalDark' | 'neutral.charcoalGray' | 'neutral.crimsonRed' | 'primary.blue' | 'primary.green';
+ * ```
+ */
+export type HoneyColorKey = {
+  [ColorType in keyof HoneyColors]: `${ColorType}.${keyof HoneyColors[ColorType] & string}`;
+}[keyof HoneyColors];
+
+/**
  * Represents the theme configuration.
  */
 export interface BaseHoneyTheme {

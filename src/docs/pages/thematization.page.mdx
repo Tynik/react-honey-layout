@@ -120,13 +120,12 @@ To augment the `HoneyColors` interface, use the following module declaration.
 ~~~ts
 import type { DataType } from 'csstype';
 
+type NeutralColors = 'charcoalDark' | 'charcoalGray' | 'crimsonRed';
+
 declare module '@tynik/react-honey-layout' {
   interface HoneyColors {
-    neutral: Record<
-      'charcoalDark' | 'charcoalGray' | 'crimsonRed',
-      DataType.Color
-    >;
-    custom: Record<string, DataType.Color>;
+    neutral: Record<NeutralColors, DataType.Color>;
+    // Other colors can be defined in the same way
   }
 }
 ~~~
