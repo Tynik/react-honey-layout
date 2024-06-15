@@ -13,6 +13,11 @@ export const theme: HoneyTheme = {
   spacings: {
     base: 8,
   },
+  fonts: {
+    body: {
+      size: 14,
+    },
+  },
   colors: {
     primary: {},
     secondary: {},

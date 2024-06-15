@@ -246,6 +246,33 @@ export type HoneyColorKey = {
   [ColorType in keyof HoneyColors]: `${ColorType}.${keyof HoneyColors[ColorType] & string}`;
 }[keyof HoneyColors];
 
+export type HoneyFont = {
+  size: number;
+  family?: string;
+  weight?: number;
+  lineHeight?: number;
+  letterSpacing?: number;
+};
+
+/**
+ * Example of augmenting the fonts interface.
+ *
+ * @example
+ * ```typescript
+ * declare module '@tynik/react-honey-layout' {
+ *  interface HoneyFonts {
+ *    body: HoneyFont;
+ *    caption: HoneyFont;
+ *  }
+ * }
+ * ```
+ */
+export interface HoneyFonts {
+  [key: string]: HoneyFont;
+}
+
+export type HoneyFontName = keyof HoneyFonts;
+
 /**
  * Represents the theme configuration.
  */
@@ -253,6 +280,7 @@ export interface BaseHoneyTheme {
   breakpoints: Partial<HoneyBreakpoints>;
   container: Partial<HoneyContainer>;
   spacings: HoneySpacings;
+  fonts: HoneyFonts;
   colors: HoneyColors;
 }
 

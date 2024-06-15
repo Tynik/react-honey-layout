@@ -4,6 +4,18 @@ export const camelToDashCase = (str: string) =>
   str.replace(/[A-Z]/g, letter => `-${letter.toLowerCase()}`);
 
 /**
+ * Converts a pixel value to rem.
+ *
+ * @param px - The pixel value to be converted to rem.
+ * @param base - The base value for conversion. Default is 16, which is the typical root font size.
+ *
+ * @returns The value in rem as a string.
+ */
+export const pxToRem = (px: number, base: number = 16): string => {
+  return `${px / base}rem`;
+};
+
+/**
  * Builds a media query string based on the provided options.
  *
  * @param {HoneyCSSMediaRule[]} rules - Conditions for the media query.

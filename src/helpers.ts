@@ -16,8 +16,9 @@ import type {
   HoneyThemedProps,
   HoneyColorKey,
   BaseHoneyColors,
+  HoneyFontName,
 } from './types';
-import { camelToDashCase, buildMediaQuery } from './utils';
+import { camelToDashCase, buildMediaQuery, pxToRem } from './utils';
 
 /**
  * Retrieves the CSS property value corresponding to the provided breakpoint.
@@ -214,4 +215,25 @@ export const resolveColor =
     const [colorType, colorName] = colorKey.split('.');
 
     return theme.colors[colorType as keyof BaseHoneyColors][colorName];
+  };
+
+/**
+ * Resolves the font styles based on the provided font name from the theme.
+ *
+ * @param fontName - The name of the font to be resolved from the theme.
+ *
+ * @returns A function that takes the theme and returns the CSS for the specified font.
+ */
+export const resolveFont =
+  (fontName: HoneyFontName) =>
+  ({ theme }: HoneyThemedProps) => {
+    const font = theme.fonts[fontName];
+
+    return css`
+      font-family: ${font.family};
+      font-size: ${pxToRem(font.size)};
+      font-weight: ${font.weight};
+      line-height: ${font.lineHeight !== undefined && pxToRem(font.lineHeight)};
+      letter-spacing: ${font.letterSpacing !== undefined && pxToRem(font.letterSpacing)};
+    `;
   };

@@ -40,6 +40,35 @@ export const ResponsiveBox = styled.div`
 
 A comprehensive list of utility functions designed to streamline and enhance your CSS-in-JS development workflow.
 
+## resolveFont
+---
+
+The `resolveFont` function generates CSS font styles based on the provided font name from the theme. This function is particularly useful when styling components with dynamically applied font properties based on theme values.
+
+### Parameters
+
+- `fontName` **\{HoneyFontName\}**: The name of the font to be resolved from the theme. This should correspond to a key in the `fonts` object of the theme.
+
+### Returns
+
+A function that takes the theme and returns the CSS for the specified font. The returned CSS includes font-family, font-size (converted from px to rem), font-weight, line-height (if defined, converted from px to rem), and letter-spacing (if defined, converted from px to rem).
+
+### Usage
+
+The `resolveFont` function generates CSS font styles based on the `fontName` parameter.
+
+```tsx
+import styled from 'styled-components';
+import { resolveFont } from '@tynik/react-honey-layout';
+
+// Assume HoneyFontName is imported or defined globally
+// Assume the theme object includes a fonts configuration
+
+const Heading = styled.h1`
+  ${resolveFont('heading')};
+`;
+```
+
 ## resolveColor
 ---
 
@@ -51,7 +80,7 @@ The `resolveColor` function resolves a color value based on the provided color k
 
 ### Returns
 
-The resolved color value from the theme.
+A function that takes the theme and returns the resolved color value from the theme.
 
 ### Usage
 
@@ -90,7 +119,7 @@ This function is particularly useful when styling components with dynamically ca
 
 ### Returns
 
-The resolved spacing value, either as a string or a number, optionally with the specified unit. When `value` is an array, the returned string joins array values with a space.
+A function that takes the theme and returns the resolved spacing value, either as a string or a number, optionally with the specified unit. When `value` is an array, the returned string joins array values with a space.
 
 ### Usage
 
