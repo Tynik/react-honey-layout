@@ -1,6 +1,6 @@
 {
   "name": "@tynik/react-honey-layout",
-  "version": "0.10.0-beta",
+  "version": "0.10.1-beta",
   "description": "",
   "keywords": [
     "react",
@@ -33,7 +33,7 @@
   ],
   "dependencies": {
     "react": "18.2.0",
-    "styled-components": "6.1.11",
+    "styled-components": "5.3.11",
     "lodash.merge": "4.6.2",
     "lodash.debounce": "4.0.8"
   },

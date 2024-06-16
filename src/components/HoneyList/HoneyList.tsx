@@ -9,9 +9,12 @@ import { HoneyBox } from '../HoneyBox';
 import { HoneyConditionalContent } from '../HoneyConditionalContent';
 import { getListItemId } from './HoneyList.helpers';
 
-const HoneyListStyled = styled(HoneyBox).attrs({
-  role: 'list',
-})`
+const HoneyListStyled = styled(
+  HoneyBox,
+) //   .attrs({
+//   role: 'list',
+// })
+`
   overflow: hidden auto;
 `;
 

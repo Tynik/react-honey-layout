@@ -61,8 +61,7 @@ The `resolveFont` function generates CSS font styles based on the `fontName` par
 import styled from 'styled-components';
 import { resolveFont } from '@tynik/react-honey-layout';
 
-// Assume HoneyFontName is imported or defined globally
-// Assume the theme object includes a fonts configuration
+// Assume the theme object includes 'heading' font configuration
 
 const Heading = styled.h1`
   ${resolveFont('heading')};
