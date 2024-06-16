@@ -100,7 +100,10 @@ export type HoneyBreakpointName = keyof HoneyBreakpoints;
  * Each breakpoint name is associated with the corresponding CSS property value.
  */
 type HoneyResponsiveCSSPropertyValue<CSSProperty extends keyof CSS.Properties> = Partial<
-  Record<HoneyBreakpointName, CSS.Properties[CSSProperty]>
+  Record<
+    HoneyBreakpointName,
+    CSS.Properties[CSSProperty] | ((props: { theme: HoneyTheme }) => CSS.Properties[CSSProperty])
+  >
 >;
 
 /**
@@ -113,7 +116,7 @@ export type HoneyCSSPropertyValue<CSSProperty extends keyof CSS.Properties> =
 
 /**
  * Represents the props that can be used to style a box element with CSS properties.
- * Each CSS property is prefixed with '$' to indicate it's a `HoneyLayoutCSSPropertyValue`.
+ * Each CSS property is prefixed with '$' to indicate it's a `HoneyCSSPropertyValue`.
  */
 export type HoneyBoxProps = HTMLAttributes<HTMLElement> &
   Partial<{

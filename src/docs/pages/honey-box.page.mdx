@@ -1,9 +1,10 @@
 import { useTheme } from 'styled-components';
 
 import { HoneyBox } from '../../components';
+import { resolveColor } from '../../helpers';
 
 export const SquareBox = () => {
-  const theme = useTheme();
+  const { colors } = useTheme();
 
   return <HoneyBox
     $width="100px"
@@ -11,8 +12,9 @@ export const SquareBox = () => {
     $margin="0 auto"
     $backgroundColor={{
       xs: 'white',
-      sm: theme.colors.neutral.forestGreen,
-      md: theme.colors.neutral.crimsonRed,
+      sm: colors.neutral.forestGreen,
+      // You can use `resolveColor` function to get a color value
+      md: resolveColor('neutral.crimsonRed'),
     }}
   />
 }
@@ -53,16 +55,16 @@ The `SquareBox` component renders a square box with customizable dimensions and 
 
 ~~~tsx
 import { useTheme } from 'styled-components';
-import { HoneyBox } from '@tynik/react-honey-layout';
+import { HoneyBox, resolveColor } from '@tynik/react-honey-layout';
 
 /**
 * $backgroundColor (object): An object containing background colors for different screen sizes.
-*   xs (string): Background color for extra small screens (xs).
-*   sm (string): Background color for small screens (sm).
-*   md (string): Background color for medium screens (md).
+*   xs: Background color for extra small screens (xs).
+*   sm: Background color for small screens (sm).
+*   md: Background color for medium screens (md).
 * */
 export const SquareBox = () => {
-  const theme = useTheme();
+  const { colors } = useTheme();
 
   return <HoneyBox
     $width="100px"
@@ -70,8 +72,9 @@ export const SquareBox = () => {
     $margin="0 auto"
     $backgroundColor={{
       xs: 'white',
-      sm: theme.colors.neutral.forestGreen,
-      md: theme.colors.neutral.crimsonRed,
+      sm: colors.neutral.forestGreen,
+      // You can use `resolveColor` function to get a color value
+      md: resolveColor('neutral.crimsonRed'),
     }}
   />
 }
