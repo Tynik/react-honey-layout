@@ -16,6 +16,45 @@ export const pxToRem = (px: number, base: number = 16): string => {
 };
 
 /**
+ * Converts a 3-character or 6-character HEX color code to an 8-character HEX with alpha (RRGGBBAA) format.
+ *
+ * @param hex - The 3-character or 6-character HEX color code (e.g., "#RGB" or "#RRGGBB" or "RGB" or "RRGGBB").
+ * @param alpha - The alpha transparency value between 0 (fully transparent) and 1 (fully opaque).
+ *
+ * @throws {Error} If alpha value is not between 0 and 1, or if the hex code is invalid.
+ *
+ * @returns The 8-character HEX with alpha (RRGGBBAA) format color code, or null if input is invalid.
+ */
+export const convertHexToHexWithAlpha = (hex: string, alpha: number): string | null => {
+  if (alpha < 0 || alpha > 1) {
+    throw new Error(`[honey-layout]: Alpha "${alpha}" is not a valid hex format.`);
+  }
+
+  const hexRegex = /^#?([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/;
+
+  const match = hex.match(hexRegex);
+  if (!match) {
+    throw new Error(`[honey-layout]: Invalid hex format.`);
+  }
+
+  const cleanHex = match[1];
+
+  // Expand 3-character hex to 6-character hex if necessary
+  const fullHex =
+    cleanHex.length === 3
+      ? cleanHex[0] + cleanHex[0] + cleanHex[1] + cleanHex[1] + cleanHex[2] + cleanHex[2]
+      : cleanHex;
+
+  // Convert to 8-character hex with alpha
+  const alphaHex = Math.round(alpha * 255)
+    .toString(16)
+    .toUpperCase()
+    .padStart(2, '0');
+
+  return `#${fullHex + alphaHex}`;
+};
+
+/**
  * Builds a media query string based on the provided options.
  *
  * @param {HoneyCSSMediaRule[]} rules - Conditions for the media query.

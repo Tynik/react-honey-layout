@@ -40,6 +40,32 @@ export const ResponsiveBox = styled.div`
 
 A comprehensive list of utility functions designed to streamline and enhance your CSS-in-JS development workflow.
 
+## convertHexToHexWithAlpha
+
+The `convertHexToHexWithAlpha` function converts a 3-character or 6-character HEX color code to an 8-character HEX with alpha (RRGGBBAA) format.
+
+### Parameters
+
+- `hex` **\{string\}**: The 3-character or 6-character HEX color code. It can optionally start with '#'. Examples include "#RGB", "#RRGGBB", "RGB", or "RRGGBB".
+- `alpha` **\{number\}**: The alpha transparency value between 0 (fully transparent) and 1 (fully opaque).
+
+### Throws
+
+- Throws an error if the alpha value is not within the valid range (0 to 1).
+- Throws an error if the hex code is not a valid format.
+
+### Returns
+
+Returns a string representing the 8-character HEX with alpha (RRGGBBAA) format color code.
+
+### Usage
+
+```ts
+import { convertHexToHexWithAlpha } from '@tynik/react-honey-layout';
+
+const hexWithAlpha = convertHexToHexWithAlpha('#1A5297', 0.5);
+```
+
 ## resolveFont
 ---
 

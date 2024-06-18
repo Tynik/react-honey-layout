@@ -12,7 +12,31 @@ import HoneyListPage from './pages/honey-list.page.mdx';
 import HoneyLazyContentPage from './pages/honey-lazy-content.page.mdx';
 import UtilsPage from './pages/utils.page.mdx';
 
-const MDX_COMPONENTS: MDXComponents = { wrapper: MDXWrapper };
+// function getAnchor(text: string) {
+//   return text
+//     .toLowerCase()
+//     .replace(/[^a-z0-9 ]/g, '')
+//     .replace(/[ ]/g, '-');
+// }
+//
+// const H2 = ({ children }: PropsWithChildren) => {
+//   const anchor = getAnchor(children as string);
+//
+//   return (
+//     <h2 id={anchor}>
+//       <a href={`#${anchor}`} className="anchor-link">
+//         §
+//       </a>
+//
+//       {children}
+//     </h2>
+//   );
+// };
+
+const MDX_COMPONENTS: MDXComponents = {
+  wrapper: MDXWrapper,
+  // h2: H2,
+};
 
 export const PAGES: Page[] = [
   {
