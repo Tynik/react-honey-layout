@@ -96,14 +96,20 @@ export type HoneyBreakpoints = {
 export type HoneyBreakpointName = keyof HoneyBreakpoints;
 
 /**
+ * A type representing a function that returns a value for a specific CSS property based on the provided theme.
+ *
+ * @template CSSProperty - The CSS property this function will generate a value for.
+ */
+type HoneyCSSPropertyValueFn<CSSProperty extends keyof CSS.Properties> = (props: {
+  theme: HoneyTheme;
+}) => CSS.Properties[CSSProperty];
+
+/**
  * Represents a responsive CSS property value for a specific CSS property.
  * Each breakpoint name is associated with the corresponding CSS property value.
  */
 type HoneyResponsiveCSSPropertyValue<CSSProperty extends keyof CSS.Properties> = Partial<
-  Record<
-    HoneyBreakpointName,
-    CSS.Properties[CSSProperty] | ((props: { theme: HoneyTheme }) => CSS.Properties[CSSProperty])
-  >
+  Record<HoneyBreakpointName, CSS.Properties[CSSProperty] | HoneyCSSPropertyValueFn<CSSProperty>>
 >;
 
 /**
@@ -112,6 +118,7 @@ type HoneyResponsiveCSSPropertyValue<CSSProperty extends keyof CSS.Properties> =
  */
 export type HoneyCSSPropertyValue<CSSProperty extends keyof CSS.Properties> =
   | CSS.Properties[CSSProperty]
+  | HoneyCSSPropertyValueFn<CSSProperty>
   | HoneyResponsiveCSSPropertyValue<CSSProperty>;
 
 /**

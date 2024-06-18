@@ -4,7 +4,7 @@ import styled, { css } from 'styled-components';
 
 import { PAGES } from '../constants';
 import { useCurrentApp } from '../providers';
-import { buildBreakpointMediaQuery, resolveSpacing } from '../../helpers';
+import { bpMedia, resolveSpacing } from '../../helpers';
 import { useHoneyMediaQuery } from '../../hooks';
 
 type MenuStyledProps = {
@@ -34,15 +34,15 @@ const MenuStyled = styled.div<MenuStyledProps>`
           padding: 0;
         `}
 
-    ${buildBreakpointMediaQuery('xs').down} {
+    ${bpMedia('xs').down} {
       width: ${$isOpenMenu && '100%'};
     }
 
-    ${buildBreakpointMediaQuery('xs').up} {
+    ${bpMedia('xs').up} {
       border-right: 1px solid ${theme.colors.neutral.charcoalDark};
     }
 
-    ${buildBreakpointMediaQuery('sm').down} {
+    ${bpMedia('sm').down} {
       position: absolute;
       z-index: 999;
     }

@@ -2,6 +2,7 @@ import * as CSS from 'csstype';
 import { css } from 'styled-components';
 
 import type { DataType } from 'csstype';
+import type { HTMLAttributes } from 'react';
 import type {
   HoneyBoxProps,
   HoneyBreakpointName,
@@ -18,7 +19,7 @@ import type {
   BaseHoneyColors,
   HoneyFontName,
 } from './types';
-import { camelToDashCase, buildMediaQuery, pxToRem } from './utils';
+import { camelToDashCase, media, pxToRem } from './utils';
 
 /**
  * Retrieves the CSS property value corresponding to the provided breakpoint.
@@ -41,8 +42,8 @@ const getCSSPropertyValue = <CSSProperty extends keyof CSS.Properties>(
  * @param {HoneyBreakpointName} breakpoint - The name of the breakpoint.
  */
 export const generateStyles =
-  (breakpoint: HoneyBreakpointName) =>
-  ({ theme, ...props }: HoneyThemedProps<HoneyBoxProps>) => css`
+  <Props extends HTMLAttributes<HTMLElement>>(breakpoint: HoneyBreakpointName) =>
+  ({ theme, ...props }: HoneyThemedProps<Props>) => css`
     ${Object.entries(props)
       .filter(
         ([propertyName, propertyValue]) =>
@@ -78,11 +79,11 @@ const checkIfApplyBreakpoint = (breakpoint: HoneyBreakpointName, props: HoneyBox
  *
  * @returns Functions for generating media queries.
  */
-export const buildBreakpointMediaQuery = (
+export const bpMedia = (
   breakpoint: HoneyBreakpointName,
   ruleOptions: Omit<HoneyCSSMediaRule, 'width' | 'minWidth' | 'maxWidth'> = {},
 ) => {
-  const resolveBreakpointValue = (theme: HoneyTheme) => {
+  const resolveBpValue = (theme: HoneyTheme) => {
     const value = theme.breakpoints[breakpoint];
     if (!value) {
       throw new Error(`[honey-layout]: Setup for breakpoint "${breakpoint}" was not found`);
@@ -91,19 +92,19 @@ export const buildBreakpointMediaQuery = (
     return value;
   };
 
-  const down = ({ theme }: HoneyThemedProps<HoneyBoxProps>) => {
-    return buildMediaQuery([
+  const down = ({ theme }: HoneyThemedProps) => {
+    return media([
       {
-        maxWidth: `${resolveBreakpointValue(theme)}px`,
+        maxWidth: `${resolveBpValue(theme)}px`,
         ...ruleOptions,
       },
     ]);
   };
 
-  const up = ({ theme }: HoneyThemedProps<HoneyBoxProps>) => {
-    return buildMediaQuery([
+  const up = ({ theme }: HoneyThemedProps) => {
+    return media([
       {
-        minWidth: `${resolveBreakpointValue(theme)}px`,
+        minWidth: `${resolveBpValue(theme)}px`,
         ...ruleOptions,
       },
     ]);
@@ -119,8 +120,8 @@ export const buildBreakpointMediaQuery = (
  * Generates media query styles based on the provided breakpoint and props.
  */
 export const generateMediaStyles =
-  (breakpoint: HoneyBreakpointName) =>
-  ({ theme, ...props }: HoneyThemedProps<HoneyBoxProps>) => {
+  <Props extends HTMLAttributes<HTMLElement>>(breakpoint: HoneyBreakpointName) =>
+  ({ theme, ...props }: HoneyThemedProps<Props>) => {
     const breakpointConfig = theme.breakpoints[breakpoint];
 
     if (!breakpointConfig || !checkIfApplyBreakpoint(breakpoint, props)) {
@@ -128,7 +129,7 @@ export const generateMediaStyles =
     }
 
     return css`
-      ${buildBreakpointMediaQuery(breakpoint).up} {
+      ${bpMedia(breakpoint).up} {
         ${generateStyles(breakpoint)};
       }
     `;

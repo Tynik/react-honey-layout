@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { resolveColor, buildBreakpointMediaQuery } from '../../helpers';
+import { resolveColor, bpMedia } from '../../helpers';
 
 export const ColoredBox = styled.div`
   ${() => css`
@@ -22,15 +22,15 @@ export const ResponsiveBox = styled.div`
     margin: 0 auto;
     background-color: ${colors.neutral.royalBlue};
 
-    ${buildBreakpointMediaQuery('sm').down} {
+    ${bpMedia('sm').down} {
         background-color: ${colors.neutral.mauve};
     }
 
-    ${buildBreakpointMediaQuery('md').up} {
+    ${bpMedia('md').up} {
         background-color: ${colors.neutral.coralRed};
     }
 
-    ${buildBreakpointMediaQuery('lg').up} {
+    ${bpMedia('lg').up} {
         background-color: ${colors.neutral.forestGreen};
     }
   `}
@@ -142,10 +142,10 @@ const Button = styled.button`
 `;
 ```
 
-## buildBreakpointMediaQuery
+## bpMedia
 ---
 
-The `buildBreakpointMediaQuery` utility function that returns functions for generating media queries for the specified breakpoint. The `down` function creates a media query for screen sizes smaller than the breakpoint, while the `up` function creates a media query for screen sizes larger than the breakpoint.
+The `bpMedia` utility function that returns functions for generating media queries for the specified breakpoint. The `down` function creates a media query for screen sizes smaller than the breakpoint, while the `up` function creates a media query for screen sizes larger than the breakpoint.
 
 ### Parameters
 
@@ -183,7 +183,7 @@ Changes the background color of the box element responsively according to the sc
 
 ```tsx
 import styled, { css }from 'styled-components';
-import { buildBreakpointMediaQuery } from '@tynik/react-honey-layout';
+import { bpMedia } from '@tynik/react-honey-layout';
 
 const ResponsiveBox = styled.div`
   ${({ theme: { colors } }) => css`
@@ -192,15 +192,15 @@ const ResponsiveBox = styled.div`
     margin: 0 auto;
     background-color: ${colors.neutral.royalBlue};
 
-    ${buildBreakpointMediaQuery('sm').down} {
+    ${bpMedia('sm').down} {
         background-color: ${colors.neutral.mauve};
     }
 
-    ${buildBreakpointMediaQuery('md').up} {
+    ${bpMedia('md').up} {
         background-color: ${colors.neutral.coralRed};
     }
 
-    ${buildBreakpointMediaQuery('lg').up} {
+    ${bpMedia('lg').up} {
         background-color: ${colors.neutral.forestGreen};
     }
   `}

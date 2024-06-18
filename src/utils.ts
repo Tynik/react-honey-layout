@@ -22,7 +22,7 @@ export const pxToRem = (px: number, base: number = 16): string => {
  *
  * @returns {string} The generated media query string.
  */
-export const buildMediaQuery = (rules: HoneyCSSMediaRule[]): string => {
+export const media = (rules: HoneyCSSMediaRule[]): string => {
   const mediaRules = rules.map(rule => {
     const conditions = [
       rule.width && ['width', rule.width],
