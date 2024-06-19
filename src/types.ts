@@ -169,6 +169,8 @@ export type HoneySpacings = {
   large?: number;
 };
 
+export type HoneyColor = DataType.Color;
+
 /**
  * Defines the color palette used in the theme.
  */
@@ -177,44 +179,44 @@ export interface BaseHoneyColors {
    * Used for elements that require high visibility and emphasis, such as primary buttons, call-to-action elements,
    * and important elements like headers or titles.
    */
-  primary: Record<string, DataType.Color>;
+  primary: Record<string, HoneyColor>;
   /**
    * Used to complement the primary color and add visual interest.
    * Often used for secondary buttons, borders, and decorative elements to provide contrast and balance within the design.
    * Helps create a cohesive visual hierarchy by providing variation in color tones.
    */
-  secondary: Record<string, DataType.Color>;
+  secondary: Record<string, HoneyColor>;
   /**
    * Used to draw attention to specific elements or interactions.
    * Often applied to interactive elements like links, icons, or tooltips to indicate their interactive nature.
    * Can be used sparingly to highlight important information or to create visual focal points.
    */
-  accent: Record<string, DataType.Color>;
+  accent: Record<string, HoneyColor>;
   /**
    * Used for backgrounds, text, and other elements where a subtle, non-distracting color is desired.
    * Provides a versatile palette for elements like backgrounds, borders, text, and icons, allowing other colors to stand
    * out more prominently. Helps maintain balance and readability without overwhelming the user with too much color.
    */
-  neutral: Record<string, DataType.Color>;
+  neutral: Record<string, HoneyColor>;
   /**
    * Used to indicate successful or positive actions or states.
    * Often applied to elements like success messages, notifications, or icons to convey successful completion of tasks or operations.
    * Provides visual feedback to users to indicate that their actions were successful.
    */
-  success: Record<string, DataType.Color>;
+  success: Record<string, HoneyColor>;
   /**
    * Used to indicate cautionary or potentially risky situations.
    * Applied to elements like warning messages, alerts, or icons to notify users about potential issues or actions that require attention.
    * Helps users recognize and address potential problems or risks before they escalate.
    */
-  warning: Record<string, DataType.Color>;
+  warning: Record<string, HoneyColor>;
   /**
    * Used to indicate errors, critical issues, or potentially destructive actions.
    * Applied to elements like error messages, validation indicators, form fields, or delete buttons to alert users about incorrect input,
    * system errors, or actions that may have irreversible consequences. Provides visual feedback to prompt users to
    * take corrective actions or seek assistance when encountering errors or potentially risky actions.
    */
-  error: Record<string, DataType.Color>;
+  error: Record<string, HoneyColor>;
 }
 
 /**
@@ -224,7 +226,7 @@ export interface BaseHoneyColors {
  * ```typescript
  * declare module '@tynik/react-honey-layout' {
  *  interface HoneyColors {
- *    neutral: Record<'charcoalDark' | 'charcoalGray' | 'crimsonRed', DataType.Color>;
+ *    neutral: Record<'charcoalDark' | 'charcoalGray' | 'crimsonRed', HoneyColor>;
  *  }
  * }
  * ```
@@ -242,8 +244,8 @@ export interface HoneyColors extends BaseHoneyColors {}
  * Given the `HoneyColors` interface:
  * ```typescript
  * interface HoneyColors {
- *   primary: Record<'blue' | 'green', DataType.Color>;
- *   neutral: Record<'charcoalDark' | 'charcoalGray' | 'crimsonRed', DataType.Color>;
+ *   primary: Record<'blue' | 'green', HoneyColor>;
+ *   neutral: Record<'charcoalDark' | 'charcoalGray' | 'crimsonRed', HoneyColor>;
  * }
  * ```
  *

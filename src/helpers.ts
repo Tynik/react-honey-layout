@@ -1,7 +1,6 @@
 import * as CSS from 'csstype';
 import { css } from 'styled-components';
 
-import type { DataType } from 'csstype';
 import type { HTMLAttributes } from 'react';
 import type {
   HoneyBoxProps,
@@ -18,8 +17,9 @@ import type {
   HoneyColorKey,
   BaseHoneyColors,
   HoneyFontName,
+  HoneyColor,
 } from './types';
-import { camelToDashCase, media, pxToRem } from './utils';
+import { camelToDashCase, convertHexToHexWithAlpha, media, pxToRem } from './utils';
 
 /**
  * Retrieves the CSS property value corresponding to the provided breakpoint.
@@ -204,18 +204,24 @@ export const resolveSpacing =
   };
 
 /**
- * Resolves a color value based on the provided color key.
+ * Resolves a color value based on the provided color key and optional alpha value.
  *
  * @param colorKey - The key representing the color to be resolved. This key is a string in the format 'colorType.colorName'.
+ * @param alpha - Optional. The alpha transparency value between 0 (fully transparent) and 1 (fully opaque).
  *
- * @returns The resolved color value from the theme.
+ * @returns The resolved color value from the theme, either in HEX format or in 8-character HEX with alpha format.
+ *
+ * @throws Will throw an error if the provided alpha value is not within the valid range (0 to 1).
+ * @throws Will throw an error if the color format is invalid.
  */
 export const resolveColor =
-  (colorKey: HoneyColorKey) =>
-  ({ theme }: HoneyThemedProps): DataType.Color => {
+  (colorKey: HoneyColorKey, alpha?: number) =>
+  ({ theme }: HoneyThemedProps): HoneyColor => {
     const [colorType, colorName] = colorKey.split('.');
 
-    return theme.colors[colorType as keyof BaseHoneyColors][colorName];
+    const color = theme.colors[colorType as keyof BaseHoneyColors][colorName];
+
+    return alpha !== undefined ? convertHexToHexWithAlpha(color, alpha) : color;
   };
 
 /**

@@ -25,7 +25,7 @@ export const pxToRem = (px: number, base: number = 16): string => {
  *
  * @returns The 8-character HEX with alpha (RRGGBBAA) format color code, or null if input is invalid.
  */
-export const convertHexToHexWithAlpha = (hex: string, alpha: number): string | null => {
+export const convertHexToHexWithAlpha = (hex: string, alpha: number): string => {
   if (alpha < 0 || alpha > 1) {
     throw new Error(`[honey-layout]: Alpha "${alpha}" is not a valid hex format.`);
   }

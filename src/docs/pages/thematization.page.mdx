@@ -116,8 +116,7 @@ This declaration extends the `DefaultTheme` interface with the properties define
 To augment any interface, use the following module declaration.
 
 ~~~ts
-import type { DataType } from 'csstype';
-import type { HoneyFont } from '@tynik/react-honey-layout';
+import type { HoneyColor, HoneyFont } from '@tynik/react-honey-layout';
 
 type NeutralColors = 'charcoalDark' | 'charcoalGray' | 'crimsonRed';
 
@@ -128,7 +127,7 @@ declare module '@tynik/react-honey-layout' {
   }
 
   interface HoneyColors {
-    neutral: Record<NeutralColors, DataType.Color>;
+    neutral: Record<NeutralColors, HoneyColor>;
     // Other colors can be defined in the same way
   }
 }

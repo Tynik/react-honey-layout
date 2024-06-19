@@ -10,7 +10,7 @@ export const ColoredBox = styled.div`
     background-color: ${resolveColor('neutral.crimsonRed')};
 
     &:hover {
-        background-color: ${resolveColor('neutral.coralRed')};
+        background-color: ${resolveColor('neutral.crimsonRed', 0.9)};
     }
   `}
 `;
@@ -41,6 +41,7 @@ export const ResponsiveBox = styled.div`
 A comprehensive list of utility functions designed to streamline and enhance your CSS-in-JS development workflow.
 
 ## convertHexToHexWithAlpha
+---
 
 The `convertHexToHexWithAlpha` function converts a 3-character or 6-character HEX color code to an 8-character HEX with alpha (RRGGBBAA) format.
 
@@ -97,19 +98,24 @@ const Heading = styled.h1`
 ## resolveColor
 ---
 
-The `resolveColor` function resolves a color value based on the provided color key. This utility function facilitates the retrieval of theme colors in a consistent and type-safe manner.
+The `resolveColor` function resolves a color value based on the provided color key and optional alpha value. This utility function facilitates the retrieval of theme colors in a consistent and type-safe manner.
 
 ### Parameters
 
 - `colorKey` **\{HoneyColorKey\}**: The key representing the color to be resolved. This key is a string in the format `colorType.colorName`.
+- `alpha` **\{number | undefined\}**: Optional. The alpha transparency value between 0 (fully transparent) and 1 (fully opaque).
 
 ### Returns
 
-A function that takes the theme and returns the resolved color value from the theme.
+A function that takes the theme and returns the resolved color value from the theme, either in HEX format or in 8-character HEX with alpha format.
+
+### Throws
+
+An error if the `alpha` value is not between 0 and 1 or if the `colorKey` does not match the expected format.
 
 ### Usage
 
-Dynamically resolve color values from the theme based on color keys, enabling consistent theming throughout your application.
+Dynamically resolve color values from the theme based on color keys, enabling consistent theming throughout your application. You can also specify an alpha value to get a color with transparency.
 
 <ColoredBox/>
 
@@ -125,7 +131,7 @@ export const ColoredBox = styled.div`
   background-color: ${resolveColor('neutral.crimsonRed')};
 
   &:hover {
-    background-color: ${resolveColor('neutral.coralRed')};
+    background-color: ${resolveColor('neutral.crimsonRed', 0.9)};
   }
 `;
 ```
