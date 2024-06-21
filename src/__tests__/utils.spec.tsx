@@ -1,4 +1,4 @@
-import { convertHexToHexWithAlpha } from '../utils';
+import { convertHexToHexWithAlpha, flattenNestedList } from '../utils';
 
 describe('[utils]: converting hex to hex with alpha', () => {
   it('should convert short hex without hash and alpha 0 to hex with alpha', () => {
@@ -51,5 +51,148 @@ describe('[utils]: converting hex to hex with alpha', () => {
 
   it('should throw error for alpha value greater than 1', () => {
     expect(() => convertHexToHexWithAlpha('#FFF', 1.1)).toThrow();
+  });
+});
+
+describe('[utils]: convert nested list to flat list', () => {
+  type Item = {
+    name: string;
+    children?: Item[];
+  };
+
+  it('should handle empty input list', () => {
+    const items: Item[] = [];
+
+    const flatList = flattenNestedList(items, 'children');
+
+    expect(flatList).toStrictEqual([]);
+  });
+
+  it('should flatten a nested list excluding the nested key', () => {
+    const items: Item[] = [
+      {
+        name: 'Apple',
+        children: [
+          {
+            name: 'Pear',
+            children: [],
+          },
+          {
+            name: 'Banana',
+            children: [],
+          },
+        ],
+      },
+    ];
+
+    const flatList = flattenNestedList(items, 'children');
+
+    expect(flatList).toStrictEqual([
+      {
+        name: 'Apple',
+        depthLevel: 0,
+      },
+      {
+        name: 'Pear',
+        depthLevel: 1,
+      },
+      {
+        name: 'Banana',
+        depthLevel: 1,
+      },
+    ]);
+  });
+
+  it('should handle deeply nested lists', () => {
+    const items: Item[] = [
+      {
+        name: 'Apple',
+        children: [
+          {
+            name: 'Pear',
+            children: [
+              {
+                name: 'Banana',
+                children: [
+                  {
+                    name: 'Mango',
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ];
+
+    const flatList = flattenNestedList(items, 'children');
+
+    expect(flatList).toStrictEqual([
+      {
+        name: 'Apple',
+        depthLevel: 0,
+      },
+      {
+        name: 'Pear',
+        depthLevel: 1,
+      },
+      {
+        name: 'Banana',
+        depthLevel: 2,
+      },
+      {
+        name: 'Mango',
+        depthLevel: 3,
+      },
+    ]);
+  });
+
+  it('should handle items without children', () => {
+    const items: Item[] = [
+      {
+        name: 'Apple',
+      },
+      {
+        name: 'Banana',
+      },
+    ];
+
+    const flatList = flattenNestedList(items, 'children');
+
+    expect(flatList).toStrictEqual([
+      {
+        name: 'Apple',
+        depthLevel: 0,
+      },
+      {
+        name: 'Banana',
+        depthLevel: 0,
+      },
+    ]);
+  });
+
+  it('should handle items with undefined children', () => {
+    const items: Item[] = [
+      {
+        name: 'Apple',
+        children: undefined,
+      },
+      {
+        name: 'Banana',
+      },
+    ];
+
+    const flatList = flattenNestedList(items, 'children');
+
+    expect(flatList).toStrictEqual([
+      {
+        name: 'Apple',
+        depthLevel: 0,
+      },
+      {
+        name: 'Banana',
+        depthLevel: 0,
+      },
+    ]);
   });
 });

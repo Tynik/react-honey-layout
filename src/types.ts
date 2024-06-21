@@ -1,9 +1,13 @@
 import * as CSS from 'csstype';
 
-import type { ComponentType, HTMLAttributes } from 'react';
+import type { ComponentType, HTMLAttributes, ReactNode } from 'react';
 import type { DataType } from 'csstype';
 
 export type TimeoutId = ReturnType<typeof setTimeout>;
+
+export type KeysWithArrayValues<T> = {
+  [K in keyof T]: T[K] extends unknown[] | undefined ? K : never;
+}[Extract<keyof T, string>];
 
 type HoneyCSSAbsoluteLengthUnit = 'px' | 'cm' | 'mm' | 'in' | 'pt' | 'pc';
 type HoneyCSSRelativeLengthUnit = 'em' | 'rem' | '%' | 'vh' | 'vw' | 'vmin' | 'vmax';
@@ -122,13 +126,16 @@ export type HoneyCSSPropertyValue<CSSProperty extends keyof CSS.Properties> =
   | HoneyResponsiveCSSPropertyValue<CSSProperty>;
 
 /**
- * Represents the props that can be used to style a box element with CSS properties.
- * Each CSS property is prefixed with '$' to indicate it's a `HoneyCSSPropertyValue`.
+ * Defines a type representing a set of CSS properties where each property key is prefixed with a dollar sign ($).
  */
-export type HoneyBoxProps = HTMLAttributes<HTMLElement> &
-  Partial<{
-    [CSSProperty in keyof CSS.Properties as `$${CSSProperty}`]: HoneyCSSPropertyValue<CSSProperty>;
-  }>;
+export type HoneyCSSProperties = Partial<{
+  [CSSProperty in keyof CSS.Properties as `$${CSSProperty}`]: HoneyCSSPropertyValue<CSSProperty>;
+}>;
+
+/**
+ * Represents the props that can be used to style a box element with CSS properties.
+ */
+export type HoneyBoxProps = HTMLAttributes<HTMLElement> & HoneyCSSProperties;
 
 /**
  * Represents the state of the screen layout.
@@ -302,4 +309,51 @@ export type HoneyThemedProps<T = unknown> = { theme: HoneyTheme } & T;
 
 export type ComponentWithAs<T, P = object> = {
   as?: string | ComponentType<P>;
+} & T;
+
+/**
+ * Type definition for status content options in a component.
+ *
+ * This type is used to provide properties for handling different states of a component,
+ * such as loading, error, and no content states, along with the content to display in each state.
+ *
+ * @template T - An optional generic type parameter to extend the type with additional properties.
+ */
+export type HoneyStatusContentOptions<T = unknown> = {
+  /**
+   * A flag indicating whether the component is in a loading state.
+   *
+   * @default false
+   */
+  isLoading?: boolean;
+  /**
+   * The content to display when the component is in a loading state.
+   *
+   * @default null
+   */
+  loadingBlockContent?: ReactNode;
+  /**
+   * A flag indicating whether the component has encountered an error.
+   *
+   * @default false
+   */
+  isError?: boolean;
+  /**
+   * The content to display when the component has encountered an error.
+   *
+   * @default null
+   */
+  errorBlockContent?: ReactNode;
+  /**
+   * A flag indicating whether the component has no content to display.
+   *
+   * @default false
+   */
+  isNoContent?: boolean;
+  /**
+   * The content to display when the component has no content to display.
+   *
+   * @default null
+   */
+  noContent?: ReactNode;
 } & T;

@@ -1,4 +1,4 @@
-import type { HoneyCSSMediaRule } from './types';
+import type { HoneyCSSMediaRule, KeysWithArrayValues } from './types';
 
 export const camelToDashCase = (str: string) =>
   str.replace(/[A-Z]/g, letter => `-${letter.toLowerCase()}`);
@@ -87,4 +87,47 @@ export const media = (rules: HoneyCSSMediaRule[]): string => {
   });
 
   return `@media ${mediaRules.join(', ')}`;
+};
+
+type HoneyFlattenedItem<Item extends object, NestedListKey extends string> = Omit<
+  Item,
+  NestedListKey
+> & {
+  depthLevel: number;
+};
+
+/**
+ * Converts a nested list structure into a flat list, excluding the nested list key from the result and adding a level property.
+ *
+ * @template Item - The type of the items in the list.
+ *
+ * @param items - The array of items to be flattened.
+ * @param nestedListKey - The key in each item that contains the nested list.
+ * @param result - The array that accumulates the flattened items. Defaults to an empty array.
+ * @param depthLevel - The current depth level of the item in the nested structure. Defaults to 0.
+ *
+ * @returns A flat array of items, excluding the nested list key and including a level property.
+ */
+export const flattenNestedList = <Item extends object>(
+  items: Item[],
+  nestedListKey: KeysWithArrayValues<Item>,
+  result: HoneyFlattenedItem<Item, typeof nestedListKey>[] = [],
+  depthLevel = 0,
+) => {
+  items.forEach(item => {
+    const { [nestedListKey]: _, ...itemWithoutNestedListKey } = item;
+
+    result.push({
+      ...itemWithoutNestedListKey,
+      depthLevel,
+    });
+
+    const nestedList = item[nestedListKey];
+
+    if (Array.isArray(nestedList)) {
+      flattenNestedList(nestedList, nestedListKey, result, depthLevel + 1);
+    }
+  });
+
+  return result;
 };
