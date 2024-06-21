@@ -379,4 +379,11 @@ export type HoneyFlattenedItem<Item extends object, NestedListKey extends string
    * Indicates how deep the item is nested within the hierarchy.
    */
   depthLevel: number;
+  /**
+   * The total number of nested items within the current item.
+   * Helps to keep track of the size of the nested structure.
+   *
+   * @default 0
+   */
+  totalNestedItems: number;
 };

@@ -69,7 +69,7 @@ export const FlattenedList = () => {
     <ul>
       {flatList.map(item => (
         <li key={item.id} style={{ marginLeft: item.depthLevel * theme.spacings.base * 2 }}>
-          {item.name} (Parent Index: {item.parentIndex ?? '-'})
+          {item.name} (Parent index: {item.parentIndex ?? 'undefined'}, Total nested items: {item.totalNestedItems})
         </li>
       ))}
     </ul>
@@ -282,23 +282,23 @@ const ResponsiveBox = styled.div`
 ## flattenNestedList
 ---
 
-The `flattenNestedList` function converts a nested list structure into a flat list, excluding the nested list key from the result and adding both a `depthLevel` and `parentIndex` property to each item. This is useful for displaying hierarchical data in a flat structure while maintaining information about the hierarchy.
+The `flattenNestedList` function converts a nested list structure into a flat list, excluding the nested list key from the result and adding `depthLevel`, `parentIndex`, and `totalNestedItems` properties to each item. This is useful for displaying hierarchical data in a flat structure while maintaining information about the hierarchy.
 
 ### Parameters
 
 - `items` \{Item[] | undefined\}: The array of items to be flattened. This array can be undefined.
-- `nestedListKey` \{KeysWithArrayValues\<Item\>\}: The key in each item that contains the nested list.
-- `result` \{HoneyFlattenedItem\<Item, typeof nestedListKey\>[]\} [default=[]\]: The array that accumulates the flattened items. Defaults to an empty array.
+- `nestedItemsKey` \{KeysWithArrayValues\<Item\>\}: The key in each item that contains the nested list.
+- `result` \{HoneyFlattenedItem\<Item, typeof nestedItemsKey\>[]\} [default=[]\]: The array that accumulates the flattened items. Defaults to an empty array.
 - `parentIndex` \{number | undefined\} \[default=undefined\]: Optional. The index of the parent item in the flattened structure. Defaults to undefined for parent item.
 - `depthLevel` \{number\} \[default=0\]: Optional. The current depth level of the item in the nested structure. Defaults to 0.
 
 ### Returns
 
-A flat array of items, excluding the nested list key and including both a `depthLevel` and `parentIndex` property.
+A flat array of items, excluding the nested list key and including `depthLevel`, `parentIndex`, and `totalNestedItems` properties.
 
 ### Usage
 
-Flattens a nested list structure to create a flat list with depth levels and parent indices, making it easier to display hierarchical data in components like lists or trees.
+Flattens a nested list structure to create a flat list with depth levels, parent indices, and total nested items, making it easier to display hierarchical data in components like lists or trees.
 
 <FlattenedList/>
 
@@ -338,7 +338,7 @@ export const FlattenedList = () => {
     <ul>
       {flatList.map(item => (
         <li key={item.id} style={{ marginLeft: item.depthLevel * theme.spacings.base * 2 }}>
-          {item.name} (Parent Index: {item.parentIndex ?? '-'})
+          {item.name} (Parent index: {item.parentIndex ?? 'undefined'}, Total nested items: {item.totalNestedItems})
         </li>
       ))}
     </ul>

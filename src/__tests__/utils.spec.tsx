@@ -100,16 +100,19 @@ describe('[utils]: convert nested list to flat list', () => {
         name: 'Apple',
         parentIndex: undefined,
         depthLevel: 0,
+        totalNestedItems: 2,
       },
       {
         name: 'Pear',
         parentIndex: 0,
         depthLevel: 1,
+        totalNestedItems: 0,
       },
       {
         name: 'Banana',
         parentIndex: 0,
         depthLevel: 1,
+        totalNestedItems: 0,
       },
     ]);
   });
@@ -143,21 +146,25 @@ describe('[utils]: convert nested list to flat list', () => {
         name: 'Apple',
         parentIndex: undefined,
         depthLevel: 0,
+        totalNestedItems: 1,
       },
       {
         name: 'Pear',
         parentIndex: 0,
         depthLevel: 1,
+        totalNestedItems: 1,
       },
       {
         name: 'Banana',
         parentIndex: 1,
         depthLevel: 2,
+        totalNestedItems: 1,
       },
       {
         name: 'Mango',
         parentIndex: 2,
         depthLevel: 3,
+        totalNestedItems: 0,
       },
     ]);
   });
@@ -179,11 +186,13 @@ describe('[utils]: convert nested list to flat list', () => {
         name: 'Apple',
         parentIndex: undefined,
         depthLevel: 0,
+        totalNestedItems: 0,
       },
       {
         name: 'Banana',
         parentIndex: undefined,
         depthLevel: 0,
+        totalNestedItems: 0,
       },
     ]);
   });
@@ -207,11 +216,13 @@ describe('[utils]: convert nested list to flat list', () => {
         name: 'Apple',
         parentIndex: undefined,
         depthLevel: 0,
+        totalNestedItems: 0,
       },
       {
         name: 'Banana',
         parentIndex: undefined,
         depthLevel: 0,
+        totalNestedItems: 0,
       },
     ]);
   });
