@@ -1,5 +1,6 @@
-import styled, { css } from 'styled-components';
+import styled, { css, useTheme } from 'styled-components';
 import { resolveColor, bpMedia } from '../../helpers';
+import { flattenNestedList } from '../../utils';
 
 export const ColoredBox = styled.div`
   ${() => css`
@@ -36,6 +37,45 @@ export const ResponsiveBox = styled.div`
   `}
 `;
 
+export const FlattenedList = () => {
+  const theme = useTheme()
+
+  const nestedList = [
+    {
+      id: 1,
+      name: 'Item 1',
+      children: [
+        {
+          id: 2,
+          name: 'Item 1.1',
+          children: [
+            { id: 3, name: 'Item 1.1.1', children: [] },
+            { id: 4, name: 'Item 1.1.2', children: [] }
+          ]
+        },
+        { id: 5, name: 'Item 1.2', children: [] }
+      ]
+    },
+    {
+      id: 6,
+      name: 'Item 2',
+      children: []
+    }
+  ];
+
+  const flatList = flattenNestedList(nestedList, 'children');
+
+  return (
+    <ul>
+      {flatList.map(item => (
+        <li key={item.id} style={{ marginLeft: item.depthLevel * theme.spacings.base * 2 }}>
+          {item.name} (Parent Index: {item.parentIndex ?? '-'})
+        </li>
+      ))}
+    </ul>
+  )
+};
+
 # Utils
 
 A comprehensive list of utility functions designed to streamline and enhance your CSS-in-JS development workflow.
@@ -47,8 +87,8 @@ The `convertHexToHexWithAlpha` function converts a 3-character or 6-character HE
 
 ### Parameters
 
-- `hex` **\{string\}**: The 3-character or 6-character HEX color code. It can optionally start with '#'. Examples include "#RGB", "#RRGGBB", "RGB", or "RRGGBB".
-- `alpha` **\{number\}**: The alpha transparency value between 0 (fully transparent) and 1 (fully opaque).
+- `hex` \{string\}: The 3-character or 6-character HEX color code. It can optionally start with '#'. Examples include "#RGB", "#RRGGBB", "RGB", or "RRGGBB".
+- `alpha` \{number\}: The alpha transparency value between 0 (fully transparent) and 1 (fully opaque).
 
 ### Throws
 
@@ -74,7 +114,7 @@ The `resolveFont` function generates CSS font styles based on the provided font 
 
 ### Parameters
 
-- `fontName` **\{HoneyFontName\}**: The name of the font to be resolved from the theme. This should correspond to a key in the `fonts` object of the theme.
+- `fontName` \{HoneyFontName\}: The name of the font to be resolved from the theme. This should correspond to a key in the `fonts` object of the theme.
 
 ### Returns
 
@@ -102,8 +142,8 @@ The `resolveColor` function resolves a color value based on the provided color k
 
 ### Parameters
 
-- `colorKey` **\{HoneyColorKey\}**: The key representing the color to be resolved. This key is a string in the format `colorType.colorName`.
-- `alpha` **\{number | undefined\}**: Optional. The alpha transparency value between 0 (fully transparent) and 1 (fully opaque).
+- `colorKey` \{HoneyColorKey\}: The key representing the color to be resolved. This key is a string in the format `colorType.colorName`.
+- `alpha` \{number | undefined\}: Optional. The alpha transparency value between 0 (fully transparent) and 1 (fully opaque).
 
 ### Returns
 
@@ -144,9 +184,9 @@ This function is particularly useful when styling components with dynamically ca
 
 ### Parameters
 
-- `value` **\{HoneyCSSMultiValue\}**: The spacing factor to be applied, which can be a single number or an array of 2, 3, or 4 numbers.
-- `unit` **\{HoneyCSSLengthUnit | null\}**: Optional. The CSS unit to be used for the calculated value, e.g., 'px', 'em'. Set null to not apply a unit. Default: 'px'.
-- `type` **\{keyof HoneySpacings\}**: Optional. The type of spacing to be used, e.g., 'base', 'small', 'large'. Default: 'base'.
+- `value` \{HoneyCSSMultiValue\}: The spacing factor to be applied, which can be a single number or an array of 2, 3, or 4 numbers.
+- `unit` \{HoneyCSSLengthUnit | null\}: Optional. The CSS unit to be used for the calculated value, e.g., 'px', 'em'. Set null to not apply a unit. Default: 'px'.
+- `type` \{keyof HoneySpacings\}: Optional. The type of spacing to be used, e.g., 'base', 'small', 'large'. Default: 'base'.
 
 ### Returns
 
@@ -181,24 +221,24 @@ The `bpMedia` utility function that returns functions for generating media queri
 
 ### Parameters
 
-- `breakpoint` **\{HoneyBreakpointName\}**: The name of the breakpoint.
-- `ruleOptions` **\{HoneyCSSMediaRule\} [default={}]**: Additional options for the media rule.
+- `breakpoint` \{HoneyBreakpointName\}: The name of the breakpoint.
+- `ruleOptions` \{HoneyCSSMediaRule\} [default={}]: Additional options for the media rule.
 
 ### HoneyCSSMediaRule
 
-- `operator` **\{'not' | 'only'\}**: Operator for the media rule.
-- `mediaType` **\{'all' | 'print' | 'screen' | 'speech'\}**: Media type for the media rule.
-- `width` **\{HoneyCSSLengthValue\}**: Width for the media rule.
-- `minWidth` **\{HoneyCSSLengthValue\}**: Minimum width for the media rule.
-- `maxWidth` **\{HoneyCSSLengthValue\}**: Maximum width for the media rule.
-- `height` **\{HoneyCSSLengthValue\}**: Height for the media rule.
-- `minHeight` **\{HoneyCSSLengthValue\}**: Minimum height for the media rule.
-- `maxHeight` **\{HoneyCSSLengthValue\}**: Maximum height for the media rule.
-- `orientation` **\{HoneyCSSMediaOrientation\}**: Orientation for the media rule.
-- `resolution` **\{HoneyCSSResolutionValue\}**: Resolution for the media rule.
-- `minResolution` **\{HoneyCSSResolutionValue\}**: Minimum resolution for the media rule.
-- `maxResolution` **\{HoneyCSSResolutionValue\}**: Maximum resolution for the media rule.
-- `update` **\{'none' | 'slow' | 'fast'\}**: Update for the media rule.
+- `operator` \{'not' | 'only'\}: Operator for the media rule.
+- `mediaType` \{'all' | 'print' | 'screen' | 'speech'\}: Media type for the media rule.
+- `width` \{HoneyCSSLengthValue\}: Width for the media rule.
+- `minWidth` \{HoneyCSSLengthValue\}: Minimum width for the media rule.
+- `maxWidth` \{HoneyCSSLengthValue\}: Maximum width for the media rule.
+- `height` \{HoneyCSSLengthValue\}: Height for the media rule.
+- `minHeight` \{HoneyCSSLengthValue\}: Minimum height for the media rule.
+- `maxHeight` \{HoneyCSSLengthValue\}: Maximum height for the media rule.
+- `orientation` \{HoneyCSSMediaOrientation\}: Orientation for the media rule.
+- `resolution` \{HoneyCSSResolutionValue\}: Resolution for the media rule.
+- `minResolution` \{HoneyCSSResolutionValue\}: Minimum resolution for the media rule.
+- `maxResolution` \{HoneyCSSResolutionValue\}: Maximum resolution for the media rule.
+- `update` \{'none' | 'slow' | 'fast'\}: Update for the media rule.
 
 ### Returns
 
@@ -237,4 +277,71 @@ const ResponsiveBox = styled.div`
     }
   `}
 `;
+```
+
+## flattenNestedList
+---
+
+The `flattenNestedList` function converts a nested list structure into a flat list, excluding the nested list key from the result and adding both a `depthLevel` and `parentIndex` property to each item. This is useful for displaying hierarchical data in a flat structure while maintaining information about the hierarchy.
+
+### Parameters
+
+- `items` \{Item[] | undefined\}: The array of items to be flattened. This array can be undefined.
+- `nestedListKey` \{KeysWithArrayValues\<Item\>\}: The key in each item that contains the nested list.
+- `result` \{HoneyFlattenedItem\<Item, typeof nestedListKey\>[]\} [default=[]\]: The array that accumulates the flattened items. Defaults to an empty array.
+- `parentIndex` \{number | undefined\} \[default=undefined\]: Optional. The index of the parent item in the flattened structure. Defaults to undefined for parent item.
+- `depthLevel` \{number\} \[default=0\]: Optional. The current depth level of the item in the nested structure. Defaults to 0.
+
+### Returns
+
+A flat array of items, excluding the nested list key and including both a `depthLevel` and `parentIndex` property.
+
+### Usage
+
+Flattens a nested list structure to create a flat list with depth levels and parent indices, making it easier to display hierarchical data in components like lists or trees.
+
+<FlattenedList/>
+
+```tsx
+import { useTheme } from 'styled-components';
+import { flattenNestedList } from '@tynik/react-honey-layout';
+
+export const FlattenedList = () => {
+  const theme = useTheme()
+
+  const nestedList = [
+    {
+      id: 1,
+      name: 'Item 1',
+      children: [
+        {
+          id: 2,
+          name: 'Item 1.1',
+          children: [
+            { id: 3, name: 'Item 1.1.1', children: [] },
+            { id: 4, name: 'Item 1.1.2', children: [] }
+          ]
+        },
+        { id: 5, name: 'Item 1.2', children: [] }
+      ]
+    },
+    {
+      id: 6,
+      name: 'Item 2',
+      children: []
+    }
+  ];
+
+  const flatList = flattenNestedList(nestedList, 'children');
+
+  return (
+    <ul>
+      {flatList.map(item => (
+        <li key={item.id} style={{ marginLeft: item.depthLevel * theme.spacings.base * 2 }}>
+          {item.name} (Parent Index: {item.parentIndex ?? '-'})
+        </li>
+      ))}
+    </ul>
+  )
+};
 ```

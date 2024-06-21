@@ -6,7 +6,7 @@ import type { DataType } from 'csstype';
 export type TimeoutId = ReturnType<typeof setTimeout>;
 
 export type KeysWithArrayValues<T> = {
-  [K in keyof T]: T[K] extends unknown[] | undefined ? K : never;
+  [K in keyof T]: T[K] extends unknown[] | null | undefined ? K : never;
 }[Extract<keyof T, string>];
 
 type HoneyCSSAbsoluteLengthUnit = 'px' | 'cm' | 'mm' | 'in' | 'pt' | 'pc';
@@ -357,3 +357,26 @@ export type HoneyStatusContentOptions<T = unknown> = {
    */
   noContent?: ReactNode;
 } & T;
+
+/**
+ * Represents an item that has been flattened with additional properties for hierarchical data structures.
+ *
+ * @template Item - The type of the original item.
+ * @template NestedListKey - The key within `Item` that contains nested items or lists.
+ */
+export type HoneyFlattenedItem<Item extends object, NestedListKey extends string> = Omit<
+  Item,
+  // Remove `NestedListKey` from the keys of `Item`
+  NestedListKey
+> & {
+  /**
+   * Optional index of the parent item in the flattened structure.
+   * Used to establish parent-child relationships in hierarchical data.
+   */
+  parentIndex: number | undefined;
+  /**
+   * The depth level of the item in the flattened structure.
+   * Indicates how deep the item is nested within the hierarchy.
+   */
+  depthLevel: number;
+};

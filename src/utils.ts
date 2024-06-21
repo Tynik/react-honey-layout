@@ -1,4 +1,4 @@
-import type { HoneyCSSMediaRule, KeysWithArrayValues } from './types';
+import type { HoneyCSSMediaRule, HoneyFlattenedItem, KeysWithArrayValues } from './types';
 
 export const camelToDashCase = (str: string) =>
   str.replace(/[A-Z]/g, letter => `-${letter.toLowerCase()}`);
@@ -89,43 +89,39 @@ export const media = (rules: HoneyCSSMediaRule[]): string => {
   return `@media ${mediaRules.join(', ')}`;
 };
 
-type HoneyFlattenedItem<Item extends object, NestedListKey extends string> = Omit<
-  Item,
-  NestedListKey
-> & {
-  depthLevel: number;
-};
-
 /**
- * Converts a nested list structure into a flat list, excluding the nested list key from the result and adding a level property.
+ * Converts a nested list structure into a flat list, excluding the nested list key from the result and adding a depth level property.
  *
  * @template Item - The type of the items in the list.
  *
- * @param items - The array of items to be flattened.
+ * @param items - The array of items to be flattened. Can be undefined.
  * @param nestedListKey - The key in each item that contains the nested list.
  * @param result - The array that accumulates the flattened items. Defaults to an empty array.
- * @param depthLevel - The current depth level of the item in the nested structure. Defaults to 0.
+ * @param parentIndex - Optional. The index of the parent item in the flattened structure. Defaults to undefined for parent item.
+ * @param depthLevel - Optional. The current depth level of the item in the nested structure. Defaults to 0.
  *
- * @returns A flat array of items, excluding the nested list key and including a level property.
+ * @returns A flat array of items, excluding the nested list key and including a depthLevel property.
  */
 export const flattenNestedList = <Item extends object>(
-  items: Item[],
+  items: Item[] | undefined,
   nestedListKey: KeysWithArrayValues<Item>,
   result: HoneyFlattenedItem<Item, typeof nestedListKey>[] = [],
+  parentIndex: number | undefined = undefined,
   depthLevel = 0,
 ) => {
-  items.forEach(item => {
+  items?.forEach(item => {
     const { [nestedListKey]: _, ...itemWithoutNestedListKey } = item;
 
     result.push({
       ...itemWithoutNestedListKey,
+      parentIndex,
       depthLevel,
     });
 
     const nestedList = item[nestedListKey];
 
     if (Array.isArray(nestedList)) {
-      flattenNestedList(nestedList, nestedListKey, result, depthLevel + 1);
+      flattenNestedList(nestedList, nestedListKey, result, result.length - 1, depthLevel + 1);
     }
   });
 
