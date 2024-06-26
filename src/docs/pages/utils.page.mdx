@@ -63,13 +63,13 @@ export const FlattenedList = () => {
     }
   ];
 
-  const flatList = flattenNestedList(nestedList, 'children');
+  const flatList = flattenNestedList(nestedList, 'id', 'children');
 
   return (
     <ul>
       {flatList.map(item => (
         <li key={item.id} style={{ marginLeft: item.depthLevel * theme.spacings.base * 2 }}>
-          {item.name} (Parent index: {item.parentIndex ?? 'undefined'}, Total nested items: {item.totalNestedItems})
+          {item.name} (Parent ID: {item.parentId ?? 'undefined'}, Total nested items: {item.totalNestedItems})
         </li>
       ))}
     </ul>
@@ -332,13 +332,13 @@ export const FlattenedList = () => {
     }
   ];
 
-  const flatList = flattenNestedList(nestedList, 'children');
+  const flatList = flattenNestedList(nestedList, 'id', 'children');
 
   return (
     <ul>
       {flatList.map(item => (
         <li key={item.id} style={{ marginLeft: item.depthLevel * theme.spacings.base * 2 }}>
-          {item.name} (Parent index: {item.parentIndex ?? 'undefined'}, Total nested items: {item.totalNestedItems})
+          {item.name} (Parent ID: {item.parentId ?? 'undefined'}, Total nested items: {item.totalNestedItems})
         </li>
       ))}
     </ul>

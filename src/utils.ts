@@ -1,4 +1,9 @@
-import type { HoneyCSSMediaRule, HoneyFlattenedItem, KeysWithArrayValues } from './types';
+import type {
+  HoneyCSSMediaRule,
+  HoneyFlattenedItem,
+  KeysWithArrayValues,
+  KeysWithNonArrayValues,
+} from './types';
 
 export const camelToDashCase = (str: string) =>
   str.replace(/[A-Z]/g, letter => `-${letter.toLowerCase()}`);
@@ -90,25 +95,27 @@ export const media = (rules: HoneyCSSMediaRule[]): string => {
 };
 
 /**
- * Converts a nested list structure into a flat list, excluding the nested list key from the result and adding depth level, parent index, and total nested items properties.
+ * Converts a nested list structure into a flat list, excluding the nested list key from the result and adding depth level, parent ID, and total nested items properties.
  *
  * @template Item - The type of the items in the list.
  *
  * @param items - The array of items to be flattened. Can be undefined.
+ * @param itemIdKey - The key in each item that uniquely identifies it.
  * @param nestedItemsKey - The key in each item that contains the nested list.
  * @param result - The array that accumulates the flattened items. Defaults to an empty array.
- * @param parentIndex - Optional. The index of the parent item in the flattened structure. Defaults to undefined for parent item.
+ * @param parentId - Optional. The ID of the parent item in the flattened structure. Defaults to undefined for parent item.
  * @param depthLevel - Optional. The current depth level of the item in the nested structure. Defaults to 0.
  *
- * @returns A flat array of items, excluding the nested list key and including depthLevel, parentIndex, and totalNestedItems properties.
+ * @returns A flat array of items, excluding the nested list key and including `depthLevel`, `parentId`, and `totalNestedItems` properties.
  */
 export const flattenNestedList = <Item extends object>(
   items: Item[] | undefined,
+  itemIdKey: KeysWithNonArrayValues<Item>,
   nestedItemsKey: KeysWithArrayValues<Item>,
   result: HoneyFlattenedItem<Item, typeof nestedItemsKey>[] = [],
-  parentIndex: number | undefined = undefined,
+  parentId: Item[KeysWithNonArrayValues<Item>] | undefined = undefined,
   depthLevel = 0,
-) => {
+): HoneyFlattenedItem<Item, typeof nestedItemsKey>[] => {
   items?.forEach(item => {
     const { [nestedItemsKey]: _, ...itemWithoutNestedListKey } = item;
 
@@ -117,15 +124,39 @@ export const flattenNestedList = <Item extends object>(
 
     result.push({
       ...itemWithoutNestedListKey,
-      parentIndex,
+      parentId,
       depthLevel,
       totalNestedItems: isNestedItemArray ? nestedItems.length : 0,
     });
 
     if (isNestedItemArray) {
-      flattenNestedList(nestedItems, nestedItemsKey, result, result.length - 1, depthLevel + 1);
+      const parentId = item[itemIdKey];
+
+      flattenNestedList(nestedItems, itemIdKey, nestedItemsKey, result, parentId, depthLevel + 1);
     }
   });
 
   return result;
 };
+
+/**
+ * Filters flattened items based on the specified parent ID and an optional predicate.
+ *
+ * @template Item - The type of the items in the list.
+ * @template NestedListKey - The key within `Item` that contains nested items or lists.
+ *
+ * @param items - The array of flattened items to filter.
+ * @param parentId - The parent ID to filter the items by.
+ * @param predicate - Optional. A function to further filter the flattened items that match the parent ID.
+ *
+ * @returns An array of flattened items that match the specified parent ID and predicate.
+ */
+export const filterFlattenedItems = <Item extends object, NestedListKey extends string>(
+  items: HoneyFlattenedItem<Item, NestedListKey>[],
+  parentId: Item[KeysWithNonArrayValues<Item>],
+  predicate?: (flattenedItem: HoneyFlattenedItem<Item, NestedListKey>) => boolean,
+) =>
+  items.filter(
+    flattenedItem =>
+      flattenedItem.parentId === parentId && (!predicate || predicate(flattenedItem)),
+  );

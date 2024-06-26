@@ -56,6 +56,7 @@ describe('[utils]: converting hex to hex with alpha', () => {
 
 describe('[utils]: convert nested list to flat list', () => {
   type Item = {
+    id: number;
     name: string;
     children?: Item[] | null;
   };
@@ -63,7 +64,7 @@ describe('[utils]: convert nested list to flat list', () => {
   it('should handle undefined input list', () => {
     const items: Item[] | undefined = undefined;
 
-    const flatList = flattenNestedList(items, 'children');
+    const flatList = flattenNestedList(items, 'id', 'children');
 
     expect(flatList).toStrictEqual([]);
   });
@@ -71,7 +72,7 @@ describe('[utils]: convert nested list to flat list', () => {
   it('should handle empty input list', () => {
     const items: Item[] = [];
 
-    const flatList = flattenNestedList(items, 'children');
+    const flatList = flattenNestedList(items, 'id', 'children');
 
     expect(flatList).toStrictEqual([]);
   });
@@ -79,13 +80,16 @@ describe('[utils]: convert nested list to flat list', () => {
   it('should flatten a nested list excluding the nested key', () => {
     const items: Item[] = [
       {
+        id: 1,
         name: 'Apple',
         children: [
           {
+            id: 2,
             name: 'Pear',
             children: [],
           },
           {
+            id: 3,
             name: 'Banana',
             children: [],
           },
@@ -93,24 +97,27 @@ describe('[utils]: convert nested list to flat list', () => {
       },
     ];
 
-    const flatList = flattenNestedList(items, 'children');
+    const flatList = flattenNestedList(items, 'id', 'children');
 
     expect(flatList).toStrictEqual([
       {
+        id: 1,
         name: 'Apple',
-        parentIndex: undefined,
+        parentId: undefined,
         depthLevel: 0,
         totalNestedItems: 2,
       },
       {
+        id: 2,
         name: 'Pear',
-        parentIndex: 0,
+        parentId: 1,
         depthLevel: 1,
         totalNestedItems: 0,
       },
       {
+        id: 3,
         name: 'Banana',
-        parentIndex: 0,
+        parentId: 1,
         depthLevel: 1,
         totalNestedItems: 0,
       },
@@ -120,15 +127,19 @@ describe('[utils]: convert nested list to flat list', () => {
   it('should handle deeply nested lists', () => {
     const items: Item[] = [
       {
+        id: 1,
         name: 'Apple',
         children: [
           {
+            id: 2,
             name: 'Pear',
             children: [
               {
+                id: 3,
                 name: 'Banana',
                 children: [
                   {
+                    id: 4,
                     name: 'Mango',
                   },
                 ],
@@ -139,30 +150,34 @@ describe('[utils]: convert nested list to flat list', () => {
       },
     ];
 
-    const flatList = flattenNestedList(items, 'children');
+    const flatList = flattenNestedList(items, 'id', 'children');
 
     expect(flatList).toStrictEqual([
       {
+        id: 1,
         name: 'Apple',
-        parentIndex: undefined,
+        parentId: undefined,
         depthLevel: 0,
         totalNestedItems: 1,
       },
       {
+        id: 2,
         name: 'Pear',
-        parentIndex: 0,
+        parentId: 1,
         depthLevel: 1,
         totalNestedItems: 1,
       },
       {
+        id: 3,
         name: 'Banana',
-        parentIndex: 1,
+        parentId: 2,
         depthLevel: 2,
         totalNestedItems: 1,
       },
       {
+        id: 4,
         name: 'Mango',
-        parentIndex: 2,
+        parentId: 3,
         depthLevel: 3,
         totalNestedItems: 0,
       },
@@ -172,25 +187,29 @@ describe('[utils]: convert nested list to flat list', () => {
   it('should handle items without children', () => {
     const items: Item[] = [
       {
+        id: 1,
         name: 'Apple',
       },
       {
+        id: 2,
         name: 'Banana',
       },
     ];
 
-    const flatList = flattenNestedList(items, 'children');
+    const flatList = flattenNestedList(items, 'id', 'children');
 
     expect(flatList).toStrictEqual([
       {
+        id: 1,
         name: 'Apple',
-        parentIndex: undefined,
+        parentId: undefined,
         depthLevel: 0,
         totalNestedItems: 0,
       },
       {
+        id: 2,
         name: 'Banana',
-        parentIndex: undefined,
+        parentId: undefined,
         depthLevel: 0,
         totalNestedItems: 0,
       },
@@ -200,27 +219,31 @@ describe('[utils]: convert nested list to flat list', () => {
   it('should handle items with undefined or null children', () => {
     const items: Item[] = [
       {
+        id: 1,
         name: 'Apple',
         children: undefined,
       },
       {
+        id: 2,
         name: 'Banana',
         children: null,
       },
     ];
 
-    const flatList = flattenNestedList(items, 'children');
+    const flatList = flattenNestedList(items, 'id', 'children');
 
     expect(flatList).toStrictEqual([
       {
+        id: 1,
         name: 'Apple',
-        parentIndex: undefined,
+        parentId: undefined,
         depthLevel: 0,
         totalNestedItems: 0,
       },
       {
+        id: 2,
         name: 'Banana',
-        parentIndex: undefined,
+        parentId: undefined,
         depthLevel: 0,
         totalNestedItems: 0,
       },

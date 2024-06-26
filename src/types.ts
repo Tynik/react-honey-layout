@@ -9,6 +9,10 @@ export type KeysWithArrayValues<T> = {
   [K in keyof T]: T[K] extends unknown[] | null | undefined ? K : never;
 }[Extract<keyof T, string>];
 
+export type KeysWithNonArrayValues<T> = {
+  [K in keyof T]: T[K] extends unknown[] | null | undefined ? never : K;
+}[Extract<keyof T, string>];
+
 type HoneyCSSAbsoluteLengthUnit = 'px' | 'cm' | 'mm' | 'in' | 'pt' | 'pc';
 type HoneyCSSRelativeLengthUnit = 'em' | 'rem' | '%' | 'vh' | 'vw' | 'vmin' | 'vmax';
 
@@ -370,10 +374,10 @@ export type HoneyFlattenedItem<Item extends object, NestedListKey extends string
   NestedListKey
 > & {
   /**
-   * Optional index of the parent item in the flattened structure.
+   * Optional id of the parent item in the flattened structure.
    * Used to establish parent-child relationships in hierarchical data.
    */
-  parentIndex: number | undefined;
+  parentId: Item[KeysWithNonArrayValues<Item>] | undefined;
   /**
    * The depth level of the item in the flattened structure.
    * Indicates how deep the item is nested within the hierarchy.
