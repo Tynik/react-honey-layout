@@ -231,17 +231,31 @@ export const searchFlattenedItems = <OriginItem extends object, NestedListKey ex
 
       if (isItemMatched) {
         if (flattenedItem.parentId === undefined) {
-          matchedFlattenedItems.push(
-            flattenedItem,
-            // Push all child items to the parent
-            ...flattenedItems.filter(item => item.parentId === item[itemIdKey as never]),
-          );
-          //
+          matchedFlattenedItems.push(flattenedItem);
+
+          const insertNestedItems = (
+            targetFlattenedItem: HoneyFlattenedItem<OriginItem, NestedListKey>,
+          ) => {
+            // If parent item does not have nested items, so do not iterate through the list
+            if (!targetFlattenedItem.totalNestedItems) {
+              return;
+            }
+
+            flattenedItems.forEach(flattenedItem => {
+              if (flattenedItem.parentId === targetFlattenedItem[itemIdKey as never]) {
+                matchedFlattenedItems.push(flattenedItem);
+
+                insertNestedItems(flattenedItem);
+              }
+            });
+          };
+
+          insertNestedItems(flattenedItem);
         } else {
           const insertParentItems = (
-            flattenedItem: HoneyFlattenedItem<OriginItem, NestedListKey>,
+            targetFlattenedItem: HoneyFlattenedItem<OriginItem, NestedListKey>,
           ) => {
-            const parentItemIndex = itemIdToIndexMap[flattenedItem.parentId as never];
+            const parentItemIndex = itemIdToIndexMap[targetFlattenedItem.parentId as never];
             const parentItem = flattenedItems[parentItemIndex];
 
             if (parentItem.parentId !== undefined) {
@@ -253,7 +267,7 @@ export const searchFlattenedItems = <OriginItem extends object, NestedListKey ex
               : null;
 
             const shouldInsertParentItem =
-              prevItemParentId === null || prevItemParentId !== flattenedItem.parentId;
+              prevItemParentId === null || prevItemParentId !== targetFlattenedItem.parentId;
 
             if (shouldInsertParentItem) {
               if (!parentItem) {

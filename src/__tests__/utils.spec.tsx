@@ -332,4 +332,12 @@ describe('[utils]: search flattened items', () => {
       items2[3],
     ]);
   });
+
+  it('should return the parent and all nested items that match the search query', () => {
+    expect(searchFlattenedItems(items2, 'id', 'name', 'Pear')).toEqual([
+      items2[1],
+      items2[2],
+      items2[3],
+    ]);
+  });
 });
