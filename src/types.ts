@@ -5,13 +5,22 @@ import type { DataType } from 'csstype';
 
 export type TimeoutId = ReturnType<typeof setTimeout>;
 
-export type KeysWithArrayValues<T> = {
-  [K in keyof T]: T[K] extends unknown[] | null | undefined ? K : never;
-}[Extract<keyof T, string>];
+type ExtractKeys<T, Condition> = {
+  [K in keyof T]: T[K] extends Condition ? K : never;
+}[keyof T];
 
-export type KeysWithNonArrayValues<T> = {
-  [K in keyof T]: T[K] extends unknown[] | null | undefined ? never : K;
-}[Extract<keyof T, string>];
+type ExcludeKeys<T, Condition> = {
+  [K in keyof T]: T[K] extends Condition ? never : K;
+}[keyof T];
+
+export type KeysWithStringValues<T> = Extract<ExtractKeys<T, string | null | undefined>, string>;
+
+export type KeysWithArrayValues<T> = Extract<ExtractKeys<T, unknown[] | null | undefined>, string>;
+
+export type KeysWithNonArrayValues<T> = Extract<
+  ExcludeKeys<T, unknown[] | null | undefined>,
+  string
+>;
 
 type HoneyCSSAbsoluteLengthUnit = 'px' | 'cm' | 'mm' | 'in' | 'pt' | 'pc';
 type HoneyCSSRelativeLengthUnit = 'em' | 'rem' | '%' | 'vh' | 'vw' | 'vmin' | 'vmax';
@@ -365,11 +374,11 @@ export type HoneyStatusContentOptions<T = unknown> = {
 /**
  * Represents an item that has been flattened with additional properties for hierarchical data structures.
  *
- * @template Item - The type of the original item.
+ * @template OriginItem - The type of the original item.
  * @template NestedListKey - The key within `Item` that contains nested items or lists.
  */
-export type HoneyFlattenedItem<Item extends object, NestedListKey extends string> = Omit<
-  Item,
+export type HoneyFlattenedItem<OriginItem extends object, NestedListKey extends string> = Omit<
+  OriginItem,
   // Remove `NestedListKey` from the keys of `Item`
   NestedListKey
 > & {
@@ -377,7 +386,7 @@ export type HoneyFlattenedItem<Item extends object, NestedListKey extends string
    * Optional id of the parent item in the flattened structure.
    * Used to establish parent-child relationships in hierarchical data.
    */
-  parentId: Item[KeysWithNonArrayValues<Item>] | undefined;
+  parentId: OriginItem[KeysWithNonArrayValues<OriginItem>] | undefined;
   /**
    * The depth level of the item in the flattened structure.
    * Indicates how deep the item is nested within the hierarchy.

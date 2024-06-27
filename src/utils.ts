@@ -3,10 +3,21 @@ import type {
   HoneyFlattenedItem,
   KeysWithArrayValues,
   KeysWithNonArrayValues,
+  KeysWithStringValues,
 } from './types';
 
-export const camelToDashCase = (str: string) =>
-  str.replace(/[A-Z]/g, letter => `-${letter.toLowerCase()}`);
+export const camelToDashCase = (inputString: string) =>
+  inputString.replace(/[A-Z]/g, letter => `-${letter.toLowerCase()}`);
+
+/**
+ * Splits a string into an array of filtered from redundant spaces words.
+ *
+ * @param {string} inputString - The input string to be split.
+ *
+ * @returns {string[]} An array of words from the input string.
+ */
+export const splitStringIntoWords = (inputString: string): string[] =>
+  inputString.split(' ').filter(v => v);
 
 /**
  * Converts a pixel value to rem.
@@ -97,7 +108,7 @@ export const media = (rules: HoneyCSSMediaRule[]): string => {
 /**
  * Converts a nested list structure into a flat list, excluding the nested list key from the result and adding depth level, parent ID, and total nested items properties.
  *
- * @template Item - The type of the items in the list.
+ * @template OriginItem - The type of the items in the list.
  *
  * @param items - The array of items to be flattened. Can be undefined.
  * @param itemIdKey - The key in each item that uniquely identifies it.
@@ -108,14 +119,14 @@ export const media = (rules: HoneyCSSMediaRule[]): string => {
  *
  * @returns A flat array of items, excluding the nested list key and including `depthLevel`, `parentId`, and `totalNestedItems` properties.
  */
-export const flattenNestedList = <Item extends object>(
-  items: Item[] | undefined,
-  itemIdKey: KeysWithNonArrayValues<Item>,
-  nestedItemsKey: KeysWithArrayValues<Item>,
-  result: HoneyFlattenedItem<Item, typeof nestedItemsKey>[] = [],
-  parentId: Item[KeysWithNonArrayValues<Item>] | undefined = undefined,
+export const flattenNestedList = <OriginItem extends object>(
+  items: OriginItem[] | undefined,
+  itemIdKey: KeysWithNonArrayValues<OriginItem>,
+  nestedItemsKey: KeysWithArrayValues<OriginItem>,
+  result: HoneyFlattenedItem<OriginItem, typeof nestedItemsKey>[] = [],
+  parentId: OriginItem[KeysWithNonArrayValues<OriginItem>] | undefined = undefined,
   depthLevel = 0,
-): HoneyFlattenedItem<Item, typeof nestedItemsKey>[] => {
+): HoneyFlattenedItem<OriginItem, typeof nestedItemsKey>[] => {
   items?.forEach(item => {
     const { [nestedItemsKey]: _, ...itemWithoutNestedListKey } = item;
 
@@ -142,21 +153,125 @@ export const flattenNestedList = <Item extends object>(
 /**
  * Filters flattened items based on the specified parent ID and an optional predicate.
  *
- * @template Item - The type of the items in the list.
+ * @template OriginItem - The type of the items in the list.
  * @template NestedListKey - The key within `Item` that contains nested items or lists.
  *
- * @param items - The array of flattened items to filter.
+ * @param flattenedItems - The array of flattened items to filter.
  * @param parentId - The parent ID to filter the items by.
  * @param predicate - Optional. A function to further filter the flattened items that match the parent ID.
  *
  * @returns An array of flattened items that match the specified parent ID and predicate.
  */
-export const filterFlattenedItems = <Item extends object, NestedListKey extends string>(
-  items: HoneyFlattenedItem<Item, NestedListKey>[],
-  parentId: Item[KeysWithNonArrayValues<Item>],
-  predicate?: (flattenedItem: HoneyFlattenedItem<Item, NestedListKey>) => boolean,
+export const filterFlattenedItems = <OriginItem extends object, NestedListKey extends string>(
+  flattenedItems: HoneyFlattenedItem<OriginItem, NestedListKey>[],
+  parentId: OriginItem[KeysWithNonArrayValues<OriginItem>],
+  predicate?: (flattenedItem: HoneyFlattenedItem<OriginItem, NestedListKey>) => boolean,
 ) =>
-  items.filter(
+  flattenedItems.filter(
     flattenedItem =>
       flattenedItem.parentId === parentId && (!predicate || predicate(flattenedItem)),
   );
+
+/**
+ * Searches through a list of flattened items to find matches based on a search query.
+ * The search considers both parent and nested items and ensures that matching items and their parents are included in the result.
+ *
+ * @template OriginItem - The type of the original item.
+ * @template NestedListKey - The key within the item that contains nested items or lists.
+ *
+ * @param flattenedItems - The array of flattened items to search through.
+ * @param itemIdKey - The key used to identify each item uniquely.
+ * @param valueKey - The key in each item that contains the searchable value.
+ * @param searchQuery - The search query string used to match items.
+ *
+ * @returns An array of matched flattened items, including their parents if applicable.
+ */
+export const searchFlattenedItems = <OriginItem extends object, NestedListKey extends string>(
+  flattenedItems: HoneyFlattenedItem<OriginItem, NestedListKey>[],
+  itemIdKey: KeysWithNonArrayValues<OriginItem>,
+  valueKey: KeysWithStringValues<OriginItem>,
+  searchQuery: string,
+) => {
+  const searchWords = splitStringIntoWords(searchQuery.toLowerCase());
+  if (!searchWords.length) {
+    return flattenedItems;
+  }
+
+  const itemIdToIndexMap = flattenedItems.reduce<Record<string, number>>(
+    (result, flattenedItem, flattenedItemIndex) => {
+      // Item ID -> Item index
+      result[flattenedItem[itemIdKey as never]] = flattenedItemIndex;
+
+      return result;
+    },
+    {} as never,
+  );
+
+  return flattenedItems.reduce<HoneyFlattenedItem<OriginItem, NestedListKey>[]>(
+    (matchedFlattenedItems, flattenedItem) => {
+      const flattenedItemValue = flattenedItem[valueKey as never];
+      // If item value is null, undefined or empty string
+      if (!flattenedItemValue) {
+        return matchedFlattenedItems;
+      }
+
+      if (
+        matchedFlattenedItems.some(
+          matchedItem => matchedItem[itemIdKey as never] === flattenedItem[itemIdKey as never],
+        )
+      ) {
+        return matchedFlattenedItems;
+      }
+
+      const itemWords = splitStringIntoWords((flattenedItemValue as string).toLowerCase());
+
+      const isItemMatched = searchWords.every(searchWord =>
+        itemWords.some(word => word.startsWith(searchWord)),
+      );
+
+      if (isItemMatched) {
+        if (flattenedItem.parentId === undefined) {
+          matchedFlattenedItems.push(
+            flattenedItem,
+            // Push all child items to the parent
+            ...flattenedItems.filter(item => item.parentId === item[itemIdKey as never]),
+          );
+          //
+        } else {
+          const insertParentItems = (
+            flattenedItem: HoneyFlattenedItem<OriginItem, NestedListKey>,
+          ) => {
+            const parentItemIndex = itemIdToIndexMap[flattenedItem.parentId as never];
+            const parentItem = flattenedItems[parentItemIndex];
+
+            if (parentItem.parentId !== undefined) {
+              insertParentItems(parentItem);
+            }
+
+            const prevItemParentId = matchedFlattenedItems.length
+              ? matchedFlattenedItems[matchedFlattenedItems.length - 1].parentId
+              : null;
+
+            const shouldInsertParentItem =
+              prevItemParentId === null || prevItemParentId !== flattenedItem.parentId;
+
+            if (shouldInsertParentItem) {
+              if (!parentItem) {
+                throw new Error('[honey-layout]: Parent item was not found');
+              }
+
+              matchedFlattenedItems.push(parentItem);
+            }
+          };
+
+          insertParentItems(flattenedItem);
+
+          matchedFlattenedItems.push(flattenedItem);
+        }
+      }
+
+      return matchedFlattenedItems;
+    },
+    [] as never,
+  );
+};

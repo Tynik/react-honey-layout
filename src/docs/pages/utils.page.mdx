@@ -286,11 +286,9 @@ The `flattenNestedList` function converts a nested list structure into a flat li
 
 ### Parameters
 
-- `items` \{Item[] | undefined\}: The array of items to be flattened. This array can be undefined.
-- `nestedItemsKey` \{KeysWithArrayValues\<Item\>\}: The key in each item that contains the nested list.
-- `result` \{HoneyFlattenedItem\<Item, typeof nestedItemsKey\>[]\} [default=[]\]: The array that accumulates the flattened items. Defaults to an empty array.
-- `parentIndex` \{number | undefined\} \[default=undefined\]: Optional. The index of the parent item in the flattened structure. Defaults to undefined for parent item.
-- `depthLevel` \{number\} \[default=0\]: Optional. The current depth level of the item in the nested structure. Defaults to 0.
+- `items`: The array of items to be flattened. This array can be undefined.
+- `itemIdKey`: The key in each item that uniquely identifies it.
+- `nestedItemsKey`: The key in each item that contains the nested list.
 
 ### Returns
 

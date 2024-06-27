@@ -1,4 +1,5 @@
-import { convertHexToHexWithAlpha, flattenNestedList } from '../utils';
+import type { HoneyFlattenedItem } from '../types';
+import { convertHexToHexWithAlpha, flattenNestedList, searchFlattenedItems } from '../utils';
 
 describe('[utils]: converting hex to hex with alpha', () => {
   it('should convert short hex without hash and alpha 0 to hex with alpha', () => {
@@ -247,6 +248,88 @@ describe('[utils]: convert nested list to flat list', () => {
         depthLevel: 0,
         totalNestedItems: 0,
       },
+    ]);
+  });
+});
+
+describe('[utils]: search flattened items', () => {
+  type Item = {
+    id: number;
+    name: string;
+    children?: Item[] | null;
+  };
+
+  const items1: HoneyFlattenedItem<Item, 'children'>[] = [
+    {
+      id: 1,
+      name: 'Apple',
+      parentId: undefined,
+      totalNestedItems: 0,
+      depthLevel: 0,
+    },
+    {
+      id: 2,
+      name: 'Pear',
+      parentId: undefined,
+      totalNestedItems: 0,
+      depthLevel: 0,
+    },
+  ];
+
+  const items2: HoneyFlattenedItem<Item, 'children'>[] = [
+    {
+      id: 1,
+      name: 'Apple',
+      parentId: undefined,
+      totalNestedItems: 0,
+      depthLevel: 0,
+    },
+    {
+      id: 2,
+      name: 'Pear',
+      parentId: undefined,
+      totalNestedItems: 1,
+      depthLevel: 0,
+    },
+    {
+      id: 3,
+      name: 'Banana',
+      parentId: 2,
+      totalNestedItems: 1,
+      depthLevel: 1,
+    },
+    {
+      id: 4,
+      name: 'Pineapple',
+      parentId: 3,
+      totalNestedItems: 0,
+      depthLevel: 2,
+    },
+  ];
+
+  it('should return an empty array when the items list is empty', () => {
+    const items: HoneyFlattenedItem<Item, 'children'>[] = [];
+
+    expect(searchFlattenedItems(items, 'id', 'name', '')).toEqual([]);
+  });
+
+  it('should return all items when the search query is empty', () => {
+    expect(searchFlattenedItems(items1, 'id', 'name', '')).toEqual(items1);
+  });
+
+  it('should return matched item when the search query partially matches an item name', () => {
+    expect(searchFlattenedItems(items1, 'id', 'name', 'App')).toEqual([items1[0]]);
+  });
+
+  it('should return parent and matched child items when the search query matches a child item name', () => {
+    expect(searchFlattenedItems(items2, 'id', 'name', 'Banana')).toEqual([items2[1], items2[2]]);
+  });
+
+  it('should return parent, intermediate parent, and matched child items when the search query matches a deeply nested child item name', () => {
+    expect(searchFlattenedItems(items2, 'id', 'name', 'Pine')).toEqual([
+      items2[1],
+      items2[2],
+      items2[3],
     ]);
   });
 });
