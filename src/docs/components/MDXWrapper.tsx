@@ -11,7 +11,7 @@ export const MDXWrapper = styled.div`
     color: ${theme.colors.neutral.lightGray};
 
     h2 {
-      margin-top: ${resolveSpacing(6)};
+      margin-top: ${resolveSpacing(8)};
     }
 
     h3 {

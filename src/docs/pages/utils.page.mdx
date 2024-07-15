@@ -87,8 +87,8 @@ The `convertHexToHexWithAlpha` function converts a 3-character or 6-character HE
 
 ### Parameters
 
-- `hex` \{string\}: The 3-character or 6-character HEX color code. It can optionally start with '#'. Examples include "#RGB", "#RRGGBB", "RGB", or "RRGGBB".
-- `alpha` \{number\}: The alpha transparency value between 0 (fully transparent) and 1 (fully opaque).
+- `hex`: The 3-character or 6-character HEX color code. It can optionally start with '#'. Examples include "#RGB", "#RRGGBB", "RGB", or "RRGGBB".
+- `alpha`: The alpha transparency value between 0 (fully transparent) and 1 (fully opaque).
 
 ### Throws
 
@@ -107,6 +107,7 @@ import { convertHexToHexWithAlpha } from '@tynik/react-honey-layout';
 const hexWithAlpha = convertHexToHexWithAlpha('#1A5297', 0.5);
 ```
 
+
 ## resolveFont
 ---
 
@@ -114,7 +115,7 @@ The `resolveFont` function generates CSS font styles based on the provided font 
 
 ### Parameters
 
-- `fontName` \{HoneyFontName\}: The name of the font to be resolved from the theme. This should correspond to a key in the `fonts` object of the theme.
+- `fontName`: The name of the font to be resolved from the theme. This should correspond to a key in the `fonts` object of the theme.
 
 ### Returns
 
@@ -135,6 +136,7 @@ const Heading = styled.h1`
 `;
 ```
 
+
 ## resolveColor
 ---
 
@@ -142,8 +144,8 @@ The `resolveColor` function resolves a color value based on the provided color k
 
 ### Parameters
 
-- `colorKey` \{HoneyColorKey\}: The key representing the color to be resolved. This key is a string in the format `colorType.colorName`.
-- `alpha` \{number | undefined\}: Optional. The alpha transparency value between 0 (fully transparent) and 1 (fully opaque).
+- `colorKey`: The key representing the color to be resolved. This key is a string in the format `colorType.colorName`.
+- `alpha`: Optional. The alpha transparency value between 0 (fully transparent) and 1 (fully opaque).
 
 ### Returns
 
@@ -176,6 +178,7 @@ export const ColoredBox = styled.div`
 `;
 ```
 
+
 ## resolveSpacing
 ---
 
@@ -184,9 +187,9 @@ This function is particularly useful when styling components with dynamically ca
 
 ### Parameters
 
-- `value` \{HoneyCSSMultiValue\}: The spacing factor to be applied, which can be a single number or an array of 2, 3, or 4 numbers.
-- `unit` \{HoneyCSSLengthUnit | null\}: Optional. The CSS unit to be used for the calculated value, e.g., 'px', 'em'. Set null to not apply a unit. Default: 'px'.
-- `type` \{keyof HoneySpacings\}: Optional. The type of spacing to be used, e.g., 'base', 'small', 'large'. Default: 'base'.
+- `value`: The spacing factor to be applied, which can be a single number or an array of 2, 3, or 4 numbers.
+- `unit`: Optional. The CSS unit to be used for the calculated value, e.g., 'px', 'em'. Set null to not apply a unit. Default: 'px'.
+- `type`: Optional. The type of spacing to be used, e.g., 'base', 'small', 'large'. Default: 'base'.
 
 ### Returns
 
@@ -203,7 +206,7 @@ Here's how it works:
 * **type**: Indicates the type of spacing ('base', 'small', 'large', etc.) to fetch from the theme. Defaults to 'base'.
 
 ```tsx
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { resolveSpacing } from '@tynik/react-honey-layout';
 
 const Button = styled.button`
@@ -214,6 +217,35 @@ const Button = styled.button`
 `;
 ```
 
+
+## resolveDimension
+---
+
+The `resolveDimension` function retrieves dimension values based on the provided dimension name from the theme configuration. This function is useful for styling components with dimension values defined in your theme.
+
+### Parameters
+
+- `dimensionName`: The name of the dimension to resolve.
+
+### Returns
+
+A function that takes the theme and returns the resolved dimension value for the specified dimension name.
+
+### Usage
+
+The `resolveDimension` function accesses a specific dimension value from the theme configuration using the dimension name.
+
+```tsx
+import styled from 'styled-components';
+import { resolveDimension } from '@tynik/react-honey-layout';
+
+const Box = styled.div`
+  width: ${resolveDimension('width')}; /* Retrieves the 'width' dimension value from the theme */
+  height: ${resolveDimension('height')};
+  margin: ${resolveDimension('margin')};
+`;
+```
+
 ## bpMedia
 ---
 
@@ -221,24 +253,24 @@ The `bpMedia` utility function that returns functions for generating media queri
 
 ### Parameters
 
-- `breakpoint` \{HoneyBreakpointName\}: The name of the breakpoint.
-- `ruleOptions` \{HoneyCSSMediaRule\} [default={}]: Additional options for the media rule.
+- `breakpoint`: The name of the breakpoint.
+- `ruleOptions`: Additional options for the media rule.
 
 ### HoneyCSSMediaRule
 
-- `operator` \{'not' | 'only'\}: Operator for the media rule.
-- `mediaType` \{'all' | 'print' | 'screen' | 'speech'\}: Media type for the media rule.
-- `width` \{HoneyCSSLengthValue\}: Width for the media rule.
-- `minWidth` \{HoneyCSSLengthValue\}: Minimum width for the media rule.
-- `maxWidth` \{HoneyCSSLengthValue\}: Maximum width for the media rule.
-- `height` \{HoneyCSSLengthValue\}: Height for the media rule.
-- `minHeight` \{HoneyCSSLengthValue\}: Minimum height for the media rule.
-- `maxHeight` \{HoneyCSSLengthValue\}: Maximum height for the media rule.
-- `orientation` \{HoneyCSSMediaOrientation\}: Orientation for the media rule.
-- `resolution` \{HoneyCSSResolutionValue\}: Resolution for the media rule.
-- `minResolution` \{HoneyCSSResolutionValue\}: Minimum resolution for the media rule.
-- `maxResolution` \{HoneyCSSResolutionValue\}: Maximum resolution for the media rule.
-- `update` \{'none' | 'slow' | 'fast'\}: Update for the media rule.
+- `operator`: Operator for the media rule.
+- `mediaType`: Media type for the media rule.
+- `width`: Width for the media rule.
+- `minWidth`: Minimum width for the media rule.
+- `maxWidth`: Maximum width for the media rule.
+- `height`: Height for the media rule.
+- `minHeight`: Minimum height for the media rule.
+- `maxHeight`: Maximum height for the media rule.
+- `orientation`: Orientation for the media rule.
+- `resolution`: Resolution for the media rule.
+- `minResolution`: Minimum resolution for the media rule.
+- `maxResolution`: Maximum resolution for the media rule.
+- `update`: Update for the media rule.
 
 ### Returns
 
@@ -278,6 +310,7 @@ const ResponsiveBox = styled.div`
   `}
 `;
 ```
+
 
 ## flattenNestedList
 ---

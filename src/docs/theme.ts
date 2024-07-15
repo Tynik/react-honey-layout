@@ -18,6 +18,7 @@ export const theme: HoneyTheme = {
       size: 14,
     },
   },
+  dimensions: {},
   colors: {
     primary: {},
     secondary: {},

@@ -22,13 +22,13 @@ export type KeysWithNonArrayValues<T> = Extract<
   string
 >;
 
-type HoneyCSSAbsoluteLengthUnit = 'px' | 'cm' | 'mm' | 'in' | 'pt' | 'pc';
-type HoneyCSSRelativeLengthUnit = 'em' | 'rem' | '%' | 'vh' | 'vw' | 'vmin' | 'vmax';
+type HoneyCSSAbsoluteDistanceUnit = 'px' | 'cm' | 'mm' | 'in' | 'pt' | 'pc';
+type HoneyCSSRelativeDistanceUnit = 'em' | 'rem' | '%' | 'vh' | 'vw' | 'vmin' | 'vmax';
 
 /**
- * Represents a CSS length unit, which can be either an absolute or relative length unit.
+ * Represents a CSS distance unit, which can be either an absolute or relative distance unit.
  */
-export type HoneyCSSLengthUnit = HoneyCSSAbsoluteLengthUnit | HoneyCSSRelativeLengthUnit;
+export type HoneyCSSDistanceUnit = HoneyCSSAbsoluteDistanceUnit | HoneyCSSRelativeDistanceUnit;
 
 export type HoneyCSSResolution = 'dpi' | 'dpcm' | 'dppx' | 'x';
 
@@ -37,26 +37,26 @@ export type HoneyCSSResolutionValue = `${number}${HoneyCSSResolution}`;
 export type HoneyCSSMediaOrientation = 'landscape' | 'portrait';
 
 /**
- * Represents a specific CSS length value with a unit.
+ * Represents a specific CSS distance value with a unit.
  */
-export type HoneyCSSLengthValue<Unit extends HoneyCSSLengthUnit = HoneyCSSLengthUnit> =
+export type HoneyCSSDistanceValue<Unit extends HoneyCSSDistanceUnit = HoneyCSSDistanceUnit> =
   `${number}${Unit}`;
 
 /**
- * Represents a shorthand CSS length value for 2, 3, or 4 values with the same unit.
+ * Represents a shorthand CSS distance value for 2, 3, or 4 values with the same unit.
  *
  * @template Value - Type of the value.
  * @template Unit - CSS length unit.
  */
-export type HoneyCSSLengthShortHandValue<Value, Unit extends HoneyCSSLengthUnit> = Value extends [
-  unknown,
-  unknown,
-]
-  ? `${HoneyCSSLengthValue<Unit>} ${HoneyCSSLengthValue<Unit>}`
+export type HoneyCSSDistanceShortHandValue<
+  Value,
+  Unit extends HoneyCSSDistanceUnit,
+> = Value extends [unknown, unknown]
+  ? `${HoneyCSSDistanceValue<Unit>} ${HoneyCSSDistanceValue<Unit>}`
   : Value extends [unknown, unknown, unknown]
-    ? `${HoneyCSSLengthValue<Unit>} ${HoneyCSSLengthValue<Unit>} ${HoneyCSSLengthValue<Unit>}`
+    ? `${HoneyCSSDistanceValue<Unit>} ${HoneyCSSDistanceValue<Unit>} ${HoneyCSSDistanceValue<Unit>}`
     : Value extends [unknown, unknown, unknown, unknown]
-      ? `${HoneyCSSLengthValue<Unit>} ${HoneyCSSLengthValue<Unit>} ${HoneyCSSLengthValue<Unit>} ${HoneyCSSLengthValue<Unit>}`
+      ? `${HoneyCSSDistanceValue<Unit>} ${HoneyCSSDistanceValue<Unit>} ${HoneyCSSDistanceValue<Unit>} ${HoneyCSSDistanceValue<Unit>}`
       : never;
 
 /**
@@ -79,12 +79,12 @@ export type HoneyCSSMultiValue<T> = T | HoneyCSSArrayValue<T>;
 export type HoneyCSSMediaRule = {
   operator?: 'not' | 'only';
   mediaType?: 'all' | 'print' | 'screen' | 'speech';
-  width?: HoneyCSSLengthValue;
-  minWidth?: HoneyCSSLengthValue;
-  maxWidth?: HoneyCSSLengthValue;
-  height?: HoneyCSSLengthValue;
-  minHeight?: HoneyCSSLengthValue;
-  maxHeight?: HoneyCSSLengthValue;
+  width?: HoneyCSSDistanceValue;
+  minWidth?: HoneyCSSDistanceValue;
+  maxWidth?: HoneyCSSDistanceValue;
+  height?: HoneyCSSDistanceValue;
+  minHeight?: HoneyCSSDistanceValue;
+  maxHeight?: HoneyCSSDistanceValue;
   orientation?: HoneyCSSMediaOrientation;
   resolution?: HoneyCSSResolutionValue;
   minResolution?: HoneyCSSResolutionValue;
@@ -306,14 +306,42 @@ export interface HoneyFonts {
 export type HoneyFontName = keyof HoneyFonts;
 
 /**
+ * Represents a map of dimension names to CSS distance values.
+ */
+export interface HoneyDimensions {
+  [key: string]: HoneyCSSDistanceValue;
+}
+
+export type HoneyDimensionName = keyof HoneyDimensions;
+
+/**
  * Represents the theme configuration.
  */
 export interface BaseHoneyTheme {
+  /**
+   * Breakpoints for responsive design, where keys are breakpoint names and values are breakpoint values.
+   */
   breakpoints: Partial<HoneyBreakpoints>;
+  /**
+   * Configuration for the container.
+   */
   container: Partial<HoneyContainer>;
+  /**
+   * Spacing values used throughout the theme.
+   */
   spacings: HoneySpacings;
+  /**
+   * Font settings used throughout the theme.
+   */
   fonts: HoneyFonts;
+  /**
+   * Color palette used throughout the theme.
+   */
   colors: HoneyColors;
+  /**
+   * Dimension values used throughout the theme.
+   */
+  dimensions: HoneyDimensions;
 }
 
 export interface HoneyTheme extends BaseHoneyTheme {}

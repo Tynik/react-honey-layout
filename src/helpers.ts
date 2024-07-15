@@ -6,8 +6,8 @@ import type {
   HoneyBoxProps,
   HoneyBreakpointName,
   HoneyCSSArrayValue,
-  HoneyCSSLengthShortHandValue,
-  HoneyCSSLengthUnit,
+  HoneyCSSDistanceShortHandValue,
+  HoneyCSSDistanceUnit,
   HoneyCSSMultiValue,
   HoneyCSSPropertyValue,
   HoneyCSSMediaRule,
@@ -18,6 +18,7 @@ import type {
   BaseHoneyColors,
   HoneyFontName,
   HoneyColor,
+  HoneyDimensionName,
 } from './types';
 import { camelToDashCase, convertHexToHexWithAlpha, media, pxToRem } from './utils';
 
@@ -144,7 +145,7 @@ export const generateMediaStyles =
  */
 type ResolveSpacingResult<
   MultiValue extends HoneyCSSMultiValue<T>,
-  Unit extends HoneyCSSLengthUnit | null,
+  Unit extends HoneyCSSDistanceUnit | null,
   T extends number,
 > = Unit extends null
   ? MultiValue extends HoneyCSSArrayValue<T>
@@ -154,7 +155,7 @@ type ResolveSpacingResult<
       T
   : MultiValue extends HoneyCSSArrayValue<T>
     ? // Returns a shorthand CSS value for arrays with specified unit
-      HoneyCSSLengthShortHandValue<MultiValue, NonNullable<Unit>>
+      HoneyCSSDistanceShortHandValue<MultiValue, NonNullable<Unit>>
     : // Returns a single value with specified unit
       `${T}${Unit}`;
 
@@ -174,7 +175,7 @@ type ResolveSpacingResult<
 export const resolveSpacing =
   <
     MultiValue extends HoneyCSSMultiValue<T>,
-    Unit extends HoneyCSSLengthUnit | null = 'px',
+    Unit extends HoneyCSSDistanceUnit | null = 'px',
     T extends number = number,
   >(
     value: MultiValue,
@@ -244,3 +245,15 @@ export const resolveFont =
       letter-spacing: ${font.letterSpacing !== undefined && pxToRem(font.letterSpacing)};
     `;
   };
+
+/**
+ * Resolves a specific dimension value from the theme configuration.
+ *
+ * @param dimensionName - The name of the dimension to resolve.
+ *
+ * @returns A function that takes the theme and returns the resolved dimension value from the theme.
+ */
+export const resolveDimension =
+  (dimensionName: HoneyDimensionName) =>
+  ({ theme }: HoneyThemedProps) =>
+    theme.dimensions[dimensionName];
