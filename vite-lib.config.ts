@@ -18,7 +18,6 @@ export default {
       entry: resolve(__dirname, 'src/index.ts'),
       fileName: 'index',
     },
-    outDir: resolve(__dirname, 'dist'),
     rollupOptions: {
       external: ['react', 'styled-components'],
     },

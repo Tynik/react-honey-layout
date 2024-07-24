@@ -11,8 +11,9 @@ export default {
     port: 9000,
   },
   build: {
+    outDir: resolve(__dirname, 'dist'),
     rollupOptions: {
-      input: resolve(__dirname, 'index.ts'),
+      input: resolve(__dirname, 'src/docs/index.html'),
     },
   },
 } satisfies UserConfig;
