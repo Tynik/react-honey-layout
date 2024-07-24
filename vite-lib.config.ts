@@ -1,5 +1,6 @@
-import { resolve } from 'path';
 import type { UserConfig } from 'vite';
+
+import { resolve } from 'path';
 import react from '@vitejs/plugin-react';
 import dts from 'vite-plugin-dts';
 

@@ -1,4 +1,6 @@
 import type { UserConfig } from 'vite';
+
+import { resolve } from 'path';
 import react from '@vitejs/plugin-react';
 import mdx from '@mdx-js/rollup';
 
@@ -10,7 +12,7 @@ export default {
   },
   build: {
     rollupOptions: {
-      input: 'index.ts',
+      input: resolve(__dirname, 'index.ts'),
     },
   },
 } satisfies UserConfig;
