@@ -19,6 +19,7 @@ import type {
   HoneyFontName,
   HoneyColor,
   HoneyDimensionName,
+  Nullable,
 } from './types';
 import { camelToDashCase, convertHexToHexWithAlpha, media, pxToRem } from './utils';
 
@@ -145,7 +146,7 @@ export const generateMediaStyles =
  */
 type ResolveSpacingResult<
   MultiValue extends HoneyCSSMultiValue<T>,
-  Unit extends HoneyCSSDistanceUnit | null,
+  Unit extends Nullable<HoneyCSSDistanceUnit>,
   T extends number,
 > = Unit extends null
   ? MultiValue extends HoneyCSSArrayValue<T>
@@ -175,7 +176,7 @@ type ResolveSpacingResult<
 export const resolveSpacing =
   <
     MultiValue extends HoneyCSSMultiValue<T>,
-    Unit extends HoneyCSSDistanceUnit | null = 'px',
+    Unit extends Nullable<HoneyCSSDistanceUnit> = 'px',
     T extends number = number,
   >(
     value: MultiValue,

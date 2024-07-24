@@ -27,8 +27,51 @@ export const splitStringIntoWords = (inputString: string): string[] =>
  *
  * @returns The value in rem as a string.
  */
-export const pxToRem = (px: number, base: number = 16): string => {
-  return `${px / base}rem`;
+export const pxToRem = (px: number, base: number = 16): string => `${px / base}rem`;
+
+/**
+ * Calculates the Euclidean distance between two points in 2D space.
+ *
+ * @param {number} startX - The X coordinate of the starting point.
+ * @param {number} startY - The Y coordinate of the starting point.
+ * @param {number} endX - The X coordinate of the ending point.
+ * @param {number} endY - The Y coordinate of the ending point.
+ *
+ * @returns {number} - The Euclidean distance between the two points.
+ */
+export const calculateEuclideanDistance = (
+  startX: number,
+  startY: number,
+  endX: number,
+  endY: number,
+): number => {
+  const deltaX = endX - startX;
+  const deltaY = endY - startY;
+
+  return Math.sqrt(deltaX ** 2 + deltaY ** 2);
+};
+
+/**
+ * Calculates the moving speed.
+ *
+ * @param {number} delta - The change in position (distance).
+ * @param {number} elapsedTime - The time taken to move the distance.
+ *
+ * @returns {number} - The calculated speed, which is the absolute value of delta divided by elapsed time.
+ */
+export const calculateMovingSpeed = (delta: number, elapsedTime: number): number =>
+  Math.abs(delta / elapsedTime);
+
+/**
+ * Calculates the specified percentage of a given value.
+ *
+ * @param {number} value - The value to calculate the percentage of.
+ * @param {number} percentage - The percentage to calculate.
+ *
+ * @returns {number} - The calculated percentage of the value.
+ */
+export const calculatePercentage = (value: number, percentage: number): number => {
+  return (value * percentage) / 100;
 };
 
 /**
@@ -103,6 +146,36 @@ export const media = (rules: HoneyCSSMediaRule[]): string => {
   });
 
   return `@media ${mediaRules.join(', ')}`;
+};
+
+/**
+ * Get various transformation values from the transformation matrix of an element.
+ *
+ * @param {HTMLElement} element - The element with a transformation applied.
+ *
+ * @returns An object containing transformation values.
+ */
+export const getTransformationValues = (element: HTMLElement) => {
+  const computedStyles = window.getComputedStyle(element);
+  const transformValue = computedStyles.getPropertyValue('transform');
+
+  const matrix = transformValue.match(/^matrix\((.+)\)$/);
+  if (!matrix) {
+    return {
+      translateX: 0,
+      translateY: 0,
+    };
+  }
+
+  const transformMatrix = matrix[1].split(', ');
+
+  const translateX = parseFloat(transformMatrix[4]);
+  const translateY = parseFloat(transformMatrix[5]);
+
+  return {
+    translateX,
+    translateY,
+  };
 };
 
 /**

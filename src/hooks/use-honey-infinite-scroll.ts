@@ -1,23 +1,25 @@
 import { useCallback, useRef } from 'react';
 import type { MutableRefObject } from 'react';
 
+import type { Nullable } from '../types';
+
 export type UseHoneyInfiniteScrollOnFetchMoreItems = () => void;
 
 export const useHoneyInfiniteScroll = <
   ScrollableContainerElement extends HTMLElement,
   TargetElement extends HTMLElement,
 >(
-  containerRef: MutableRefObject<ScrollableContainerElement | null> | undefined,
+  containerRef: MutableRefObject<Nullable<ScrollableContainerElement>> | undefined,
   onFetchMoreItems: UseHoneyInfiniteScrollOnFetchMoreItems,
 ) => {
-  const scrollableContainerRef = useRef<ScrollableContainerElement | null>(null);
+  const scrollableContainerRef = useRef<Nullable<ScrollableContainerElement>>(null);
 
-  const intersectionObserverRef = useRef<IntersectionObserver | null>(null);
-  const targetRef = useRef<TargetElement | null>(null);
+  const intersectionObserverRef = useRef<Nullable<IntersectionObserver>>(null);
+  const targetRef = useRef<Nullable<TargetElement>>(null);
 
   const assignIntersectionObserver = (
-    scrollableContainer: ScrollableContainerElement | null,
-    target: TargetElement | null,
+    scrollableContainer: Nullable<ScrollableContainerElement>,
+    target: Nullable<TargetElement>,
   ) => {
     scrollableContainerRef.current = scrollableContainer;
     targetRef.current = target;
@@ -48,14 +50,14 @@ export const useHoneyInfiniteScroll = <
   };
 
   const scrollableContainerRefFn = useCallback(
-    (scrollableContainer: ScrollableContainerElement | null) => {
+    (scrollableContainer: Nullable<ScrollableContainerElement>) => {
       assignIntersectionObserver(scrollableContainer, targetRef.current);
     },
     [],
   );
 
   const targetRefFn = useCallback(
-    (target: TargetElement | null) => {
+    (target: Nullable<TargetElement>) => {
       assignIntersectionObserver(scrollableContainerRef.current, target);
     },
     [scrollableContainerRef, onFetchMoreItems],

@@ -1,13 +1,11 @@
 {
   "compilerOptions": {
-    "lib": ["dom", "ESNext"],
-    "target": "ES6",
-    "module": "ESNext",
-    "jsx": "react",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "target": "es5",
+    "module": "esnext",
     "moduleResolution": "node",
     "esModuleInterop": true,
-    "sourceMap": true,
-    "declaration": true,
+    "jsx": "react-jsx",
     "outDir": "./dist",
     "skipLibCheck": true,
     "allowSyntheticDefaultImports": true,

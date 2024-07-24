@@ -6,7 +6,7 @@ import type { ComponentWithAs, HoneyBoxProps, HoneyStatusContentOptions } from '
 import type { HoneyListItem, HoneyListItemKey } from './HoneyList.types';
 import { HoneyBox } from '../HoneyBox';
 import { HoneyStatusContent } from '../HoneyStatusContent';
-import { getListItemId } from './HoneyList.helpers';
+import { getHoneyListItemId } from './HoneyList.helpers';
 
 const HoneyListStyled = styled(
   HoneyBox,
@@ -17,15 +17,18 @@ const HoneyListStyled = styled(
   overflow: hidden auto;
 `;
 
-type HoneyListProps<Item extends HoneyListItem> = Omit<
-  HoneyStatusContentOptions<
-    Omit<HoneyBoxProps, 'children'> & {
-      children: (item: Item, itemIndex: number, thisItems: Item[]) => ReactNode;
-      items: Item[] | undefined;
-      itemKey?: HoneyListItemKey<Item>;
-    }
-  >,
-  'isNoContent'
+export type HoneyListGenericProps<Item extends HoneyListItem, T = unknown> = Omit<
+  HoneyBoxProps,
+  'children'
+> & {
+  children: (item: Item, itemIndex: number, thisItems: Item[]) => ReactNode;
+  items: Item[] | undefined;
+  itemKey?: HoneyListItemKey<Item>;
+} & T;
+
+type HoneyListProps<Item extends HoneyListItem> = HoneyListGenericProps<
+  Item,
+  Omit<HoneyStatusContentOptions, 'isNoContent'>
 >;
 
 export const HoneyList = <Item extends HoneyListItem>({
@@ -40,7 +43,7 @@ export const HoneyList = <Item extends HoneyListItem>({
   ...boxProps
 }: ComponentWithAs<HoneyListProps<Item>>) => {
   return (
-    <HoneyListStyled {...boxProps}>
+    <HoneyListStyled data-testid="honey-list" {...boxProps}>
       <HoneyStatusContent
         isLoading={isLoading}
         loadingBlockContent={loadingBlockContent}
@@ -50,7 +53,7 @@ export const HoneyList = <Item extends HoneyListItem>({
         noContent={noContent}
       >
         {items?.map((item, itemIndex, thisItems) => {
-          const itemId = getListItemId(item, itemKey, itemIndex);
+          const itemId = getHoneyListItemId(item, itemKey, itemIndex);
 
           return <Fragment key={String(itemId)}>{children(item, itemIndex, thisItems)}</Fragment>;
         })}

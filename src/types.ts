@@ -5,6 +5,8 @@ import type { DataType } from 'csstype';
 
 export type TimeoutId = ReturnType<typeof setTimeout>;
 
+export type Nullable<T> = T | null;
+
 type ExtractKeys<T, Condition> = {
   [K in keyof T]: T[K] extends Condition ? K : never;
 }[keyof T];
@@ -171,8 +173,10 @@ export type HoneyScreenState = {
 };
 
 export type HoneyContainer = {
-  /** Max container width in px */
-  maxWidth: number;
+  /**
+   * Max container width in any CSS distance value.
+   */
+  maxWidth: HoneyCSSDistanceValue;
 };
 
 /**
@@ -345,6 +349,11 @@ export interface BaseHoneyTheme {
 }
 
 export interface HoneyTheme extends BaseHoneyTheme {}
+
+declare module 'styled-components' {
+  // eslint-disable-next-line @typescript-eslint/no-empty-interface
+  interface DefaultTheme extends HoneyTheme {}
+}
 
 export type HoneyThemedProps<T = unknown> = { theme: HoneyTheme } & T;
 

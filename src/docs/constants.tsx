@@ -9,6 +9,7 @@ import ThematizationPage from './pages/thematization.page.mdx';
 import HoneyBoxPage from './pages/honey-box.page.mdx';
 import HoneyGridPage from './pages/honey-grid.page.mdx';
 import HoneyListPage from './pages/honey-list.page.mdx';
+import HoneyLoopingListPage from './pages/honey-looping-list.page.mdx';
 import HoneyLazyContentPage from './pages/honey-lazy-content.page.mdx';
 import UtilsPage from './pages/utils.page.mdx';
 
@@ -68,6 +69,11 @@ export const PAGES: Page[] = [
     path: 'list',
     menuLabel: 'List',
     element: <HoneyListPage components={MDX_COMPONENTS} />,
+  },
+  {
+    path: 'looping-list',
+    menuLabel: 'Looping List',
+    element: <HoneyLoopingListPage components={MDX_COMPONENTS} />,
   },
   {
     path: 'utils',

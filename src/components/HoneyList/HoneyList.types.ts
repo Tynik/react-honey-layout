@@ -1,4 +1,4 @@
-export type HoneyListItem = object;
+export type HoneyListItem = object | string | number;
 
 export type HoneyListItemKey<Item extends HoneyListItem> = ((item: Item) => string) | keyof Item;
 
