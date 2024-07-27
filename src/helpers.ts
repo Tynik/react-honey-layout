@@ -21,9 +21,10 @@ import type {
   Nullable,
   HoneyCSSProperties,
   HoneyCSSDimensionProperty,
+  HoneyCSSColorProperty,
 } from './types';
 import { camelToDashCase, convertHexToHexWithAlpha, media, pxToRem } from './utils';
-import { CSS_DIMENSION_PROPERTIES } from './constants';
+import { CSS_COLOR_PROPERTIES, CSS_DIMENSION_PROPERTIES } from './constants';
 
 /**
  * Conditional type to determine the return type of the `resolveSpacing` function.
@@ -94,6 +95,27 @@ export const resolveSpacing =
   };
 
 /**
+ * Resolves a color value based on the provided color key and optional alpha value.
+ *
+ * @param colorKey - The key representing the color to be resolved. This key is a string in the format 'colorType.colorName'.
+ * @param alpha - Optional. The alpha transparency value between 0 (fully transparent) and 1 (fully opaque).
+ *
+ * @returns The resolved color value from the theme, either in HEX format or in 8-character HEX with alpha format.
+ *
+ * @throws Will throw an error if the provided alpha value is not within the valid range (0 to 1).
+ * @throws Will throw an error if the color format is invalid.
+ */
+export const resolveColor =
+  (colorKey: HoneyColorKey, alpha?: number) =>
+  ({ theme }: HoneyThemedProps): HoneyColor => {
+    const [colorType, colorName] = colorKey.split('.');
+
+    const color = theme.colors[colorType as keyof BaseHoneyColors][colorName];
+
+    return alpha !== undefined ? convertHexToHexWithAlpha(color, alpha) : color;
+  };
+
+/**
  * Type guard function to check if a property name is a dimension property.
  *
  * @param {keyof CSS.Properties} propertyName - The name of the CSS property.
@@ -105,6 +127,31 @@ const checkIsCSSDimensionProperty = (
 ): propertyName is HoneyCSSDimensionProperty => {
   return (CSS_DIMENSION_PROPERTIES as readonly string[]).includes(propertyName as string);
 };
+
+/**
+ * Type guard function to check if a property name is a color property.
+ *
+ * @param {keyof CSS.Properties} propertyName - The name of the CSS property.
+ *
+ * @returns {propertyName is HoneyCSSColorProperty} - True if the property name is a color property, false otherwise.
+ */
+const checkIsCSSColorProperty = (
+  propertyName: keyof CSS.Properties,
+): propertyName is HoneyCSSColorProperty => {
+  return (CSS_COLOR_PROPERTIES as readonly string[]).includes(propertyName as string);
+};
+
+/**
+ * Type guard function to check if a string value follows the pattern of a theme color value.
+ *
+ * A theme color value is assumed to be a string containing exactly one dot (e.g., 'primary.main').
+ *
+ * @param {string} propertyValue - The string value to check.
+ *
+ * @returns {value is HoneyColorKey} - True if the string value is a theme color value, false otherwise.
+ */
+const checkIsThemeColorValue = (propertyValue: string): propertyValue is HoneyColorKey =>
+  propertyValue.split('.').length === 2;
 
 /**
  * Retrieves the CSS property value for a specific breakpoint, potentially resolving it to include units.
@@ -135,12 +182,21 @@ const getCSSPropertyValue = <CSSProperty extends keyof CSS.Properties>(
       ? propertyValue[breakpoint]
       : propertyValue;
 
-  if (
-    checkIsCSSDimensionProperty(propertyName) &&
-    (typeof resolvedValue === 'number' || Array.isArray(resolvedValue))
-  ) {
-    // @ts-ignore
-    return resolveSpacing(resolvedValue, 'px');
+  if (resolvedValue === undefined) {
+    return undefined;
+  }
+
+  if (checkIsCSSDimensionProperty(propertyName)) {
+    if (typeof resolvedValue === 'number' || Array.isArray(resolvedValue)) {
+      // @ts-expect-error
+      return resolveSpacing(resolvedValue, 'px');
+    }
+  }
+
+  if (checkIsCSSColorProperty(propertyName)) {
+    if (typeof resolvedValue === 'string' && checkIsThemeColorValue(resolvedValue)) {
+      return resolveColor(resolvedValue);
+    }
   }
 
   return resolvedValue;
@@ -249,27 +305,6 @@ export const generateMediaStyles =
         ${generateStyles(breakpoint)};
       }
     `;
-  };
-
-/**
- * Resolves a color value based on the provided color key and optional alpha value.
- *
- * @param colorKey - The key representing the color to be resolved. This key is a string in the format 'colorType.colorName'.
- * @param alpha - Optional. The alpha transparency value between 0 (fully transparent) and 1 (fully opaque).
- *
- * @returns The resolved color value from the theme, either in HEX format or in 8-character HEX with alpha format.
- *
- * @throws Will throw an error if the provided alpha value is not within the valid range (0 to 1).
- * @throws Will throw an error if the color format is invalid.
- */
-export const resolveColor =
-  (colorKey: HoneyColorKey, alpha?: number) =>
-  ({ theme }: HoneyThemedProps): HoneyColor => {
-    const [colorType, colorName] = colorKey.split('.');
-
-    const color = theme.colors[colorType as keyof BaseHoneyColors][colorName];
-
-    return alpha !== undefined ? convertHexToHexWithAlpha(color, alpha) : color;
   };
 
 /**

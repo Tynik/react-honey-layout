@@ -1,6 +1,6 @@
 import type { HTMLAttributes } from 'react';
 
-import type { HoneyCSSDimensionProperty } from './types';
+import type { HoneyCSSColorProperty, HoneyCSSDimensionProperty } from './types';
 
 export const HTML_ATTRIBUTES: (keyof HTMLAttributes<HTMLElement>)[] = [
   // Standard HTML Attributes
@@ -58,4 +58,21 @@ export const CSS_DIMENSION_PROPERTIES: HoneyCSSDimensionProperty[] = [
   'right',
   'bottom',
   'left',
+  'gap',
+  'rowGap',
+  'columnGap',
+];
+
+export const CSS_COLOR_PROPERTIES: HoneyCSSColorProperty[] = [
+  'color',
+  'backgroundColor',
+  'borderColor',
+  'borderTopColor',
+  'borderRightColor',
+  'borderBottomColor',
+  'borderLeftColor',
+  'outlineColor',
+  'textDecorationColor',
+  'fill',
+  'stroke',
 ];

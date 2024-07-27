@@ -48,6 +48,27 @@ export type HoneyCSSDimensionProperty = keyof Pick<
   | 'right'
   | 'bottom'
   | 'left'
+  | 'gap'
+  | 'rowGap'
+  | 'columnGap'
+>;
+
+/**
+ * Represents a subset of CSS properties that define color-related styles.
+ */
+export type HoneyCSSColorProperty = keyof Pick<
+  CSS.Properties,
+  | 'color'
+  | 'backgroundColor'
+  | 'borderColor'
+  | 'borderTopColor'
+  | 'borderRightColor'
+  | 'borderBottomColor'
+  | 'borderLeftColor'
+  | 'outlineColor'
+  | 'textDecorationColor'
+  | 'fill'
+  | 'stroke'
 >;
 
 /**
@@ -158,6 +179,18 @@ type HoneyCSSDimensionNumericValue<CSSProperty extends keyof CSS.Properties> =
   CSSProperty extends HoneyCSSDimensionProperty ? HoneyCSSMultiValue<number> : never;
 
 /**
+ * Type representing possible color values for CSS color properties.
+ *
+ * If `CSSProperty` extends `HoneyCSSColorProperty`, this type will be `HoneyColorKey`,
+ * which can be a string representing a color key in the theme or any valid CSS color value.
+ * Otherwise, it results in `never`, indicating that non-color properties are not included.
+ *
+ * @template CSSProperty - The key of a CSS property to check.
+ */
+type HoneyCSSColorValue<CSSProperty extends keyof CSS.Properties> =
+  CSSProperty extends HoneyCSSColorProperty ? HoneyColorKey : never;
+
+/**
  * Represents a responsive CSS property value for a specific CSS property.
  *
  * This type maps each breakpoint name to a corresponding CSS property value.
@@ -173,6 +206,7 @@ type HoneyResponsiveCSSPropertyValue<CSSProperty extends keyof CSS.Properties> =
     HoneyBreakpointName,
     | CSS.Properties[CSSProperty]
     | HoneyCSSDimensionNumericValue<CSSProperty>
+    | HoneyCSSColorValue<CSSProperty>
     | HoneyCSSPropertyValueFn<CSSProperty>
   >
 >;
@@ -191,6 +225,7 @@ type HoneyResponsiveCSSPropertyValue<CSSProperty extends keyof CSS.Properties> =
 export type HoneyCSSPropertyValue<CSSProperty extends keyof CSS.Properties> =
   | CSS.Properties[CSSProperty]
   | HoneyCSSDimensionNumericValue<CSSProperty>
+  | HoneyCSSColorValue<CSSProperty>
   | HoneyCSSPropertyValueFn<CSSProperty>
   | HoneyResponsiveCSSPropertyValue<CSSProperty>;
 
