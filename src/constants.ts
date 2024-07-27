@@ -1,5 +1,7 @@
 import type { HTMLAttributes } from 'react';
 
+import type { HoneyCSSDimensionProperty } from './types';
+
 export const HTML_ATTRIBUTES: (keyof HTMLAttributes<HTMLElement>)[] = [
   // Standard HTML Attributes
   'accessKey',
@@ -37,4 +39,23 @@ export const HTML_ATTRIBUTES: (keyof HTMLAttributes<HTMLElement>)[] = [
   'is',
   // DOM
   'children',
+];
+
+export const CSS_DIMENSION_PROPERTIES: HoneyCSSDimensionProperty[] = [
+  'width',
+  'height',
+  'margin',
+  'marginTop',
+  'marginRight',
+  'marginBottom',
+  'marginLeft',
+  'padding',
+  'paddingTop',
+  'paddingRight',
+  'paddingBottom',
+  'paddingLeft',
+  'top',
+  'right',
+  'bottom',
+  'left',
 ];

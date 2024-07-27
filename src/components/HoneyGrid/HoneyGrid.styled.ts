@@ -1,7 +1,7 @@
 import type { CSSProperties } from 'styled-components';
 import styled, { css } from 'styled-components';
 
-import type { HoneyBoxProps } from '../../types';
+import type { HoneyBoxProps } from '../HoneyBox';
 import { resolveSpacing } from '../../helpers';
 import { HoneyGridColumnStyled } from './HoneyGridColumn.styled';
 import { HoneyBox } from '../HoneyBox';

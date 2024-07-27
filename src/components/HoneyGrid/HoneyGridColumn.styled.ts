@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components';
 
-import type { HoneyBoxProps } from '../../types';
-import { resolveSpacing } from '../../helpers';
+import type { HoneyBoxProps } from '../HoneyBox';
+import { bpMedia, resolveSpacing } from '../../helpers';
 import { HoneyBox } from '../HoneyBox';
 
 export type HoneyGridColumnStyledProps = HoneyBoxProps & {
@@ -40,6 +40,10 @@ export const HoneyGridColumnStyled = styled(HoneyBox)<HoneyGridColumnStyledProps
       flex-basis: calc(${columnWidth}% - ${columnGap}px);
 
       overflow: hidden;
+
+      ${bpMedia('lg').up} {
+        max-width: calc(${columnWidth}% - ${columnGap}px);
+      }
     `;
   }}
 `;

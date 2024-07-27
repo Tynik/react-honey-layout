@@ -2,8 +2,9 @@ import React, { Fragment } from 'react';
 import type { ReactNode } from 'react';
 import styled from 'styled-components';
 
-import type { ComponentWithAs, HoneyBoxProps, HoneyStatusContentOptions } from '../../types';
+import type { ComponentWithAs, HoneyStatusContentOptions } from '../../types';
 import type { HoneyListItem, HoneyListItemKey } from './HoneyList.types';
+import type { HoneyBoxProps } from '../HoneyBox';
 import { HoneyBox } from '../HoneyBox';
 import { HoneyStatusContent } from '../HoneyStatusContent';
 import { getHoneyListItemId } from './HoneyList.helpers';

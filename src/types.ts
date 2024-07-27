@@ -1,6 +1,6 @@
 import * as CSS from 'csstype';
 
-import type { ComponentType, HTMLAttributes, ReactNode } from 'react';
+import type { ComponentType, ReactNode } from 'react';
 import type { DataType } from 'csstype';
 
 export type TimeoutId = ReturnType<typeof setTimeout>;
@@ -24,41 +24,64 @@ export type KeysWithNonArrayValues<T> = Extract<
   string
 >;
 
-type HoneyCSSAbsoluteDistanceUnit = 'px' | 'cm' | 'mm' | 'in' | 'pt' | 'pc';
-type HoneyCSSRelativeDistanceUnit = 'em' | 'rem' | '%' | 'vh' | 'vw' | 'vmin' | 'vmax';
+type HoneyCSSAbsoluteDimensionUnit = 'px' | 'cm' | 'mm' | 'in' | 'pt' | 'pc';
+type HoneyCSSRelativeDimensionUnit = 'em' | 'rem' | '%' | 'vh' | 'vw' | 'vmin' | 'vmax';
 
 /**
- * Represents a CSS distance unit, which can be either an absolute or relative distance unit.
+ * Type representing CSS properties related to spacing and positioning.
  */
-export type HoneyCSSDistanceUnit = HoneyCSSAbsoluteDistanceUnit | HoneyCSSRelativeDistanceUnit;
+export type HoneyCSSDimensionProperty = keyof Pick<
+  CSS.Properties,
+  | 'width'
+  | 'height'
+  | 'margin'
+  | 'marginTop'
+  | 'marginRight'
+  | 'marginBottom'
+  | 'marginLeft'
+  | 'padding'
+  | 'paddingTop'
+  | 'paddingRight'
+  | 'paddingBottom'
+  | 'paddingLeft'
+  | 'top'
+  | 'right'
+  | 'bottom'
+  | 'left'
+>;
 
-export type HoneyCSSResolution = 'dpi' | 'dpcm' | 'dppx' | 'x';
+/**
+ * Represents a CSS dimension unit, which can be either an absolute or relative.
+ */
+export type HoneyCSSDimensionUnit = HoneyCSSAbsoluteDimensionUnit | HoneyCSSRelativeDimensionUnit;
 
-export type HoneyCSSResolutionValue = `${number}${HoneyCSSResolution}`;
+export type HoneyCSSResolutionUnit = 'dpi' | 'dpcm' | 'dppx' | 'x';
+
+export type HoneyCSSResolutionValue = `${number}${HoneyCSSResolutionUnit}`;
 
 export type HoneyCSSMediaOrientation = 'landscape' | 'portrait';
 
 /**
- * Represents a specific CSS distance value with a unit.
+ * Represents a specific CSS dimension value with a unit.
  */
-export type HoneyCSSDistanceValue<Unit extends HoneyCSSDistanceUnit = HoneyCSSDistanceUnit> =
+export type HoneyCSSDimensionValue<Unit extends HoneyCSSDimensionUnit = HoneyCSSDimensionUnit> =
   `${number}${Unit}`;
 
 /**
- * Represents a shorthand CSS distance value for 2, 3, or 4 values with the same unit.
+ * Represents a shorthand CSS dimension value for 2, 3, or 4 values with the same unit.
  *
  * @template Value - Type of the value.
  * @template Unit - CSS length unit.
  */
-export type HoneyCSSDistanceShortHandValue<
+export type HoneyCSSDimensionShortHandValue<
   Value,
-  Unit extends HoneyCSSDistanceUnit,
+  Unit extends HoneyCSSDimensionUnit,
 > = Value extends [unknown, unknown]
-  ? `${HoneyCSSDistanceValue<Unit>} ${HoneyCSSDistanceValue<Unit>}`
+  ? `${HoneyCSSDimensionValue<Unit>} ${HoneyCSSDimensionValue<Unit>}`
   : Value extends [unknown, unknown, unknown]
-    ? `${HoneyCSSDistanceValue<Unit>} ${HoneyCSSDistanceValue<Unit>} ${HoneyCSSDistanceValue<Unit>}`
+    ? `${HoneyCSSDimensionValue<Unit>} ${HoneyCSSDimensionValue<Unit>} ${HoneyCSSDimensionValue<Unit>}`
     : Value extends [unknown, unknown, unknown, unknown]
-      ? `${HoneyCSSDistanceValue<Unit>} ${HoneyCSSDistanceValue<Unit>} ${HoneyCSSDistanceValue<Unit>} ${HoneyCSSDistanceValue<Unit>}`
+      ? `${HoneyCSSDimensionValue<Unit>} ${HoneyCSSDimensionValue<Unit>} ${HoneyCSSDimensionValue<Unit>} ${HoneyCSSDimensionValue<Unit>}`
       : never;
 
 /**
@@ -81,12 +104,12 @@ export type HoneyCSSMultiValue<T> = T | HoneyCSSArrayValue<T>;
 export type HoneyCSSMediaRule = {
   operator?: 'not' | 'only';
   mediaType?: 'all' | 'print' | 'screen' | 'speech';
-  width?: HoneyCSSDistanceValue;
-  minWidth?: HoneyCSSDistanceValue;
-  maxWidth?: HoneyCSSDistanceValue;
-  height?: HoneyCSSDistanceValue;
-  minHeight?: HoneyCSSDistanceValue;
-  maxHeight?: HoneyCSSDistanceValue;
+  width?: HoneyCSSDimensionValue;
+  minWidth?: HoneyCSSDimensionValue;
+  maxWidth?: HoneyCSSDimensionValue;
+  height?: HoneyCSSDimensionValue;
+  minHeight?: HoneyCSSDimensionValue;
+  maxHeight?: HoneyCSSDimensionValue;
   orientation?: HoneyCSSMediaOrientation;
   resolution?: HoneyCSSResolutionValue;
   minResolution?: HoneyCSSResolutionValue;
@@ -113,7 +136,6 @@ export type HoneyBreakpoints = {
 };
 
 export type HoneyBreakpointName = keyof HoneyBreakpoints;
-
 /**
  * A type representing a function that returns a value for a specific CSS property based on the provided theme.
  *
@@ -124,19 +146,51 @@ type HoneyCSSPropertyValueFn<CSSProperty extends keyof CSS.Properties> = (props:
 }) => CSS.Properties[CSSProperty];
 
 /**
+ * Type representing numeric values for CSS dimension properties.
+ *
+ * If `CSSProperty` extends `HoneyCSSDimensionProperty`, this type will be a single value or an array of numbers,
+ * allowing for spacing properties that can have single or multiple numeric values (e.g., margin, padding).
+ * Otherwise, it results in `never`, indicating that non-distance properties are not included.
+ *
+ * @template CSSProperty - The key of a CSS property to check.
+ */
+type HoneyCSSDimensionNumericValue<CSSProperty extends keyof CSS.Properties> =
+  CSSProperty extends HoneyCSSDimensionProperty ? HoneyCSSMultiValue<number> : never;
+
+/**
  * Represents a responsive CSS property value for a specific CSS property.
- * Each breakpoint name is associated with the corresponding CSS property value.
+ *
+ * This type maps each breakpoint name to a corresponding CSS property value.
+ * The values can include:
+ * - A standard CSS property value.
+ * - A numeric value for distance properties.
+ * - A function returning a value based on the CSS property.
+ *
+ * @template CSSProperty - The key of a CSS property for which values are defined.
  */
 type HoneyResponsiveCSSPropertyValue<CSSProperty extends keyof CSS.Properties> = Partial<
-  Record<HoneyBreakpointName, CSS.Properties[CSSProperty] | HoneyCSSPropertyValueFn<CSSProperty>>
+  Record<
+    HoneyBreakpointName,
+    | CSS.Properties[CSSProperty]
+    | HoneyCSSDimensionNumericValue<CSSProperty>
+    | HoneyCSSPropertyValueFn<CSSProperty>
+  >
 >;
 
 /**
  * Represents a CSS property value that can be either a single value or a responsive value.
- * For responsive values, each breakpoint name is associated with the corresponding CSS property value.
+ *
+ * This type can be one of the following:
+ * - A standard CSS property value.
+ * - A numeric value for distance properties.
+ * - A function that generates the value based on the CSS property.
+ * - A responsive value where each breakpoint maps to a specific CSS property value.
+ *
+ * @template CSSProperty - The key of a CSS property to check.
  */
 export type HoneyCSSPropertyValue<CSSProperty extends keyof CSS.Properties> =
   | CSS.Properties[CSSProperty]
+  | HoneyCSSDimensionNumericValue<CSSProperty>
   | HoneyCSSPropertyValueFn<CSSProperty>
   | HoneyResponsiveCSSPropertyValue<CSSProperty>;
 
@@ -146,11 +200,6 @@ export type HoneyCSSPropertyValue<CSSProperty extends keyof CSS.Properties> =
 export type HoneyCSSProperties = Partial<{
   [CSSProperty in keyof CSS.Properties as `$${CSSProperty}`]: HoneyCSSPropertyValue<CSSProperty>;
 }>;
-
-/**
- * Represents the props that can be used to style a box element with CSS properties.
- */
-export type HoneyBoxProps = HTMLAttributes<HTMLElement> & HoneyCSSProperties;
 
 /**
  * Represents the state of the screen layout.
@@ -176,7 +225,7 @@ export type HoneyContainer = {
   /**
    * Max container width in any CSS distance value.
    */
-  maxWidth: HoneyCSSDistanceValue;
+  maxWidth: HoneyCSSDimensionValue;
 };
 
 /**
@@ -313,7 +362,7 @@ export type HoneyFontName = keyof HoneyFonts;
  * Represents a map of dimension names to CSS distance values.
  */
 export interface HoneyDimensions {
-  [key: string]: HoneyCSSDistanceValue;
+  [key: string]: HoneyCSSDimensionValue;
 }
 
 export type HoneyDimensionName = keyof HoneyDimensions;

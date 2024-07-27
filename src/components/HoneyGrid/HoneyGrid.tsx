@@ -12,7 +12,7 @@ type HoneyGridContextValue = {
 
 const HoneyGridContext = createContext<HoneyGridContextValue | undefined>(undefined);
 
-export type HoneyLayoutGridProps = HoneyGridStyledProps & {
+export type HoneyGridProps = HoneyGridStyledProps & {
   /**
    * The number of columns in the grid layout.
    */
@@ -31,7 +31,7 @@ export const HoneyGrid = ({
   columnGrowing = true,
   spacing,
   ...props
-}: PropsWithChildren<HoneyLayoutGridProps>) => {
+}: PropsWithChildren<HoneyGridProps>) => {
   const contextValue = useMemo<HoneyGridContextValue>(
     () => ({
       columns,

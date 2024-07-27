@@ -1,8 +1,11 @@
 import styled, { css } from 'styled-components';
+import type { HTMLAttributes } from 'react';
 
-import type { HoneyBoxProps } from '../types';
+import type { HoneyCSSProperties } from '../types';
 import { generateMediaStyles, generateStyles } from '../helpers';
 import { HTML_ATTRIBUTES } from '../constants';
+
+export type HoneyBoxProps = HTMLAttributes<HTMLElement> & HoneyCSSProperties;
 
 export const HoneyBox = styled.div.withConfig({
   shouldForwardProp: prop =>

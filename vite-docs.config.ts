@@ -3,10 +3,17 @@ import type { UserConfig } from 'vite';
 import { resolve } from 'path';
 import react from '@vitejs/plugin-react';
 import mdx from '@mdx-js/rollup';
+import checker from 'vite-plugin-checker';
 
 export default {
   root: 'src/docs',
-  plugins: [react(), mdx()],
+  plugins: [
+    checker({
+      typescript: true,
+    }),
+    react(),
+    mdx(),
+  ],
   server: {
     port: 9000,
   },
