@@ -13,8 +13,9 @@ export const SquareBox = () => {
     $backgroundColor={{
       xs: 'white',
       sm: colors.neutral.forestGreen,
+      md: 'neutral.forestGreen',
       // You can use `resolveColor` function to get a color value
-      md: resolveColor('neutral.crimsonRed'),
+      lg: resolveColor('neutral.crimsonRed')
     }}
   />
 }
@@ -73,10 +74,39 @@ export const SquareBox = () => {
     $backgroundColor={{
       xs: 'white',
       sm: colors.neutral.forestGreen,
+      md: 'neutral.forestGreen',
       // You can use `resolveColor` function to get a color value
-      md: resolveColor('neutral.crimsonRed'),
+      lg: resolveColor('neutral.crimsonRed')
     }}
   />
 }
 ~~~
 
+### Modifiers
+
+Modifiers allow for additional custom styling to be applied to the `HoneyBox` component.
+Modifiers are functions that return CSS styles, which can be dynamically applied to the `HoneyBox` component.
+
+Below is an example of how to create and use a modifier with the component:
+
+~~~tsx
+import { css } from 'styled-components';
+import type { HoneyModifier } from '@tynik/react-honey-layout';
+import { HoneyBox, resolveColor } from '@tynik/react-honey-layout';
+
+const hoverableModifier: HoneyModifier = () => () => css`
+  &:hover {
+    background-color: ${resolveColor('neutral.coralRed')};
+  }
+`;
+
+export const SquareBox = () => {
+  return <HoneyBox
+    modifiers={[hoverableModifier()]}
+    $width="100px"
+    $height="100px"
+    $margin="0 auto"
+    $backgroundColor="neutral.forestGreen"
+  />
+}
+~~~

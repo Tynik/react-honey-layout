@@ -1,9 +1,9 @@
 import React from 'react';
 import type { PropsWithChildren } from 'react';
 
-import type { HoneyGridColumnProps } from './HoneyGrid.types';
-import { useCurrentHoneyGrid } from './HoneyGrid';
+import type { HoneyGridColumnProps } from './HoneyGridColumn.types';
 import { HoneyGridColumnStyled } from './HoneyGridColumn.styled';
+import { useCurrentHoneyGrid } from '../HoneyGrid/hooks';
 
 export const HoneyGridColumn = ({
   children,

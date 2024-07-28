@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useMemo } from 'react';
+import React, { createContext, useMemo } from 'react';
 import type { PropsWithChildren } from 'react';
 
 import type { HoneyGridStyledProps } from './HoneyGrid.styled';
@@ -10,7 +10,7 @@ type HoneyGridContextValue = {
   spacing: number | undefined;
 };
 
-const HoneyGridContext = createContext<HoneyGridContextValue | undefined>(undefined);
+export const HoneyGridContext = createContext<HoneyGridContextValue | undefined>(undefined);
 
 export type HoneyGridProps = HoneyGridStyledProps & {
   /**
@@ -48,15 +48,4 @@ export const HoneyGrid = ({
       </HoneyGridStyled>
     </HoneyGridContext.Provider>
   );
-};
-
-export const useCurrentHoneyGrid = () => {
-  const context = useContext(HoneyGridContext);
-  if (!context) {
-    throw new Error(
-      'The `useCurrentHoneyGrid()` hook can only be used inside <HoneyGrid/> component!',
-    );
-  }
-
-  return context;
 };

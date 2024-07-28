@@ -1,20 +1,20 @@
-import type { CSSProperties } from 'styled-components';
+import * as CSS from 'csstype';
 import styled, { css } from 'styled-components';
 
 import type { HoneyBoxProps } from '../HoneyBox';
 import { resolveSpacing } from '../../helpers';
-import { HoneyGridColumnStyled } from './HoneyGridColumn.styled';
 import { HoneyBox } from '../HoneyBox';
+import { HoneyGridColumnStyled } from '../HoneyGridColumn';
 
 export type HoneyGridStyledProps = HoneyBoxProps & {
   /**
    * The height of each grid column.
    */
-  columnHeight?: CSSProperties['height'];
+  columnHeight?: CSS.Properties['height'];
   /**
    * The minimum height of each grid column.
    */
-  minColumnHeight?: CSSProperties['height'];
+  minColumnHeight?: CSS.Properties['height'];
   /**
    * The spacing between grid columns.
    */

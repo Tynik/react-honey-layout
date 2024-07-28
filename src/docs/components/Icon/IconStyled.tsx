@@ -1,13 +1,13 @@
+import * as CSS from 'csstype';
 import styled, { css } from 'styled-components';
 
 import type { SVGAttributes } from 'react';
-import type { CSSProperties } from 'styled-components';
 
 export type IconSize = 'small' | 'medium' | 'large';
 
 export type IconStyledProps = SVGAttributes<SVGElement> & {
   $size?: IconSize;
-  $color?: CSSProperties['color'];
+  $color?: CSS.Properties['color'];
   $rotate?: number;
 };
 

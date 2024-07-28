@@ -1,2 +1,2 @@
 export * from './HoneyGrid';
-export * from './HoneyGridColumn';
+export * from './hooks';

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 
 import type { PropsWithChildren } from 'react';
+
 import type { TimeoutId } from '../types';
 
 type HoneyLazyContentProps = {
@@ -29,7 +30,7 @@ type HoneyLazyContentProps = {
 };
 
 /**
- * Component for lazy loading and unloading content based on a mount/unmount state.
+ * Component for lazy loading/unloading content based on a mount/unmount state.
  */
 export const HoneyLazyContent = ({
   children,

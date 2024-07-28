@@ -1,11 +1,14 @@
-import styled, { css } from 'styled-components';
 import type { HTMLAttributes } from 'react';
+import styled, { css } from 'styled-components';
 
-import type { HoneyCSSProperties } from '../types';
+import type { HoneyCSSProperties, HoneyModifierResultFn } from '../types';
 import { generateMediaStyles, generateStyles } from '../helpers';
 import { HTML_ATTRIBUTES } from '../constants';
 
-export type HoneyBoxProps = HTMLAttributes<HTMLElement> & HoneyCSSProperties;
+export type HoneyBoxProps = HTMLAttributes<HTMLElement> &
+  HoneyCSSProperties & {
+    modifiers?: HoneyModifierResultFn[];
+  };
 
 export const HoneyBox = styled.div.withConfig({
   shouldForwardProp: prop =>
@@ -14,7 +17,9 @@ export const HoneyBox = styled.div.withConfig({
     prop.startsWith('data-') ||
     prop.startsWith('aria-'),
 })<HoneyBoxProps>`
-  ${() => css`
+  ${({ modifiers }) => css`
+    ${modifiers?.map(modifier => modifier())};
+
     ${generateStyles('xs')};
 
     ${generateMediaStyles('sm')};
