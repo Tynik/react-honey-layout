@@ -24,6 +24,8 @@ export type KeysWithNonArrayValues<T> = Extract<
   string
 >;
 
+export type HoneyHEXColor = `#${string}`;
+
 type HoneyCSSAbsoluteDimensionUnit = 'px' | 'cm' | 'mm' | 'in' | 'pt' | 'pc';
 type HoneyCSSRelativeDimensionUnit = 'em' | 'rem' | '%' | 'vh' | 'vw' | 'vmin' | 'vmax';
 
@@ -81,6 +83,8 @@ export type HoneyCSSResolutionUnit = 'dpi' | 'dpcm' | 'dppx' | 'x';
 export type HoneyCSSResolutionValue = `${number}${HoneyCSSResolutionUnit}`;
 
 export type HoneyCSSMediaOrientation = 'landscape' | 'portrait';
+
+export type HoneyCSSColor = DataType.NamedColor | HoneyHEXColor;
 
 /**
  * Represents a specific CSS dimension value with a unit.
@@ -179,16 +183,16 @@ type HoneyCSSDimensionNumericValue<CSSProperty extends keyof CSS.Properties> =
   CSSProperty extends HoneyCSSDimensionProperty ? HoneyCSSMultiValue<number> : never;
 
 /**
- * Type representing possible color values for CSS color properties.
+ * Type representing possible values for CSS color properties.
  *
- * If `CSSProperty` extends `HoneyCSSColorProperty`, this type will be `HoneyColorKey`,
- * which can be a string representing a color key in the theme or any valid CSS color value.
- * Otherwise, it results in `never`, indicating that non-color properties are not included.
+ * This type can be either a color from the theme or a valid CSS color value.
  *
  * @template CSSProperty - The key of a CSS property to check.
  */
 type HoneyCSSColorValue<CSSProperty extends keyof CSS.Properties> =
-  CSSProperty extends HoneyCSSColorProperty ? HoneyColorKey : never;
+  CSSProperty extends HoneyCSSColorProperty
+    ? HoneyCSSColor | HoneyColorKey
+    : CSS.Properties[CSSProperty] | HoneyCSSDimensionNumericValue<CSSProperty>;
 
 /**
  * Represents a responsive CSS property value for a specific CSS property.
@@ -196,7 +200,7 @@ type HoneyCSSColorValue<CSSProperty extends keyof CSS.Properties> =
  * This type maps each breakpoint name to a corresponding CSS property value.
  * The values can include:
  * - A standard CSS property value.
- * - A numeric value for distance properties.
+ * - A numeric value for dimension properties.
  * - A function returning a value based on the CSS property.
  *
  * @template CSSProperty - The key of a CSS property for which values are defined.
@@ -204,10 +208,7 @@ type HoneyCSSColorValue<CSSProperty extends keyof CSS.Properties> =
 type HoneyResponsiveCSSPropertyValue<CSSProperty extends keyof CSS.Properties> = Partial<
   Record<
     HoneyBreakpointName,
-    | CSS.Properties[CSSProperty]
-    | HoneyCSSDimensionNumericValue<CSSProperty>
-    | HoneyCSSColorValue<CSSProperty>
-    | HoneyCSSPropertyValueFn<CSSProperty>
+    HoneyCSSColorValue<CSSProperty> | HoneyCSSPropertyValueFn<CSSProperty>
   >
 >;
 
@@ -216,15 +217,13 @@ type HoneyResponsiveCSSPropertyValue<CSSProperty extends keyof CSS.Properties> =
  *
  * This type can be one of the following:
  * - A standard CSS property value.
- * - A numeric value for distance properties.
+ * - A numeric value for dimension properties.
  * - A function that generates the value based on the CSS property.
  * - A responsive value where each breakpoint maps to a specific CSS property value.
  *
  * @template CSSProperty - The key of a CSS property to check.
  */
 export type HoneyCSSPropertyValue<CSSProperty extends keyof CSS.Properties> =
-  | CSS.Properties[CSSProperty]
-  | HoneyCSSDimensionNumericValue<CSSProperty>
   | HoneyCSSColorValue<CSSProperty>
   | HoneyCSSPropertyValueFn<CSSProperty>
   | HoneyResponsiveCSSPropertyValue<CSSProperty>;
@@ -277,8 +276,6 @@ export type HoneySpacings = {
   large?: number;
 };
 
-export type HoneyColor = DataType.Color;
-
 /**
  * Defines the color palette used in the theme.
  */
@@ -287,44 +284,44 @@ export interface BaseHoneyColors {
    * Used for elements that require high visibility and emphasis, such as primary buttons, call-to-action elements,
    * and important elements like headers or titles.
    */
-  primary: Record<string, HoneyColor>;
+  primary: Record<string, HoneyCSSColor>;
   /**
    * Used to complement the primary color and add visual interest.
    * Often used for secondary buttons, borders, and decorative elements to provide contrast and balance within the design.
    * Helps create a cohesive visual hierarchy by providing variation in color tones.
    */
-  secondary: Record<string, HoneyColor>;
+  secondary: Record<string, HoneyCSSColor>;
   /**
    * Used to draw attention to specific elements or interactions.
    * Often applied to interactive elements like links, icons, or tooltips to indicate their interactive nature.
    * Can be used sparingly to highlight important information or to create visual focal points.
    */
-  accent: Record<string, HoneyColor>;
+  accent: Record<string, HoneyCSSColor>;
   /**
    * Used for backgrounds, text, and other elements where a subtle, non-distracting color is desired.
    * Provides a versatile palette for elements like backgrounds, borders, text, and icons, allowing other colors to stand
    * out more prominently. Helps maintain balance and readability without overwhelming the user with too much color.
    */
-  neutral: Record<string, HoneyColor>;
+  neutral: Record<string, HoneyCSSColor>;
   /**
    * Used to indicate successful or positive actions or states.
    * Often applied to elements like success messages, notifications, or icons to convey successful completion of tasks or operations.
    * Provides visual feedback to users to indicate that their actions were successful.
    */
-  success: Record<string, HoneyColor>;
+  success: Record<string, HoneyCSSColor>;
   /**
    * Used to indicate cautionary or potentially risky situations.
    * Applied to elements like warning messages, alerts, or icons to notify users about potential issues or actions that require attention.
    * Helps users recognize and address potential problems or risks before they escalate.
    */
-  warning: Record<string, HoneyColor>;
+  warning: Record<string, HoneyCSSColor>;
   /**
    * Used to indicate errors, critical issues, or potentially destructive actions.
    * Applied to elements like error messages, validation indicators, form fields, or delete buttons to alert users about incorrect input,
    * system errors, or actions that may have irreversible consequences. Provides visual feedback to prompt users to
    * take corrective actions or seek assistance when encountering errors or potentially risky actions.
    */
-  error: Record<string, HoneyColor>;
+  error: Record<string, HoneyCSSColor>;
 }
 
 /**

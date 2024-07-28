@@ -1,6 +1,7 @@
 import type {
   HoneyCSSMediaRule,
   HoneyFlattenedItem,
+  HoneyHEXColor,
   KeysWithArrayValues,
   KeysWithNonArrayValues,
   KeysWithStringValues,
@@ -82,9 +83,9 @@ export const calculatePercentage = (value: number, percentage: number): number =
  *
  * @throws {Error} If alpha value is not between 0 and 1, or if the hex code is invalid.
  *
- * @returns The 8-character HEX with alpha (RRGGBBAA) format color code, or null if input is invalid.
+ * @returns {HoneyHEXColor} - The 8-character HEX with alpha (RRGGBBAA) format color code, or null if input is invalid.
  */
-export const convertHexToHexWithAlpha = (hex: string, alpha: number): string => {
+export const convertHexToHexWithAlpha = (hex: string, alpha: number): HoneyHEXColor => {
   if (alpha < 0 || alpha > 1) {
     throw new Error(`[honey-layout]: Alpha "${alpha}" is not a valid hex format.`);
   }

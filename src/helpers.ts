@@ -16,7 +16,7 @@ import type {
   HoneyColorKey,
   BaseHoneyColors,
   HoneyFontName,
-  HoneyColor,
+  HoneyCSSColor,
   HoneyDimensionName,
   Nullable,
   HoneyCSSProperties,
@@ -107,13 +107,46 @@ export const resolveSpacing =
  */
 export const resolveColor =
   (colorKey: HoneyColorKey, alpha?: number) =>
-  ({ theme }: HoneyThemedProps): HoneyColor => {
+  ({ theme }: HoneyThemedProps): HoneyCSSColor => {
     const [colorType, colorName] = colorKey.split('.');
 
     const color = theme.colors[colorType as keyof BaseHoneyColors][colorName];
 
     return alpha !== undefined ? convertHexToHexWithAlpha(color, alpha) : color;
   };
+
+/**
+ * Resolves the font styles based on the provided font name from the theme.
+ *
+ * @param fontName - The name of the font to be resolved from the theme.
+ *
+ * @returns A function that takes the theme and returns the CSS for the specified font.
+ */
+export const resolveFont =
+  (fontName: HoneyFontName) =>
+  ({ theme }: HoneyThemedProps) => {
+    const font = theme.fonts[fontName];
+
+    return css`
+      font-family: ${font.family};
+      font-size: ${pxToRem(font.size)};
+      font-weight: ${font.weight};
+      line-height: ${font.lineHeight !== undefined && pxToRem(font.lineHeight)};
+      letter-spacing: ${font.letterSpacing !== undefined && pxToRem(font.letterSpacing)};
+    `;
+  };
+
+/**
+ * Resolves a specific dimension value from the theme configuration.
+ *
+ * @param dimensionName - The name of the dimension to resolve.
+ *
+ * @returns A function that takes the theme and returns the resolved dimension value from the theme.
+ */
+export const resolveDimension =
+  (dimensionName: HoneyDimensionName) =>
+  ({ theme }: HoneyThemedProps) =>
+    theme.dimensions[dimensionName];
 
 /**
  * Type guard function to check if a property name is a dimension property.
@@ -188,7 +221,6 @@ const getCSSPropertyValue = <CSSProperty extends keyof CSS.Properties>(
 
   if (checkIsCSSDimensionProperty(propertyName)) {
     if (typeof resolvedValue === 'number' || Array.isArray(resolvedValue)) {
-      // @ts-expect-error
       return resolveSpacing(resolvedValue, 'px');
     }
   }
@@ -306,36 +338,3 @@ export const generateMediaStyles =
       }
     `;
   };
-
-/**
- * Resolves the font styles based on the provided font name from the theme.
- *
- * @param fontName - The name of the font to be resolved from the theme.
- *
- * @returns A function that takes the theme and returns the CSS for the specified font.
- */
-export const resolveFont =
-  (fontName: HoneyFontName) =>
-  ({ theme }: HoneyThemedProps) => {
-    const font = theme.fonts[fontName];
-
-    return css`
-      font-family: ${font.family};
-      font-size: ${pxToRem(font.size)};
-      font-weight: ${font.weight};
-      line-height: ${font.lineHeight !== undefined && pxToRem(font.lineHeight)};
-      letter-spacing: ${font.letterSpacing !== undefined && pxToRem(font.letterSpacing)};
-    `;
-  };
-
-/**
- * Resolves a specific dimension value from the theme configuration.
- *
- * @param dimensionName - The name of the dimension to resolve.
- *
- * @returns A function that takes the theme and returns the resolved dimension value from the theme.
- */
-export const resolveDimension =
-  (dimensionName: HoneyDimensionName) =>
-  ({ theme }: HoneyThemedProps) =>
-    theme.dimensions[dimensionName];
